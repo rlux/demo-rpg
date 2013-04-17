@@ -14,21 +14,21 @@ namespace tmx {
 class BuilderState
 {
 public:
-	virtual void setAttribute(Format::Attribute attribute, const QString& value);
+	virtual void setAttribute(format::Attribute::Type attribute, const QString& value);
 	virtual void handleData(const QString& data);
-	virtual BuilderState* handleElement(Format::Element element);
+	virtual BuilderState* handleElement(format::Element::Type element);
 };
 
 class DefaultState : public BuilderState
 {
 public:
-	virtual BuilderState* handleElement(Format::Element element);
+	virtual BuilderState* handleElement(format::Element::Type element);
 };
 
 class StartState : public BuilderState
 {
 public:
-	virtual BuilderState* handleElement(Format::Element element);
+	virtual BuilderState* handleElement(format::Element::Type element);
 
 	QList<Map*> maps;
 };
@@ -38,8 +38,8 @@ class MapState : public DefaultState
 public:
 	MapState(Map* map);
 
-	virtual void setAttribute(Format::Attribute attribute, const QString& value);
-	virtual BuilderState* handleElement(Format::Element element);
+	virtual void setAttribute(format::Attribute::Type attribute, const QString& value);
+	virtual BuilderState* handleElement(format::Element::Type element);
 protected:
 	Map* map;
 };
@@ -49,8 +49,8 @@ class TilesetState : public DefaultState
 public:
 	TilesetState(Tileset* tileset);
 
-	virtual void setAttribute(Format::Attribute attribute, const QString& value);
-	virtual BuilderState* handleElement(Format::Element element);
+	virtual void setAttribute(format::Attribute::Type attribute, const QString& value);
+	virtual BuilderState* handleElement(format::Element::Type element);
 protected:
 	Tileset* tileset;
 };
@@ -60,7 +60,7 @@ class TileOffsetState : public BuilderState
 public:
 	TileOffsetState(QPoint* tileOffset);
 
-	virtual void setAttribute(Format::Attribute attribute, const QString& value);
+	virtual void setAttribute(format::Attribute::Type attribute, const QString& value);
 protected:
 	QPoint* tileOffset;
 };
@@ -70,8 +70,8 @@ class TileLayerState : public DefaultState
 public:
 	TileLayerState(TileLayer* tileLayer);
 
-	virtual void setAttribute(Format::Attribute attribute, const QString& value);
-	virtual BuilderState* handleElement(Format::Element element);
+	virtual void setAttribute(format::Attribute::Type attribute, const QString& value);
+	virtual BuilderState* handleElement(format::Element::Type element);
 protected:
 	TileLayer* tileLayer;
 };
@@ -81,7 +81,7 @@ class DataState : public BuilderState
 public:
 	DataState(Data* data);
 
-	virtual void setAttribute(Format::Attribute attribute, const QString& value);
+	virtual void setAttribute(format::Attribute::Type attribute, const QString& value);
 		virtual void handleData(const QString& data);
 protected:
 	Data* data;
@@ -92,7 +92,7 @@ class ImageState : public BuilderState
 public:
 	ImageState(Image* image);
 
-	virtual void setAttribute(Format::Attribute attribute, const QString& value);
+	virtual void setAttribute(format::Attribute::Type attribute, const QString& value);
 protected:
 	Image* image;
 };
@@ -104,9 +104,9 @@ public:
 	Builder();
 	~Builder();
 
-	void create(const QString& type);
-	void finish(const QString& type);
-	void setAttribute(const QString& name, const QString& value);
+	void create(const QString& elementName);
+	void finish(const QString& elementName);
+	void setAttribute(const QString& attributeName, const QString& value);
 	void data(const QString& bytes);
 
 	Map* map() const;

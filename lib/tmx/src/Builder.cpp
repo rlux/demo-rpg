@@ -3,8 +3,9 @@
 #include <QDebug>
 
 using namespace tmx;
+using namespace tmx::format;
 
-void BuilderState::setAttribute(Format::Attribute attribute, const QString& value)
+void BuilderState::setAttribute(Attribute::Type attribute, const QString& value)
 {
 }
 
@@ -12,20 +13,20 @@ void BuilderState::handleData(const QString& data)
 {
 }
 
-BuilderState* BuilderState::handleElement(Format::Element element)
+BuilderState* BuilderState::handleElement(Element::Type element)
 {
 	return new BuilderState();
 }
 
-BuilderState* DefaultState::handleElement(Format::Element element)
+BuilderState* DefaultState::handleElement(Element::Type element)
 {
 	// properties;
 	return new BuilderState();
 }
 
-BuilderState* StartState::handleElement(Format::Element element)
+BuilderState* StartState::handleElement(Element::Type element)
 {
-	if (element == Format::Map)
+	if (element == Element::Map)
 	{
 		Map* map = new Map();
 		maps << map;
@@ -41,46 +42,46 @@ MapState::MapState(Map* map) : map(map)
 {
 }
 
-void MapState::setAttribute(Format::Attribute attribute, const QString& value)
+void MapState::setAttribute(Attribute::Type attribute, const QString& value)
 {
 	switch (attribute)
 	{
-		case Format::Version:
+		case Attribute::Version:
 			// todo
 			break;
-		case Format::Orientation:
+		case Attribute::Orientation:
 			map->setOrientation(Map::orientationFromString(value));
 			break;
-		case Format::Width:
+		case Attribute::Width:
 			map->setWidth(value.toUInt());
 			break;
-		case Format::Height:
+		case Attribute::Height:
 			map->setHeight(value.toUInt());
 			break;
-		case Format::TileWidth:
+		case Attribute::TileWidth:
 			map->setTileWidth(value.toUInt());
 			break;
-		case Format::TileHeight:
+		case Attribute::TileHeight:
 			map->setTileHeight(value.toUInt());
 			break;
 	}
 }
 
-BuilderState* MapState::handleElement(Format::Element element)
+BuilderState* MapState::handleElement(Element::Type element)
 {
 	switch (element)
 	{
-		case Format::Tileset: {
+		case Element::Tileset: {
 			Tileset* tileset = new Tileset();
 			map->addTileset(tileset);
 			return new TilesetState(tileset);
 		}
-		case Format::Layer: {
+		case Element::Layer: {
 			TileLayer* tileLayer = new TileLayer();
 			map->addTileLayer(tileLayer);
 			return new TileLayerState(tileLayer);
 		}
-		case Format::ObjectGroup:
+		case Element::ObjectGroup:
 			// todo
 		default:
 			return DefaultState::handleElement(element);
@@ -91,35 +92,35 @@ TilesetState::TilesetState(Tileset* tileset) : tileset(tileset)
 {
 }
 
-void TilesetState::setAttribute(Format::Attribute attribute, const QString& value)
+void TilesetState::setAttribute(Attribute::Type attribute, const QString& value)
 {
 	switch (attribute)
 	{
-		case Format::FirstGid:
+		case Attribute::FirstGid:
 			tileset->setFirstGid(value.toUInt());
 			break;
-		case Format::Source:
+		case Attribute::Source:
 			tileset->setSource(value);
 			break;
-		case Format::Name:
+		case Attribute::Name:
 			tileset->setName(value);
 			break;
-		case Format::Spacing:
+		case Attribute::Spacing:
 			tileset->setSpacing(value.toInt());
 			break;
-		case Format::Margin:
+		case Attribute::Margin:
 			tileset->setMargin(value.toInt());
 			break;
 	}
 }
 
-BuilderState* TilesetState::handleElement(Format::Element element)
+BuilderState* TilesetState::handleElement(Element::Type element)
 {
 	switch (element)
 	{
-		case Format::Image:
+		case Element::Image:
 			return new ImageState(&tileset->image());
-		case Format::TileOffset:
+		case Element::TileOffset:
 			return new TileOffsetState(&tileset->tileOffset());
 		default:
 			return DefaultState::handleElement(element);
@@ -130,14 +131,14 @@ TileOffsetState::TileOffsetState(QPoint* tileOffset) : tileOffset(tileOffset)
 {
 }
 
-void TileOffsetState::setAttribute(Format::Attribute attribute, const QString& value)
+void TileOffsetState::setAttribute(Attribute::Type attribute, const QString& value)
 {
 	switch (attribute)
 	{
-		case Format::X:
+		case Attribute::X:
 			tileOffset->setX(value.toInt());
 			break;
-		case Format::Y:
+		case Attribute::Y:
 			tileOffset->setY(value.toInt());
 			break;
 	}
@@ -147,39 +148,39 @@ TileLayerState::TileLayerState(TileLayer* tileLayer) : tileLayer(tileLayer)
 {
 }
 
-void TileLayerState::setAttribute(Format::Attribute attribute, const QString& value)
+void TileLayerState::setAttribute(Attribute::Type attribute, const QString& value)
 {
 	switch (attribute)
 	{
-		case Format::Name:
+		case Attribute::Name:
 			tileLayer->setName(value);
 			break;
-		case Format::X:
+		case Attribute::X:
 			tileLayer->setX(value.toInt());
 			break;
-		case Format::Y:
+		case Attribute::Y:
 			tileLayer->setY(value.toInt());
 			break;
-		case Format::Width:
+		case Attribute::Width:
 			tileLayer->setWidth(value.toInt());
 			break;
-		case Format::Height:
+		case Attribute::Height:
 			tileLayer->setHeight(value.toInt());
 			break;
-		case Format::Opacity:
+		case Attribute::Opacity:
 			tileLayer->setOpacity(value.toFloat());
 			break;
-		case Format::Visible:
+		case Attribute::Visible:
 			tileLayer->setVisible(value.toInt()!=0);
 			break;
 	}
 }
 
-BuilderState* TileLayerState::handleElement(Format::Element element)
+BuilderState* TileLayerState::handleElement(Element::Type element)
 {
 	switch (element)
 	{
-		case Format::Data:
+		case Element::Data:
 			return new DataState(&tileLayer->data());
 		default:
 			return DefaultState::handleElement(element);
@@ -191,14 +192,14 @@ DataState::DataState(Data* data) : data(data)
 {
 }
 
-void DataState::setAttribute(Format::Attribute attribute, const QString& value)
+void DataState::setAttribute(Attribute::Type attribute, const QString& value)
 {
 	switch (attribute)
 	{
-		case Format::Encoding:
+		case Attribute::Encoding:
 			data->setEncoding(Data::encodingFromString(value));
 			break;
-		case Format::Compression:
+		case Attribute::Compression:
 			data->setCompression(Data::compressionFromString(value));
 			break;
 	}
@@ -213,23 +214,23 @@ ImageState::ImageState(Image* image) : image(image)
 {
 }
 
-void ImageState::setAttribute(Format::Attribute attribute, const QString& value)
+void ImageState::setAttribute(Attribute::Type attribute, const QString& value)
 {
 	switch (attribute)
 	{
-		case Format::ImageFormat:
+		case Attribute::Format:
 			image->setFormat(value);
 			break;
-		case Format::Source:
+		case Attribute::Source:
 			image->setSource(value);
 			break;
-		case Format::Trans:
+		case Attribute::Trans:
 			image->setTrans(value);
 			break;
-		case Format::Width:
+		case Attribute::Width:
 			image->setWidth(value.toInt());
 			break;
-		case Format::Height:
+		case Attribute::Height:
 			image->setHeight(value.toInt());
 			break;
 	}
@@ -257,26 +258,19 @@ BuilderState* Builder::currentState()
 	return _stateStack.isEmpty() ? _startState : _stateStack.top();
 }
 
-void Builder::create(const QString& type)
+void Builder::create(const QString& elementName)
 {
-	Format::Element element = Format::element(type);
-
-	BuilderState* state = currentState();
-	_stateStack.push(state->handleElement(element));
+	_stateStack.push(currentState()->handleElement(Element::type(elementName)));
 }
 
-void Builder::finish(const QString& type)
+void Builder::finish(const QString& elementName)
 {
-	Format::Element element = Format::element(type);
-
 	delete _stateStack.pop();
 }
 
-void Builder::setAttribute(const QString& name, const QString& value)
+void Builder::setAttribute(const QString& attributeName, const QString& value)
 {
-	Format::Attribute attribute = Format::attribute(name);
-
-	currentState()->setAttribute(attribute, value);
+	currentState()->setAttribute(Attribute::type(attributeName), value);
 }
 
 void Builder::data(const QString& bytes)

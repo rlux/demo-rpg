@@ -4,12 +4,13 @@
 #include <QHash>
 
 namespace tmx {
+namespace format {
 
-class Format
+class Element
 {
 public:
-	enum Element {
-		UnknownElement,
+	enum Type {
+		Unknown,
 		Map,
 		Tileset,
 		Layer,
@@ -20,8 +21,17 @@ public:
 		Data,
 		TileOffset
 	};
-	enum Attribute {
-		UnknownAttribute,
+
+	static Type type(const QString& name);
+protected:
+	static QHash<QString, Type> typeMap;
+};
+
+class Attribute
+{
+public:
+	enum Type {
+		Unknown,
 		Id,
 		Gid,
 		FirstGid,
@@ -40,21 +50,15 @@ public:
 		Margin,
 		Visible,
 		Opacity,
-		ImageFormat,
+		Format,
 		Source,
 		Trans
 	};
 
-	static Element element(const QString& name);
-	static Attribute attribute(const QString& name);
+	static Type type(const QString& name);
 protected:
-	static QHash<QString, Element> _elementMap;
-	static QHash<QString, Attribute> _attributeMap;
-
-	static QHash<QString, Element> createElementMap();
-	static QHash<QString, Attribute> createAttributeMap();
-private:
-	Format();
+	static QHash<QString, Type> typeMap;
 };
 
+} // namespace format
 } // namespace tmx
