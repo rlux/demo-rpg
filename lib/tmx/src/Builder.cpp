@@ -17,6 +17,12 @@ BuilderState* BuilderState::handleElement(Format::Element element)
 	return new BuilderState();
 }
 
+BuilderState* DefaultState::handleElement(Format::Element element)
+{
+	// properties;
+	return new BuilderState();
+}
+
 BuilderState* StartState::handleElement(Format::Element element)
 {
 	if (element == Format::Map)
@@ -77,7 +83,7 @@ BuilderState* MapState::handleElement(Format::Element element)
 		case Format::ObjectGroup:
 			// todo
 		default:
-			return new BuilderState();
+			return DefaultState::handleElement(element);
 	}
 }
 
@@ -116,7 +122,7 @@ BuilderState* TilesetState::handleElement(Format::Element element)
 		case Format::TileOffset:
 			return new TileOffsetState(&tileset->tileOffset());
 		default:
-			return new BuilderState();
+			return DefaultState::handleElement(element);
 	}
 }
 
@@ -176,7 +182,7 @@ BuilderState* TileLayerState::handleElement(Format::Element element)
 		case Format::Data:
 			return new DataState(&tileLayer->data());
 		default:
-			return new BuilderState();
+			return DefaultState::handleElement(element);
 	}
 }
 

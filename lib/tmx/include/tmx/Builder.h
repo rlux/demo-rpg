@@ -19,6 +19,12 @@ public:
 	virtual BuilderState* handleElement(Format::Element element);
 };
 
+class DefaultState : public BuilderState
+{
+public:
+	virtual BuilderState* handleElement(Format::Element element);
+};
+
 class StartState : public BuilderState
 {
 public:
@@ -27,7 +33,7 @@ public:
 	QList<Map*> maps;
 };
 
-class MapState : public BuilderState
+class MapState : public DefaultState
 {
 public:
 	MapState(Map* map);
@@ -38,7 +44,7 @@ protected:
 	Map* map;
 };
 
-class TilesetState : public BuilderState
+class TilesetState : public DefaultState
 {
 public:
 	TilesetState(Tileset* tileset);
@@ -59,7 +65,7 @@ protected:
 	QPoint* tileOffset;
 };
 
-class TileLayerState : public BuilderState
+class TileLayerState : public DefaultState
 {
 public:
 	TileLayerState(TileLayer* tileLayer);
