@@ -47,7 +47,7 @@ bool XmlHandler::endElement(const QString& namespaceURI, const QString& localNam
 
 bool XmlHandler::characters(const QString& characters)
 {
-	//qDebug() << characters;
+	_builder.data(characters.trimmed());
 
 	return true;
 }

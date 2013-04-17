@@ -38,7 +38,9 @@ public:
 		Compression,
 		Version,
 		Spacing,
-		Margin
+		Margin,
+		Visible,
+		Opacity
 	};
 
 	static Element element(const QString& name);

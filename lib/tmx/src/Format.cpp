@@ -53,6 +53,8 @@ QHash<QString, Format::Attribute> Format::createAttributeMap()
 	attributeMap.insert("version", Version);
 	attributeMap.insert("spacing", Spacing);
 	attributeMap.insert("margin", Margin);
+	attributeMap.insert("opacity", Opacity);
+	attributeMap.insert("visible", Visible);
 
 	return attributeMap;
 }

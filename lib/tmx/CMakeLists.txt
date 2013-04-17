@@ -19,6 +19,7 @@ set(sources
 	src/Parser.cpp
 	src/XmlHandler.cpp
 	src/Format.cpp
+	src/Data.cpp
 	src/Builder.cpp
 	src/Base.cpp
 	src/Layer.cpp
