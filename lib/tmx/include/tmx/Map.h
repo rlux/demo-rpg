@@ -2,6 +2,7 @@
 
 #include <tmx/Base.h>
 #include <tmx/Tileset.h>
+#include <tmx/TileMapper.h>
 #include <tmx/TileLayer.h>
 #include <tmx/ImageLayer.h>
 #include <tmx/ObjectLayer.h>
@@ -43,7 +44,9 @@ public:
 	void setTileWidth(int width);
 	void setTileHeight(int height);
 
+	const TileMapper& tileMapper();
 	void addTileset(Tileset* tileset);
+
 	void addLayer(Layer* layer);
 
 	QString toString() const;
@@ -54,7 +57,7 @@ protected:
 	QSize _size;
 	QSize _tileSize;
 //	QColor _backgroundColor;
-	QList<Tileset*> _tilesets;
+	TileMapper _tileMapper;
 	QList<Layer*> _layers;
 };
 

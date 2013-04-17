@@ -14,6 +14,13 @@ class Tileset : public Base
 public:
 	Tileset();
 
+	unsigned firstGid() const;
+	const QString& name() const;
+	const QString& source() const;
+	int spacing() const;
+	int margin() const;
+	const QSize& tileSize() const;
+
 	void setFirstGid(unsigned gid);
 	void setSource(const QString& source);
 	void setName(const QString& name);

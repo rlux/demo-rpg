@@ -8,6 +8,36 @@ Tileset::Tileset()
 {
 }
 
+unsigned Tileset::firstGid() const
+{
+	return _firstGid;
+}
+
+const QString& Tileset::name() const
+{
+	return _name;
+}
+
+const QString& Tileset::source() const
+{
+	return _source;
+}
+
+int Tileset::spacing() const
+{
+	return _spacing;
+}
+
+int Tileset::margin() const
+{
+	return _margin;
+}
+
+const QSize& Tileset::tileSize() const
+{
+	return _tileSize;
+}
+
 void Tileset::setFirstGid(unsigned gid)
 {
 	_firstGid = gid;

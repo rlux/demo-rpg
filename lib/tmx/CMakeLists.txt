@@ -28,6 +28,7 @@ set(sources
 	src/ObjectLayer.cpp
 	src/Cell.cpp
 	src/Tile.cpp
+	src/TileMapper.cpp
 	src/Map.cpp
 	src/Tileset.cpp
 	src/Image.cpp

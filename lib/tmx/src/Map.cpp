@@ -16,7 +16,7 @@ Map::Map(Orientation orientation, const QSize& size, const QSize& tileSize)
 
 Map::~Map()
 {
-	qDeleteAll(_tilesets);
+	qDeleteAll(_layers);
 }
 
 Map::Orientation Map::orientation() const
@@ -104,7 +104,12 @@ void Map::setTileHeight(int height)
 
 void Map::addTileset(Tileset* tileset)
 {
-	_tilesets << tileset;
+	_tileMapper.addTileset(tileset);
+}
+
+const TileMapper& Map::tileMapper()
+{
+	return _tileMapper;
 }
 
 void Map::addLayer(Layer* layer)
@@ -116,7 +121,7 @@ void Map::addLayer(Layer* layer)
 QString Map::toString() const
 {
 	QString sets;
-	for (Tileset* tileset: _tilesets) {
+	for (Tileset* tileset: _tileMapper.tilesets()) {
 		sets += tileset->toString() + "\n";
 	}
 	QString layers;
