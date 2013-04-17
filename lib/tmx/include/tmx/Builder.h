@@ -38,6 +38,7 @@ protected:
 	void setMapAttribute(const QString& name, const QString& value);
 	void setTilesetAttribute(const QString& name, const QString& value);
 	void setTileOffsetAttribute(const QString& name, const QString& value);
+	void setImageAttribute(const QString& name, const QString& value);
 	void setTileLayerAttribute(const QString& name, const QString& value);
 	void setTileLayerDataAttribute(const QString& name, const QString& value);
 };

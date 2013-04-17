@@ -65,13 +65,13 @@ int TileLayer::at(int x, int y) const
 #include <QDebug>
 QString TileLayer::toString() const
 {
-	QString str;
-	for (int y=0;y<_size.height();++y) {
-		for (int x=0;x<_size.width();++x) {
-			str += QString::number(at(x,y))+",";
-		}
-		str+="\n";
-	}
-	qDebug() << str;
+//	QString str;
+//	for (int y=0;y<_size.height();++y) {
+//		for (int x=0;x<_size.width();++x) {
+//			str += QString::number(at(x,y))+",";
+//		}
+//		str+="\n";
+//	}
+//	qDebug() << str;
 	return QString("TileLayer(%1 %2x%3)").arg(_name).arg(_size.width()).arg(_size.height());
 }

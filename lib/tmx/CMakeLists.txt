@@ -28,6 +28,7 @@ set(sources
 	src/Tile.cpp
 	src/Map.cpp
 	src/Tileset.cpp
+	src/Image.cpp
 	src/Object.cpp
 )
 

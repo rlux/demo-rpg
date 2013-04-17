@@ -27,7 +27,6 @@ QHash<QString, Format::Element> Format::createElementMap()
 	elementMap.insert("object", Object);
 	elementMap.insert("objectgroup", ObjectGroup);
 	elementMap.insert("data", Data);
-	elementMap.insert("source", Source);
 	elementMap.insert("tileoffset", TileOffset);
 
 	return elementMap;
@@ -55,6 +54,9 @@ QHash<QString, Format::Attribute> Format::createAttributeMap()
 	attributeMap.insert("margin", Margin);
 	attributeMap.insert("opacity", Opacity);
 	attributeMap.insert("visible", Visible);
+	attributeMap.insert("format", ImageFormat);
+	attributeMap.insert("source", Source);
+	attributeMap.insert("trans", Trans);
 
 	return attributeMap;
 }

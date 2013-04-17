@@ -18,7 +18,6 @@ public:
 		ObjectGroup,
 		Object,
 		Data,
-		Source,
 		TileOffset
 	};
 	enum Attribute {
@@ -40,7 +39,10 @@ public:
 		Spacing,
 		Margin,
 		Visible,
-		Opacity
+		Opacity,
+		ImageFormat,
+		Source,
+		Trans
 	};
 
 	static Element element(const QString& name);

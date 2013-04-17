@@ -107,6 +107,9 @@ void Builder::setAttribute(const QString& name, const QString& value)
 		case Format::TileOffset:
 			setTileOffsetAttribute(name, value);
 			break;
+		case Format::Image:
+			setImageAttribute(name, value);
+			break;
 		case Format::Layer:
 			setTileLayerAttribute(name, value);
 			break;
@@ -186,6 +189,30 @@ void Builder::setTileOffsetAttribute(const QString& name, const QString& value)
 			break;
 		case Format::Y:
 			tileset->tileOffset().setY(value.toInt());
+			break;
+	}
+}
+
+void Builder::setImageAttribute(const QString& name, const QString& value)
+{
+	Tileset* tileset = currentTileset();
+
+	switch (Format::attribute(name))
+	{
+		case Format::ImageFormat:
+			tileset->image().setFormat(value);
+			break;
+		case Format::Source:
+			tileset->image().setSource(value);
+			break;
+		case Format::Trans:
+			tileset->image().setTrans(value);
+			break;
+		case Format::Width:
+			tileset->image().setWidth(value.toInt());
+			break;
+		case Format::Height:
+			tileset->image().setHeight(value.toInt());
 			break;
 	}
 }

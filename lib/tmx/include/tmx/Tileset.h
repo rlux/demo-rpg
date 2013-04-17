@@ -1,6 +1,7 @@
 #pragma once
 
 #include <tmx/Base.h>
+#include <tmx/Image.h>
 
 #include <QSize>
 #include <QPoint>
@@ -20,6 +21,7 @@ public:
 	void setMargin(int margin);
 
 	QPoint& tileOffset();
+	Image& image();
 
 	QString toString() const;
 protected:
@@ -30,6 +32,7 @@ protected:
 	int _spacing;
 	int _margin;
 	QPoint _tileOffset;
+	Image _image;
 };
 
 } // namespace tmx

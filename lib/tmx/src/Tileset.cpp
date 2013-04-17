@@ -38,7 +38,12 @@ QPoint& Tileset::tileOffset()
 	return _tileOffset;
 }
 
+Image& Tileset::image()
+{
+	return _image;
+}
+
 QString Tileset::toString() const
 {
-	return QString("Tileset(%1 %2 %3 %4 %5 %6x%7)").arg(_name).arg(_firstGid).arg(_spacing).arg(_margin).arg(_source).arg(_tileOffset.x()).arg(_tileOffset.y());
+	return QString("Tileset(%1 %2 %3 %4 %5 %6x%7 %8)").arg(_name).arg(_firstGid).arg(_spacing).arg(_margin).arg(_source).arg(_tileOffset.x()).arg(_tileOffset.y()).arg(_image.source());
 }
