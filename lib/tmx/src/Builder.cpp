@@ -81,16 +81,19 @@ Format::Element Builder::currentElementType() const
 
 Map* Builder::currentMap()
 {
+	if (_mapStack.isEmpty()) return nullptr;
 	return _mapStack.top();
 }
 
 Tileset* Builder::currentTileset()
 {
+	if (_tilesetStack.isEmpty()) return nullptr;
 	return _tilesetStack.top();
 }
 
 TileLayer* Builder::currentTileLayer()
 {
+	if (_tileLayerStack.isEmpty()) return nullptr;
 	return _tileLayerStack.top();
 }
 
@@ -196,6 +199,8 @@ void Builder::setTileOffsetAttribute(const QString& name, const QString& value)
 void Builder::setImageAttribute(const QString& name, const QString& value)
 {
 	Tileset* tileset = currentTileset();
+
+	if (!tileset) return; // image layer
 
 	switch (Format::attribute(name))
 	{

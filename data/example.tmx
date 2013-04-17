@@ -1,39 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="ExteriorTest-760306" tilewidth="32" tileheight="32">
-  <image source="ExteriorTest-760306.jpg" width="640" height="480"/>
-  <terraintypes>
-   <terrain name="myterrain" tile="-1"/>
-   <terrain name="stone" tile="135"/>
-   <terrain name="grass" tile="214"/>
-  </terraintypes>
-  <tile id="193" terrain=",,,2"/>
-  <tile id="194" terrain=",,2,2"/>
-  <tile id="195" terrain=",,2,"/>
-  <tile id="213" terrain=",2,,2"/>
-  <tile id="215" terrain="2,,2,"/>
-  <tile id="233" terrain=",2,,"/>
-  <tile id="234" terrain="2,2,,"/>
-  <tile id="235" terrain="2,,,"/>
+<map version="1.0" orientation="orthogonal" width="20" height="20" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32">
+  <image source="alles_by_samidare88-d6214gf.png" width="128" height="352"/>
  </tileset>
- <layer name="Tile Layer 1" width="100" height="100">
+ <imagelayer name="background" width="20" height="20">
+  <image source="background.png"/>
+ </imagelayer>
+ <layer name="tiles" width="20" height="20">
   <data encoding="base64" compression="zlib">
-   eJzt0TENADAMBLGURfmTCp0OBZFX5MH7SddV1QAAAMAa93zTHfiRyI8sfmTxI4sfAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAw6wEpe8dp
+   eJxjYBjcQBGIlYBYmUw+OlAFYjUgVgdiLTQ+ujw2PilAiwI9EkDMQgbGBTio5D508yiND3TzSIkPfO4XYUCECQ8BuwkBdD/A3IrNfmL8i+4nbHGDSy0xgIOAO/C5H5d5+NxBjnnEyGMzTwsNgwByXGPDAiS6bxQQDwDcDQvJ
   </data>
  </layer>
- <objectgroup name="Object Layer 1" width="100" height="100" visible="0">
-  <object gid="229" x="904" y="287"/>
-  <object gid="250" x="712" y="381"/>
-  <object gid="250" x="967" y="245"/>
-  <object gid="250" x="959" y="429"/>
-  <object gid="250" x="1016" y="383"/>
-  <object gid="250" x="749" y="470"/>
-  <object gid="250" x="803" y="319"/>
-  <object name="test" type="mytype" x="442" y="272" width="94" height="79">
-   <ellipse/>
-  </object>
-  <object x="446" y="665" width="147" height="150">
-   <ellipse/>
-  </object>
+ <objectgroup name="objects" width="20" height="20">
+  <object name="man01" type="man" gid="18" x="346" y="332"/>
+  <object name="woman01" type="woman" gid="2" x="25" y="264"/>
+  <object name="woman02" type="woman" gid="7" x="411" y="214"/>
+  <object name="man02" type="man" gid="22" x="442" y="438"/>
  </objectgroup>
 </map>
