@@ -4,137 +4,40 @@
 
 using namespace tmx;
 
-Builder::Builder()
+void BuilderState::setAttribute(Format::Attribute attribute, const QString& value)
 {
 }
 
-Map* Builder::map() const
+void BuilderState::handleData(const QString& data)
 {
-	return _maps.first();
 }
 
-void Builder::create(const QString& type)
+BuilderState* BuilderState::handleElement(Format::Element element)
 {
-	Format::Element element = Format::element(type);
+	return new BuilderState();
+}
 
-	switch (element)
+BuilderState* StartState::handleElement(Format::Element element)
+{
+	if (element == Format::Map)
 	{
-		case Format::Map: {
-			Map* map = new Map();
-			_mapStack.push(map);
-			_maps << map;
-			break;
-		}
-		case Format::Tileset: {
-			Tileset* tileset = new Tileset();
-			_tilesetStack.push(tileset);
-			currentMap()->addTileset(tileset);
-			break;
-		}
-		case Format::Tile:
-			break;
-		case Format::Layer:{
-			TileLayer* tileLayer = new TileLayer();
-			_tileLayerStack.push(tileLayer);
-			currentMap()->addTileLayer(tileLayer);
-			break;
-		}
-		case Format::ObjectGroup:
-			break;
-		case Format::Object:
-			break;
+		Map* map = new Map();
+		maps << map;
+		return new MapState(map);
 	}
-
-	_elementStack.push(element);
-}
-
-void Builder::finish(const QString& type)
-{
-	Format::Element element = Format::element(type);
-
-	switch (element)
+	else
 	{
-		case Format::Map:
-			_mapStack.pop();
-			break;
-		case Format::Tileset:
-			_tilesetStack.pop();
-			break;
-		case Format::Tile:
-			break;
-		case Format::Layer:
-			_tileLayerStack.pop();
-			break;
-		case Format::ObjectGroup:
-			break;
-		case Format::Object:
-			break;
-	}
-
-	_elementStack.pop();
-}
-
-Format::Element Builder::currentElementType() const
-{
-	return _elementStack.top();
-}
-
-Map* Builder::currentMap()
-{
-	if (_mapStack.isEmpty()) return nullptr;
-	return _mapStack.top();
-}
-
-Tileset* Builder::currentTileset()
-{
-	if (_tilesetStack.isEmpty()) return nullptr;
-	return _tilesetStack.top();
-}
-
-TileLayer* Builder::currentTileLayer()
-{
-	if (_tileLayerStack.isEmpty()) return nullptr;
-	return _tileLayerStack.top();
-}
-
-void Builder::setAttribute(const QString& name, const QString& value)
-{
-	switch (currentElementType())
-	{
-		case Format::Map:
-			setMapAttribute(name, value);
-			break;
-		case Format::Tileset:
-			setTilesetAttribute(name, value);
-			break;
-		case Format::TileOffset:
-			setTileOffsetAttribute(name, value);
-			break;
-		case Format::Image:
-			setImageAttribute(name, value);
-			break;
-		case Format::Layer:
-			setTileLayerAttribute(name, value);
-			break;
-		case Format::Data:
-			setTileLayerDataAttribute(name, value);
-			break;
+		return new BuilderState();
 	}
 }
 
-void Builder::data(const QString& string)
+MapState::MapState(Map* map) : map(map)
 {
-	if (currentElementType()==Format::Data)
-	{
-		currentTileLayer()->data().setBytes(string.toAscii());
-	}
 }
 
-void Builder::setMapAttribute(const QString& name, const QString& value)
+void MapState::setAttribute(Format::Attribute attribute, const QString& value)
 {
-	Map* map = currentMap();
-
-	switch (Format::attribute(name))
+	switch (attribute)
 	{
 		case Format::Version:
 			// todo
@@ -157,11 +60,34 @@ void Builder::setMapAttribute(const QString& name, const QString& value)
 	}
 }
 
-void Builder::setTilesetAttribute(const QString& name, const QString& value)
+BuilderState* MapState::handleElement(Format::Element element)
 {
-	Tileset* tileset = currentTileset();
+	switch (element)
+	{
+		case Format::Tileset: {
+			Tileset* tileset = new Tileset();
+			map->addTileset(tileset);
+			return new TilesetState(tileset);
+		}
+		case Format::Layer: {
+			TileLayer* tileLayer = new TileLayer();
+			map->addTileLayer(tileLayer);
+			return new TileLayerState(tileLayer);
+		}
+		case Format::ObjectGroup:
+			// todo
+		default:
+			return new BuilderState();
+	}
+}
 
-	switch (Format::attribute(name))
+TilesetState::TilesetState(Tileset* tileset) : tileset(tileset)
+{
+}
+
+void TilesetState::setAttribute(Format::Attribute attribute, const QString& value)
+{
+	switch (attribute)
 	{
 		case Format::FirstGid:
 			tileset->setFirstGid(value.toUInt());
@@ -181,52 +107,43 @@ void Builder::setTilesetAttribute(const QString& name, const QString& value)
 	}
 }
 
-void Builder::setTileOffsetAttribute(const QString& name, const QString& value)
+BuilderState* TilesetState::handleElement(Format::Element element)
 {
-	Tileset* tileset = currentTileset();
+	switch (element)
+	{
+		case Format::Image:
+			return new ImageState(&tileset->image());
+		case Format::TileOffset:
+			return new TileOffsetState(&tileset->tileOffset());
+		default:
+			return new BuilderState();
+	}
+}
 
-	switch (Format::attribute(name))
+TileOffsetState::TileOffsetState(QPoint* tileOffset) : tileOffset(tileOffset)
+{
+}
+
+void TileOffsetState::setAttribute(Format::Attribute attribute, const QString& value)
+{
+	switch (attribute)
 	{
 		case Format::X:
-			tileset->tileOffset().setX(value.toInt());
+			tileOffset->setX(value.toInt());
 			break;
 		case Format::Y:
-			tileset->tileOffset().setY(value.toInt());
+			tileOffset->setY(value.toInt());
 			break;
 	}
 }
 
-void Builder::setImageAttribute(const QString& name, const QString& value)
+TileLayerState::TileLayerState(TileLayer* tileLayer) : tileLayer(tileLayer)
 {
-	Tileset* tileset = currentTileset();
-
-	if (!tileset) return; // image layer
-
-	switch (Format::attribute(name))
-	{
-		case Format::ImageFormat:
-			tileset->image().setFormat(value);
-			break;
-		case Format::Source:
-			tileset->image().setSource(value);
-			break;
-		case Format::Trans:
-			tileset->image().setTrans(value);
-			break;
-		case Format::Width:
-			tileset->image().setWidth(value.toInt());
-			break;
-		case Format::Height:
-			tileset->image().setHeight(value.toInt());
-			break;
-	}
 }
 
-void Builder::setTileLayerAttribute(const QString& name, const QString& value)
+void TileLayerState::setAttribute(Format::Attribute attribute, const QString& value)
 {
-	TileLayer* tileLayer = currentTileLayer();
-
-	switch (Format::attribute(name))
+	switch (attribute)
 	{
 		case Format::Name:
 			tileLayer->setName(value);
@@ -252,17 +169,111 @@ void Builder::setTileLayerAttribute(const QString& name, const QString& value)
 	}
 }
 
-void Builder::setTileLayerDataAttribute(const QString& name, const QString& value)
+BuilderState* TileLayerState::handleElement(Format::Element element)
 {
-	TileLayer* tileLayer = currentTileLayer();
+	switch (element)
+	{
+		case Format::Data:
+			return new DataState(&tileLayer->data());
+		default:
+			return new BuilderState();
+	}
+}
 
-	switch (Format::attribute(name))
+
+DataState::DataState(Data* data) : data(data)
+{
+}
+
+void DataState::setAttribute(Format::Attribute attribute, const QString& value)
+{
+	switch (attribute)
 	{
 		case Format::Encoding:
-			tileLayer->data().setEncoding(Data::encodingFromString(value));
+			data->setEncoding(Data::encodingFromString(value));
 			break;
 		case Format::Compression:
-			tileLayer->data().setCompression(Data::compressionFromString(value));
+			data->setCompression(Data::compressionFromString(value));
 			break;
 	}
+}
+
+void DataState::handleData(const QString& _data)
+{
+	data->setBytes(_data.toAscii());
+}
+
+ImageState::ImageState(Image* image) : image(image)
+{
+}
+
+void ImageState::setAttribute(Format::Attribute attribute, const QString& value)
+{
+	switch (attribute)
+	{
+		case Format::ImageFormat:
+			image->setFormat(value);
+			break;
+		case Format::Source:
+			image->setSource(value);
+			break;
+		case Format::Trans:
+			image->setTrans(value);
+			break;
+		case Format::Width:
+			image->setWidth(value.toInt());
+			break;
+		case Format::Height:
+			image->setHeight(value.toInt());
+			break;
+	}
+}
+
+
+Builder::Builder()
+{
+	_startState = new StartState();
+}
+
+Builder::~Builder()
+{
+	qDeleteAll(_stateStack);
+	delete _startState;
+}
+
+Map* Builder::map() const
+{
+	return _startState->maps.first();
+}
+
+BuilderState* Builder::currentState()
+{
+	return _stateStack.isEmpty() ? _startState : _stateStack.top();
+}
+
+void Builder::create(const QString& type)
+{
+	Format::Element element = Format::element(type);
+
+	BuilderState* state = currentState();
+	_stateStack.push(state->handleElement(element));
+}
+
+void Builder::finish(const QString& type)
+{
+	Format::Element element = Format::element(type);
+
+	delete _stateStack.pop();
+}
+
+void Builder::setAttribute(const QString& name, const QString& value)
+{
+	Format::Attribute attribute = Format::attribute(name);
+
+	currentState()->setAttribute(attribute, value);
+}
+
+void Builder::data(const QString& bytes)
+{
+	currentState()->handleData(bytes);
 }

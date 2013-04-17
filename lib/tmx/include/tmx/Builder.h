@@ -11,10 +11,92 @@
 
 namespace tmx {
 
+class BuilderState
+{
+public:
+	virtual void setAttribute(Format::Attribute attribute, const QString& value);
+	virtual void handleData(const QString& data);
+	virtual BuilderState* handleElement(Format::Element element);
+};
+
+class StartState : public BuilderState
+{
+public:
+	virtual BuilderState* handleElement(Format::Element element);
+
+	QList<Map*> maps;
+};
+
+class MapState : public BuilderState
+{
+public:
+	MapState(Map* map);
+
+	virtual void setAttribute(Format::Attribute attribute, const QString& value);
+	virtual BuilderState* handleElement(Format::Element element);
+protected:
+	Map* map;
+};
+
+class TilesetState : public BuilderState
+{
+public:
+	TilesetState(Tileset* tileset);
+
+	virtual void setAttribute(Format::Attribute attribute, const QString& value);
+	virtual BuilderState* handleElement(Format::Element element);
+protected:
+	Tileset* tileset;
+};
+
+class TileOffsetState : public BuilderState
+{
+public:
+	TileOffsetState(QPoint* tileOffset);
+
+	virtual void setAttribute(Format::Attribute attribute, const QString& value);
+protected:
+	QPoint* tileOffset;
+};
+
+class TileLayerState : public BuilderState
+{
+public:
+	TileLayerState(TileLayer* tileLayer);
+
+	virtual void setAttribute(Format::Attribute attribute, const QString& value);
+	virtual BuilderState* handleElement(Format::Element element);
+protected:
+	TileLayer* tileLayer;
+};
+
+class DataState : public BuilderState
+{
+public:
+	DataState(Data* data);
+
+	virtual void setAttribute(Format::Attribute attribute, const QString& value);
+		virtual void handleData(const QString& data);
+protected:
+	Data* data;
+};
+
+class ImageState : public BuilderState
+{
+public:
+	ImageState(Image* image);
+
+	virtual void setAttribute(Format::Attribute attribute, const QString& value);
+protected:
+	Image* image;
+};
+
+
 class Builder
 {
 public:
 	Builder();
+	~Builder();
 
 	void create(const QString& type);
 	void finish(const QString& type);
@@ -23,24 +105,10 @@ public:
 
 	Map* map() const;
 protected:
-	QStack<Format::Element> _elementStack;
-	QStack<Map*> _mapStack;
-	QStack<Tileset*> _tilesetStack;
-	QStack<TileLayer*> _tileLayerStack;
+	StartState* _startState;
+	QStack<BuilderState*> _stateStack;
 
-	QList<Map*> _maps;
-
-	Format::Element currentElementType() const;
-	Map* currentMap();
-	Tileset* currentTileset();
-	TileLayer* currentTileLayer();
-
-	void setMapAttribute(const QString& name, const QString& value);
-	void setTilesetAttribute(const QString& name, const QString& value);
-	void setTileOffsetAttribute(const QString& name, const QString& value);
-	void setImageAttribute(const QString& name, const QString& value);
-	void setTileLayerAttribute(const QString& name, const QString& value);
-	void setTileLayerDataAttribute(const QString& name, const QString& value);
+	BuilderState* currentState();
 };
 
 
