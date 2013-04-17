@@ -23,6 +23,7 @@ set(sources
 	src/Builder.cpp
 	src/Base.cpp
 	src/Layer.cpp
+	src/ImageLayer.cpp
 	src/TileLayer.cpp
 	src/ObjectLayer.cpp
 	src/Tile.cpp

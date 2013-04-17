@@ -107,9 +107,9 @@ void Map::addTileset(Tileset* tileset)
 	_tilesets << tileset;
 }
 
-void Map::addTileLayer(TileLayer* tileLayer)
+void Map::addLayer(Layer* layer)
 {
-	_tileLayers << tileLayer;
+	_layers << layer;
 }
 
 QString Map::toString() const
@@ -119,8 +119,9 @@ QString Map::toString() const
 		sets += tileset->toString() + "\n";
 	}
 	QString layers;
-	for (TileLayer* layer: _tileLayers) {
+	for (Layer* layer: _layers) {
 		layers += layer->toString() + "\n";
 	}
+
 	return QString("Map(%1 %2x%3 %4x%5\n%6 %7)").arg((unsigned)_orientation).arg(_size.width()).arg(_size.height()).arg(_tileSize.width()).arg(_tileSize.height()).arg(sets).arg(layers);
 }

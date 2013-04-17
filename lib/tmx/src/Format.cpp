@@ -13,6 +13,7 @@ QHash<QString, Element::Type> createElementMap()
 	elementMap.insert("tile", Element::Tile);
 	elementMap.insert("image", Element::Image);
 	elementMap.insert("layer", Element::Layer);
+	elementMap.insert("imagelayer", Element::ImageLayer);
 	elementMap.insert("object", Element::Object);
 	elementMap.insert("objectgroup", Element::ObjectGroup);
 	elementMap.insert("data", Element::Data);

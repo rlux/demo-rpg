@@ -8,6 +8,11 @@ TileLayer::TileLayer()
 {
 }
 
+bool TileLayer::isTileLayer() const
+{
+	return true;
+}
+
 void TileLayer::setName(const QString& name)
 {
 	_name = name;

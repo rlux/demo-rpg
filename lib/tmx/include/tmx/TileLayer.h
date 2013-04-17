@@ -1,6 +1,6 @@
 #pragma once
 
-#include <tmx/Base.h>
+#include <tmx/Layer.h>
 #include <tmx/Data.h>
 
 #include <QString>
@@ -9,10 +9,12 @@
 
 namespace tmx {
 
-class TileLayer : public Base
+class TileLayer : public Layer
 {
 public:
 	TileLayer();
+
+	virtual bool isTileLayer() const;
 
 	void setName(const QString& name);
 	void setSize(const QSize& size);

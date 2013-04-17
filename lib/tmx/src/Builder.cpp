@@ -78,11 +78,19 @@ BuilderState* MapState::handleElement(Element::Type element)
 		}
 		case Element::Layer: {
 			TileLayer* tileLayer = new TileLayer();
-			map->addTileLayer(tileLayer);
+			map->addLayer(tileLayer);
 			return new TileLayerState(tileLayer);
 		}
-		case Element::ObjectGroup:
-			// todo
+		case Element::ImageLayer: {
+			ImageLayer* imageLayer = new ImageLayer();
+			map->addLayer(imageLayer);
+			return new ImageLayerState(imageLayer);
+		}
+		case Element::ObjectGroup:{
+			ObjectLayer* objectLayer = new ObjectLayer();
+			map->addLayer(objectLayer);
+			return new ObjectLayerState(objectLayer);
+		}
 		default:
 			return DefaultState::handleElement(element);
 	}
@@ -187,6 +195,35 @@ BuilderState* TileLayerState::handleElement(Element::Type element)
 	}
 }
 
+ImageLayerState::ImageLayerState(ImageLayer* imageLayer) : imageLayer(imageLayer)
+{
+}
+
+BuilderState* ImageLayerState::handleElement(format::Element::Type element)
+{
+	switch (element)
+	{
+		case Element::Image:
+			return new ImageState(&imageLayer->image());
+		default:
+			return DefaultState::handleElement(element);
+	}
+}
+
+ObjectLayerState::ObjectLayerState(ObjectLayer* objectLayer) : objectLayer(objectLayer)
+{
+}
+
+BuilderState* ObjectLayerState::handleElement(format::Element::Type element)
+{
+	switch (element)
+	{
+//		case Element::Image:
+//			return new ImageState(&imageLayer->image());
+		default:
+			return DefaultState::handleElement(element);
+	}
+}
 
 DataState::DataState(Data* data) : data(data)
 {

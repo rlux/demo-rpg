@@ -14,6 +14,7 @@ public:
 		Map,
 		Tileset,
 		Layer,
+		ImageLayer,
 		Tile,
 		Image,
 		ObjectGroup,

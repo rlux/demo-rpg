@@ -4,6 +4,7 @@
 #include <tmx/Map.h>
 #include <tmx/Tileset.h>
 #include <tmx/TileLayer.h>
+#include <tmx/ImageLayer.h>
 
 #include <QHash>
 #include <QStack>
@@ -74,6 +75,26 @@ public:
 	virtual BuilderState* handleElement(format::Element::Type element);
 protected:
 	TileLayer* tileLayer;
+};
+
+class ImageLayerState : public DefaultState
+{
+public:
+	ImageLayerState(ImageLayer* imageLayer);
+
+	virtual BuilderState* handleElement(format::Element::Type element);
+protected:
+	ImageLayer* imageLayer;
+};
+
+class ObjectLayerState : public DefaultState
+{
+public:
+	ObjectLayerState(ObjectLayer* objectLayer);
+
+	virtual BuilderState* handleElement(format::Element::Type element);
+protected:
+	ObjectLayer* objectLayer;
 };
 
 class DataState : public BuilderState
