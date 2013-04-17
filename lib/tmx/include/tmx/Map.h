@@ -51,6 +51,7 @@ protected:
 	Orientation _orientation;
 	QSize _size;
 	QSize _tileSize;
+//	QColor _backgroundColor;
 	QList<Tileset*> _tilesets;
 	QList<TileLayer*> _tileLayers;
 };
