@@ -2,10 +2,12 @@
 
 #include <tmx/Layer.h>
 #include <tmx/Data.h>
+#include <tmx/Cell.h>
 
 #include <QString>
 #include <QSize>
 #include <QPoint>
+#include <QVector>
 
 namespace tmx {
 
@@ -27,6 +29,7 @@ public:
 	void setVisible(bool visible);
 
 	Data& data();
+	void createCells();
 
 	QString toString() const;
 protected:
@@ -36,6 +39,7 @@ protected:
 	float _opacity;
 	bool _visible;
 	Data _data;
+	QVector<Cell> _cells;
 
 	int at(int x, int y) const;
 };

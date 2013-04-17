@@ -109,6 +109,7 @@ void Map::addTileset(Tileset* tileset)
 
 void Map::addLayer(Layer* layer)
 {
+	layer->setMap(this);
 	_layers << layer;
 }
 

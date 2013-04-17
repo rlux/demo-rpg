@@ -15,6 +15,8 @@ namespace tmx {
 class BuilderState
 {
 public:
+	virtual ~BuilderState();
+
 	virtual void setAttribute(format::Attribute::Type attribute, const QString& value);
 	virtual void handleData(const QString& data);
 	virtual BuilderState* handleElement(format::Element::Type element);
@@ -70,6 +72,7 @@ class TileLayerState : public DefaultState
 {
 public:
 	TileLayerState(TileLayer* tileLayer);
+	~TileLayerState();
 
 	virtual void setAttribute(format::Attribute::Type attribute, const QString& value);
 	virtual BuilderState* handleElement(format::Element::Type element);

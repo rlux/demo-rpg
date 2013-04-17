@@ -62,12 +62,19 @@ Data& TileLayer::data()
 {
 	return _data;
 }
+#include <QDebug>
+void TileLayer::createCells()
+{
+	_cells.resize(_size.width()*_size.height());
+	// todo
+	qDebug() << "create cells";
+}
 
 int TileLayer::at(int x, int y) const
 {
 	return ((int*)_data.data().data())[y*_size.width()+x];
 }
-#include <QDebug>
+
 QString TileLayer::toString() const
 {
 //	QString str;

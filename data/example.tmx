@@ -3,12 +3,15 @@
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32">
   <image source="alles_by_samidare88-d6214gf.png" width="128" height="352"/>
  </tileset>
+ <tileset firstgid="45" name="grounds" tilewidth="32" tileheight="32">
+  <image source="grounds.png" width="512" height="64"/>
+ </tileset>
  <imagelayer name="background" width="20" height="20">
   <image source="background.png"/>
  </imagelayer>
  <layer name="tiles" width="20" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBjcQBGIlYBYmUw+OlAFYjUgVgdiLTQ+ujw2PilAiwI9EkDMQgbGBTio5D508yiND3TzSIkPfO4XYUCECQ8BuwkBdD/A3IrNfmL8i+4nbHGDSy0xgIOAO/C5H5d5+NxBjnnEyGMzTwsNgwByXGPDAiS6bxQQDwDcDQvJ
+   eJwzYGBgMKAAowMHCjE6UARiJSBWJpOPDlSBWA2I1YFYC42PLo+NTwrQokCPBBCzkIFxAQ4quQ/dPErjA908UuIDn/tFGBBhwkPAbkIA3Q8wt2Kznxj/ovsJW9zgUksM4CDgDnzux2UePneQYx4x8tjM00LDIIAc19iwAInuGwXEAwCMgxLJ
   </data>
  </layer>
  <objectgroup name="objects" width="20" height="20">

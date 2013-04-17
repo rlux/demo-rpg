@@ -26,6 +26,7 @@ set(sources
 	src/ImageLayer.cpp
 	src/TileLayer.cpp
 	src/ObjectLayer.cpp
+	src/Cell.cpp
 	src/Tile.cpp
 	src/Map.cpp
 	src/Tileset.cpp

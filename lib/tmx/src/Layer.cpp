@@ -2,8 +2,24 @@
 #include <tmx/TileLayer.h>
 #include <tmx/ImageLayer.h>
 #include <tmx/ObjectLayer.h>
+#include <tmx/Map.h>
 
 using namespace tmx;
+
+Layer::Layer()
+: _map(nullptr)
+{
+}
+
+Map*Layer::map() const
+{
+	return _map;
+}
+
+void Layer::setMap(Map* map)
+{
+	_map = map;
+}
 
 bool Layer::isTileLayer() const
 {

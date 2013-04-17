@@ -1,13 +1,15 @@
 #pragma once
 
+#include <tmx/Tile.h>
+
 namespace tmx {
 
-class Tile
+class Cell
 {
 public:
 
 protected:
-
+	Tile* _tile;
 };
 
 } // namespace tmx

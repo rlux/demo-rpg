@@ -5,6 +5,10 @@
 using namespace tmx;
 using namespace tmx::format;
 
+BuilderState::~BuilderState()
+{
+}
+
 void BuilderState::setAttribute(Attribute::Type attribute, const QString& value)
 {
 }
@@ -154,6 +158,11 @@ void TileOffsetState::setAttribute(Attribute::Type attribute, const QString& val
 
 TileLayerState::TileLayerState(TileLayer* tileLayer) : tileLayer(tileLayer)
 {
+}
+
+TileLayerState::~TileLayerState()
+{
+	tileLayer->createCells();
 }
 
 void TileLayerState::setAttribute(Attribute::Type attribute, const QString& value)
