@@ -28,6 +28,9 @@ public:
 	void setOpacity(float opacity);
 	void setVisible(bool visible);
 
+	Cell& cellAt(int x, int y);
+	Cell& cellAt(const QPoint& position);
+
 	void setCellData(Data* data);
 
 	QString toString() const;

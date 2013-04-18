@@ -5,9 +5,6 @@
 using namespace tmx;
 using namespace tmx::format;
 
-BuilderState::~BuilderState()
-{
-}
 
 void BuilderState::handleAttribute(Attribute::Type attribute, const QString& value)
 {
@@ -20,6 +17,10 @@ void BuilderState::handleData(const QString& data)
 BuilderState* BuilderState::handleElement(Element::Type element)
 {
 	return new BuilderState();
+}
+
+void BuilderState::finish()
+{
 }
 
 BuilderState* DefaultState::handleElement(Element::Type element)
@@ -169,14 +170,6 @@ TileLayerState::TileLayerState(TileLayer* tileLayer) : tileLayer(tileLayer), dat
 {
 }
 
-TileLayerState::~TileLayerState()
-{
-	if (data) {
-		tileLayer->setCellData(data);
-		delete data;
-	}
-}
-
 void TileLayerState::handleAttribute(Attribute::Type attribute, const QString& value)
 {
 	switch (attribute)
@@ -215,6 +208,14 @@ BuilderState* TileLayerState::handleElement(Element::Type element)
 		}
 		default:
 			return DefaultState::handleElement(element);
+	}
+}
+
+void TileLayerState::finish()
+{
+	if (data) {
+		tileLayer->setCellData(data);
+		delete data;
 	}
 }
 
@@ -325,7 +326,9 @@ void Builder::createElement(const QString& elementName)
 
 void Builder::finishElement(const QString& elementName)
 {
-	delete _stateStack.pop();
+	BuilderState* state = _stateStack.pop();
+	state->finish();
+	delete state;
 }
 
 void Builder::setAttribute(const QString& attributeName, const QString& value)

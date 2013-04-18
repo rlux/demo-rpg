@@ -60,7 +60,16 @@ void TileLayer::setVisible(bool visible)
 	_visible = visible;
 }
 
-#include <QDebug>
+Cell& TileLayer::cellAt(int x, int y)
+{
+	return _cells[_size.width()*y+x];
+}
+
+Cell& TileLayer::cellAt(const QPoint& position)
+{
+	return cellAt(position.x(), position.y());
+}
+
 void TileLayer::setCellData(Data* data)
 {
 	_cells.resize(_size.width()*_size.height());
@@ -71,9 +80,6 @@ void TileLayer::setCellData(Data* data)
 		unsigned rawData = ((unsigned*)data->bytes().data())[i];
 
 		_cells[i] = Cell::fromRawData(rawData, mapper);
-//		Tile* tile = mapper.tile(t);
-//		if (tile) qDebug() << tile->rect();
-//		else qDebug() << "-";
 	}
 }
 
