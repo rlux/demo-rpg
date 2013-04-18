@@ -4,7 +4,6 @@
 
 #include <QtXml/QXmlDefaultHandler>
 #include <QString>
-#include <QStack>
 
 namespace tmx {
 
@@ -20,7 +19,6 @@ public:
 	virtual bool characters(const QString& characters);
 protected:
 	Builder _builder;
-	QStack<QString> _tags;
 
 	void setAttributes(const QXmlAttributes& attributes);
 };

@@ -102,12 +102,22 @@ void Map::setTileHeight(int height)
 	_tileSize.setHeight(height);
 }
 
+const QColor& Map::backgroundColor() const
+{
+	return _backgroundColor;
+}
+
+void Map::setBackgroundColor(const QColor& color)
+{
+	_backgroundColor = color;
+}
+
 void Map::addTileset(Tileset* tileset)
 {
 	_tileMapper.addTileset(tileset);
 }
 
-const TileMapper& Map::tileMapper()
+const TileMapper& Map::tileMapper() const
 {
 	return _tileMapper;
 }

@@ -63,11 +63,18 @@ Data& TileLayer::data()
 	return _data;
 }
 #include <QDebug>
+#include <tmx/TileMapper.h>
+#include <tmx/Map.h>
 void TileLayer::createCells()
 {
 	_cells.resize(_size.width()*_size.height());
-	// todo
-	qDebug() << "create cells";
+	const TileMapper& mapper = map()->tileMapper();
+	for (int i=0; i<_cells.size(); ++i) {
+		int t = ((int*)_data.data().data())[i];
+//		Tile* tile = mapper.tile(t);
+//		qDebug() << tile->rect();
+qDebug() << t << " ";
+	}
 }
 
 int TileLayer::at(int x, int y) const

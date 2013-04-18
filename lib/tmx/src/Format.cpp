@@ -47,6 +47,7 @@ QHash<QString, Attribute::Type> createAttributeMap()
 	attributeMap.insert("format", Attribute::Format);
 	attributeMap.insert("source", Attribute::Source);
 	attributeMap.insert("trans", Attribute::Trans);
+	attributeMap.insert("backgroundcolor", Attribute::BackgroundColor);
 
 	return attributeMap;
 }

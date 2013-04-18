@@ -53,7 +53,8 @@ public:
 		Opacity,
 		Format,
 		Source,
-		Trans
+		Trans,
+		BackgroundColor
 	};
 
 	static Type type(const QString& name);

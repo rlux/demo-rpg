@@ -8,6 +8,11 @@ Tileset::Tileset()
 {
 }
 
+Tileset::~Tileset()
+{
+	qDeleteAll(_tiles);
+}
+
 unsigned Tileset::firstGid() const
 {
 	return _firstGid;
@@ -63,6 +68,21 @@ void Tileset::setMargin(int margin)
 	_margin = margin;
 }
 
+void Tileset::setTileSize(const QSize& size)
+{
+	_tileSize = size;
+}
+
+void Tileset::setTileWidth(int width)
+{
+	_tileSize.setWidth(width);
+}
+
+void Tileset::setTileHeight(int height)
+{
+	_tileSize.setHeight(height);
+}
+
 QPoint& Tileset::tileOffset()
 {
 	return _tileOffset;
@@ -71,6 +91,19 @@ QPoint& Tileset::tileOffset()
 Image& Tileset::image()
 {
 	return _image;
+}
+
+Tile* Tileset::atGid(unsigned gid)
+{
+	return at(gid-_firstGid);
+}
+
+Tile* Tileset::at(unsigned id)
+{
+	if (!_tiles.contains(id)) {
+		_tiles.insert(id, new Tile(id, this));
+	}
+	return _tiles[id];
 }
 
 QString Tileset::toString() const

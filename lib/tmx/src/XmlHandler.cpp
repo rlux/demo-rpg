@@ -17,10 +17,7 @@ Map* XmlHandler::map() const
 
 bool XmlHandler::startElement(const QString& namespaceURI, const QString& localName, const QString& qName, const QXmlAttributes& attributes)
 {
-	QString tag = localName.toLower();
-	_tags.push(tag);
-
-	_builder.create(tag);
+	_builder.createElement(localName.toLower());
 
 	setAttributes(attributes);
 
@@ -37,17 +34,14 @@ void XmlHandler::setAttributes(const QXmlAttributes& attributes)
 
 bool XmlHandler::endElement(const QString& namespaceURI, const QString& localName, const QString& qName)
 {
-	QString tag = localName.toLower();
-	_tags.pop();
-
-	_builder.finish(tag);
+	_builder.finishElement(localName.toLower());
 
 	return true;
 }
 
 bool XmlHandler::characters(const QString& characters)
 {
-	_builder.data(characters.trimmed());
+	_builder.setData(characters.trimmed());
 
 	return true;
 }

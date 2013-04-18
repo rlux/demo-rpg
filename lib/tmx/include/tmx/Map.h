@@ -9,6 +9,7 @@
 
 #include <QSize>
 #include <QList>
+#include <QColor>
 
 namespace tmx {
 
@@ -44,10 +45,14 @@ public:
 	void setTileWidth(int width);
 	void setTileHeight(int height);
 
-	const TileMapper& tileMapper();
+	const QColor& backgroundColor() const;
+	void setBackgroundColor(const QColor& color);
+
+	const TileMapper& tileMapper() const;
 	void addTileset(Tileset* tileset);
 
 	void addLayer(Layer* layer);
+
 
 	QString toString() const;
 
@@ -56,7 +61,7 @@ protected:
 	Orientation _orientation;
 	QSize _size;
 	QSize _tileSize;
-//	QColor _backgroundColor;
+	QColor _backgroundColor;
 	TileMapper _tileMapper;
 	QList<Layer*> _layers;
 };

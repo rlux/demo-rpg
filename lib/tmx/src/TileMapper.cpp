@@ -17,7 +17,7 @@ QList<Tileset*> TileMapper::tilesets() const
 {
 	return _tilesets;
 }
-
+#include <QDebug>
 Tile* TileMapper::tile(unsigned gid) const
 {
 	Tileset* t = nullptr;
@@ -26,6 +26,6 @@ Tile* TileMapper::tile(unsigned gid) const
 		if (gid<tileset->firstGid()) break;
 		t = tileset;
 	}
-	;
-	return nullptr;
+	qDebug() << gid << t->firstGid();
+	return t->atGid(gid);
 }

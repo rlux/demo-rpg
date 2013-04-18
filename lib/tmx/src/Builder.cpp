@@ -9,7 +9,7 @@ BuilderState::~BuilderState()
 {
 }
 
-void BuilderState::setAttribute(Attribute::Type attribute, const QString& value)
+void BuilderState::handleAttribute(Attribute::Type attribute, const QString& value)
 {
 }
 
@@ -46,7 +46,7 @@ MapState::MapState(Map* map) : map(map)
 {
 }
 
-void MapState::setAttribute(Attribute::Type attribute, const QString& value)
+void MapState::handleAttribute(Attribute::Type attribute, const QString& value)
 {
 	switch (attribute)
 	{
@@ -67,6 +67,9 @@ void MapState::setAttribute(Attribute::Type attribute, const QString& value)
 			break;
 		case Attribute::TileHeight:
 			map->setTileHeight(value.toUInt());
+			break;
+		case Attribute::BackgroundColor:
+			map->setBackgroundColor(("FF"+value).toUInt(nullptr, 16));
 			break;
 	}
 }
@@ -104,7 +107,7 @@ TilesetState::TilesetState(Tileset* tileset) : tileset(tileset)
 {
 }
 
-void TilesetState::setAttribute(Attribute::Type attribute, const QString& value)
+void TilesetState::handleAttribute(Attribute::Type attribute, const QString& value)
 {
 	switch (attribute)
 	{
@@ -122,6 +125,12 @@ void TilesetState::setAttribute(Attribute::Type attribute, const QString& value)
 			break;
 		case Attribute::Margin:
 			tileset->setMargin(value.toInt());
+			break;
+		case Attribute::TileWidth:
+			tileset->setTileWidth(value.toUInt());
+			break;
+		case Attribute::TileHeight:
+			tileset->setTileHeight(value.toUInt());
 			break;
 	}
 }
@@ -143,7 +152,7 @@ TileOffsetState::TileOffsetState(QPoint* tileOffset) : tileOffset(tileOffset)
 {
 }
 
-void TileOffsetState::setAttribute(Attribute::Type attribute, const QString& value)
+void TileOffsetState::handleAttribute(Attribute::Type attribute, const QString& value)
 {
 	switch (attribute)
 	{
@@ -165,7 +174,7 @@ TileLayerState::~TileLayerState()
 	tileLayer->createCells();
 }
 
-void TileLayerState::setAttribute(Attribute::Type attribute, const QString& value)
+void TileLayerState::handleAttribute(Attribute::Type attribute, const QString& value)
 {
 	switch (attribute)
 	{
@@ -238,7 +247,7 @@ DataState::DataState(Data* data) : data(data)
 {
 }
 
-void DataState::setAttribute(Attribute::Type attribute, const QString& value)
+void DataState::handleAttribute(Attribute::Type attribute, const QString& value)
 {
 	switch (attribute)
 	{
@@ -260,7 +269,7 @@ ImageState::ImageState(Image* image) : image(image)
 {
 }
 
-void ImageState::setAttribute(Attribute::Type attribute, const QString& value)
+void ImageState::handleAttribute(Attribute::Type attribute, const QString& value)
 {
 	switch (attribute)
 	{
@@ -271,7 +280,7 @@ void ImageState::setAttribute(Attribute::Type attribute, const QString& value)
 			image->setSource(value);
 			break;
 		case Attribute::Trans:
-			image->setTrans(value);
+			image->setTransparentColor(("FF"+value).toUInt(nullptr, 16));
 			break;
 		case Attribute::Width:
 			image->setWidth(value.toInt());
@@ -304,22 +313,22 @@ BuilderState* Builder::currentState()
 	return _stateStack.isEmpty() ? _startState : _stateStack.top();
 }
 
-void Builder::create(const QString& elementName)
+void Builder::createElement(const QString& elementName)
 {
 	_stateStack.push(currentState()->handleElement(Element::type(elementName)));
 }
 
-void Builder::finish(const QString& elementName)
+void Builder::finishElement(const QString& elementName)
 {
 	delete _stateStack.pop();
 }
 
 void Builder::setAttribute(const QString& attributeName, const QString& value)
 {
-	currentState()->setAttribute(Attribute::type(attributeName), value);
+	currentState()->handleAttribute(Attribute::type(attributeName), value);
 }
 
-void Builder::data(const QString& bytes)
+void Builder::setData(const QString& bytes)
 {
 	currentState()->handleData(bytes);
 }

@@ -2,10 +2,12 @@
 
 #include <tmx/Base.h>
 #include <tmx/Image.h>
+#include <tmx/Tile.h>
 
 #include <QSize>
 #include <QPoint>
 #include <QString>
+#include <QHash>
 
 namespace tmx {
 
@@ -13,6 +15,7 @@ class Tileset : public Base
 {
 public:
 	Tileset();
+	~Tileset();
 
 	unsigned firstGid() const;
 	const QString& name() const;
@@ -26,6 +29,12 @@ public:
 	void setName(const QString& name);
 	void setSpacing(int spacing);
 	void setMargin(int margin);
+	void setTileSize(const QSize& size);
+	void setTileWidth(int width);
+	void setTileHeight(int height);
+
+	Tile* atGid(unsigned gid);
+	Tile* at(unsigned id);
 
 	QPoint& tileOffset();
 	Image& image();
@@ -40,6 +49,7 @@ protected:
 	int _margin;
 	QPoint _tileOffset;
 	Image _image;
+	QHash<unsigned, Tile*> _tiles;
 };
 
 } // namespace tmx

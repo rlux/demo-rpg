@@ -15,14 +15,14 @@ void Image::setSource(const QString& source)
 	qDebug() << source;
 }
 
-QString Image::source() const
+const QString& Image::source() const
 {
 	return _source;
 }
 
-void Image::setTrans(const QString& trans)
+void Image::setTransparentColor(const QColor& color)
 {
-	_trans = trans;
+	_transparentColor = color;
 }
 
 void Image::setSize(const QSize& size)
@@ -38,4 +38,19 @@ void Image::setWidth(int width)
 void Image::setHeight(int height)
 {
 	_size.setHeight(height);
+}
+
+const QSize& Image::size() const
+{
+	return _size;
+}
+
+int Image::width() const
+{
+	return _size.width();
+}
+
+int Image::height() const
+{
+	return _size.height();
 }

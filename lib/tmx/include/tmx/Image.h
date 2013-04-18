@@ -2,6 +2,7 @@
 
 #include <QString>
 #include <QSize>
+#include <QColor>
 
 namespace tmx {
 
@@ -10,16 +11,20 @@ class Image
 public:
 	void setFormat(const QString& format);
 	void setSource(const QString& source);
-	void setTrans(const QString& trans);
+	void setTransparentColor(const QColor& color);
 	void setSize(const QSize& size);
 	void setWidth(int width);
 	void setHeight(int height);
 
-	QString source() const;
+	const QString& format() const;
+	const QString& source() const;
+	const QSize& size() const;
+	int width() const;
+	int height() const;
 protected:
 	QString _format;
 	QString _source;
-	QString _trans;
+	QColor _transparentColor;
 	QSize _size;
 };
 
