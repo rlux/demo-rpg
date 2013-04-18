@@ -28,8 +28,7 @@ public:
 	void setOpacity(float opacity);
 	void setVisible(bool visible);
 
-	Data& data();
-	void createCells();
+	void setCellData(Data* data);
 
 	QString toString() const;
 protected:
@@ -38,10 +37,7 @@ protected:
 	QSize _size;
 	float _opacity;
 	bool _visible;
-	Data _data;
 	QVector<Cell> _cells;
-
-	int at(int x, int y) const;
 };
 
 } // namespace tmx

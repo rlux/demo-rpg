@@ -21,7 +21,7 @@ public:
 
 	Data();
 
-	const QByteArray& data() const;
+	const QByteArray& bytes() const;
 
 	void setEncoding(Encoding encoding);
 	void setCompression(Compression compression);
@@ -32,7 +32,7 @@ public:
 protected:
 	Encoding _encoding;
 	Compression _compression;
-	QByteArray _data;
+	QByteArray _bytes;
 
 	QByteArray uncompress(const QByteArray& bytes);
 

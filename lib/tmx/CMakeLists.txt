@@ -19,12 +19,12 @@ set(sources
 	src/Parser.cpp
 	src/XmlHandler.cpp
 	src/Format.cpp
-	src/Data.cpp
 	src/Builder.cpp
 	src/Base.cpp
 	src/Layer.cpp
 	src/ImageLayer.cpp
 	src/TileLayer.cpp
+  src/Data.cpp
 	src/ObjectLayer.cpp
 	src/Cell.cpp
 	src/Tile.cpp

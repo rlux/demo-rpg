@@ -60,38 +60,24 @@ void TileLayer::setVisible(bool visible)
 	_visible = visible;
 }
 
-Data& TileLayer::data()
-{
-	return _data;
-}
 #include <QDebug>
-void TileLayer::createCells()
+void TileLayer::setCellData(Data* data)
 {
 	_cells.resize(_size.width()*_size.height());
-	const TileMapper& mapper = map()->tileMapper();
-	for (int i=0; i<_cells.size(); ++i) {
-		unsigned t = ((unsigned*)_data.data().data())[i];
-		Tile* tile = mapper.tile(t);
-		if (tile) qDebug() << tile->rect();
-		else qDebug() << "-";
-//qDebug() << t << " ";
-	}
-}
 
-int TileLayer::at(int x, int y) const
-{
-	return ((int*)_data.data().data())[y*_size.width()+x];
+	const TileMapper& mapper = map()->tileMapper();
+	for (int i=0; i<_cells.size(); ++i)
+	{
+		unsigned rawData = ((unsigned*)data->bytes().data())[i];
+
+		_cells[i] = Cell::fromRawData(rawData, mapper);
+//		Tile* tile = mapper.tile(t);
+//		if (tile) qDebug() << tile->rect();
+//		else qDebug() << "-";
+	}
 }
 
 QString TileLayer::toString() const
 {
-//	QString str;
-//	for (int y=0;y<_size.height();++y) {
-//		for (int x=0;x<_size.width();++x) {
-//			str += QString::number(at(x,y))+",";
-//		}
-//		str+="\n";
-//	}
-//	qDebug() << str;
 	return QString("TileLayer(%1 %2x%3)").arg(_name).arg(_size.width()).arg(_size.height());
 }

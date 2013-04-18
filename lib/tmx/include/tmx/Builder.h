@@ -5,6 +5,7 @@
 #include <tmx/Tileset.h>
 #include <tmx/TileLayer.h>
 #include <tmx/ImageLayer.h>
+#include <tmx/Data.h>
 
 #include <QHash>
 #include <QStack>
@@ -78,6 +79,7 @@ public:
 	virtual BuilderState* handleElement(format::Element::Type element);
 protected:
 	TileLayer* tileLayer;
+	Data* data;
 };
 
 class ImageLayerState : public DefaultState

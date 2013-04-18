@@ -11,9 +11,9 @@ Data::Data()
 }
 
 
-const QByteArray& Data::data() const
+const QByteArray& Data::bytes() const
 {
-	return _data;
+	return _bytes;
 }
 
 void Data::setEncoding(Encoding encoding)
@@ -56,7 +56,7 @@ void Data::setBytes(const QByteArray& bytes)
 			qDebug() << "Csv encoding not supported yet";
 			return;
 		case Base64:
-			_data = uncompress(QByteArray::fromBase64(bytes));
+			_bytes = uncompress(QByteArray::fromBase64(bytes));
 			break;
 		default:
 			qDebug() << "cannot set bytes without encoding";

@@ -165,13 +165,16 @@ void TileOffsetState::handleAttribute(Attribute::Type attribute, const QString& 
 	}
 }
 
-TileLayerState::TileLayerState(TileLayer* tileLayer) : tileLayer(tileLayer)
+TileLayerState::TileLayerState(TileLayer* tileLayer) : tileLayer(tileLayer), data(nullptr)
 {
 }
 
 TileLayerState::~TileLayerState()
 {
-	tileLayer->createCells();
+	if (data) {
+		tileLayer->setCellData(data);
+		delete data;
+	}
 }
 
 void TileLayerState::handleAttribute(Attribute::Type attribute, const QString& value)
@@ -206,8 +209,10 @@ BuilderState* TileLayerState::handleElement(Element::Type element)
 {
 	switch (element)
 	{
-		case Element::Data:
-			return new DataState(&tileLayer->data());
+		case Element::Data: {
+			data = new Data();
+			return new DataState(data);
+		}
 		default:
 			return DefaultState::handleElement(element);
 	}
