@@ -20,7 +20,7 @@ QRect Tile::rect() const
 	if (!_tileset) return QRect();
 
 	const QSize& size = _tileset->tileSize();
-	int w = _tileset->image().width();
+	int w = _tileset->image().width()/size.width();
 	unsigned x = _index%w;
 	unsigned y = _index/w;
 

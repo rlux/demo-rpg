@@ -26,6 +26,6 @@ Tile* TileMapper::tile(unsigned gid) const
 		if (gid<tileset->firstGid()) break;
 		t = tileset;
 	}
-	qDebug() << gid << t->firstGid();
+	if (!t) return nullptr;
 	return t->atGid(gid);
 }
