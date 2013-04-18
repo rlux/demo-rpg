@@ -77,7 +77,7 @@ void TileLayer::setCellData(Data* data)
 	const TileMapper& mapper = map()->tileMapper();
 	for (int i=0; i<_cells.size(); ++i)
 	{
-		unsigned rawData = ((unsigned*)data->bytes().data())[i];
+		unsigned rawData = data->at<unsigned>(i);
 
 		_cells[i] = Cell::fromRawData(rawData, mapper);
 	}

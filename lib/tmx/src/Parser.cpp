@@ -8,6 +8,16 @@
 
 using namespace tmx;
 
+Parser::Parser()
+: _map(nullptr)
+{
+}
+
+Map* Parser::map()
+{
+	return _map;
+}
+
 void Parser::parseFile(const QString& filename)
 {
 	QFile file(filename);
@@ -26,8 +36,7 @@ void Parser::parseFile(const QString& filename)
 
 	bool ok = xmlReader.parse(source);
 
-	//qDebug() << (ok?"ok":"not ok");
-	qDebug() << handler->map()->toString();
+	_map = handler->map();
 
 	delete handler;
 }

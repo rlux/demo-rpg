@@ -23,6 +23,8 @@ public:
 
 	const QByteArray& bytes() const;
 
+	template<typename T> T at(unsigned index) const;
+
 	void setEncoding(Encoding encoding);
 	void setCompression(Compression compression);
 	void setBytes(const QByteArray& bytes);
@@ -39,5 +41,11 @@ protected:
 	static QByteArray uncompressZlib(const QByteArray& bytes);
 	static QByteArray uncompressGzip(const QByteArray& bytes);
 };
+
+template<typename T>
+T Data::at(unsigned index) const
+{
+	return ((T*)_bytes.data())[index];
+}
 
 } // namespace tmx
