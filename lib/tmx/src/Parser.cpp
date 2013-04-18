@@ -1,6 +1,7 @@
 #include <tmx/Parser.h>
 
 #include <tmx/XmlHandler.h>
+#include <tmx/Builder.h>
 
 #include <QtXml/QtXml>
 #include <QFile>
@@ -28,7 +29,8 @@ void Parser::parseFile(const QString& filename)
 	}
 
 	QXmlSimpleReader xmlReader;
-	XmlHandler* handler = new XmlHandler();
+	Builder builder;
+	XmlHandler* handler = new XmlHandler(&builder);
 	QXmlInputSource* source = new QXmlInputSource(&file);
 
 	xmlReader.setContentHandler(handler);
@@ -36,7 +38,8 @@ void Parser::parseFile(const QString& filename)
 
 	bool ok = xmlReader.parse(source);
 
-	_map = handler->map();
+	_map = builder.map();
+	_map->setFilename(filename);
 
 	delete handler;
 }

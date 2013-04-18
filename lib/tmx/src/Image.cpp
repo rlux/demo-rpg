@@ -1,7 +1,5 @@
 #include <tmx/Image.h>
 
-#include <QDebug>
-
 using namespace tmx;
 
 void Image::setFormat(const QString& format)
@@ -12,7 +10,6 @@ void Image::setFormat(const QString& format)
 void Image::setSource(const QString& source)
 {
 	_source = source;
-	qDebug() << source;
 }
 
 const QString& Image::source() const

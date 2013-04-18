@@ -14,7 +14,7 @@ public:
 	~TileMapper();
 
 	void addTileset(Tileset* tileset);
-	QList<Tileset*> tilesets() const;
+	const QList<Tileset*>& tilesets() const;
 
 	Tile* tile(unsigned gid) const;
 protected:

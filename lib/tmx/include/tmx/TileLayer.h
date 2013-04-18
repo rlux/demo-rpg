@@ -28,6 +28,10 @@ public:
 	void setOpacity(float opacity);
 	void setVisible(bool visible);
 
+	const QSize& size() const;
+	int width() const;
+	int height() const;
+
 	Cell& cellAt(int x, int y);
 	Cell& cellAt(const QPoint& position);
 

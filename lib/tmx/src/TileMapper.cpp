@@ -13,11 +13,11 @@ void TileMapper::addTileset(Tileset* tileset)
 	_tilesets << tileset;
 }
 
-QList<Tileset*> TileMapper::tilesets() const
+const QList<Tileset*>& TileMapper::tilesets() const
 {
 	return _tilesets;
 }
-#include <QDebug>
+
 Tile* TileMapper::tile(unsigned gid) const
 {
 	Tileset* t = nullptr;

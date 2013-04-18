@@ -60,6 +60,21 @@ void TileLayer::setVisible(bool visible)
 	_visible = visible;
 }
 
+const QSize& TileLayer::size() const
+{
+	return _size;
+}
+
+int TileLayer::width() const
+{
+	return _size.width();
+}
+
+int TileLayer::height() const
+{
+	return _size.height();
+}
+
 Cell& TileLayer::cellAt(int x, int y)
 {
 	return _cells[_size.width()*y+x];

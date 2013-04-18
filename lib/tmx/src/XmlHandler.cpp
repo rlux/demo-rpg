@@ -6,18 +6,14 @@
 
 using namespace tmx;
 
-XmlHandler::XmlHandler()
+XmlHandler::XmlHandler(Builder* builder)
+: _builder(builder)
 {
-}
-
-Map* XmlHandler::map() const
-{
-	return _builder.map();
 }
 
 bool XmlHandler::startElement(const QString& namespaceURI, const QString& localName, const QString& qName, const QXmlAttributes& attributes)
 {
-	_builder.createElement(localName.toLower());
+	_builder->createElement(localName.toLower());
 
 	setAttributes(attributes);
 
@@ -28,20 +24,20 @@ void XmlHandler::setAttributes(const QXmlAttributes& attributes)
 {
 	for (int i=0; i< attributes.length(); ++i)
 	{
-		_builder.setAttribute(attributes.localName(i), attributes.value(i));
+		_builder->setAttribute(attributes.localName(i), attributes.value(i));
 	}
 }
 
 bool XmlHandler::endElement(const QString& namespaceURI, const QString& localName, const QString& qName)
 {
-	_builder.finishElement(localName.toLower());
+	_builder->finishElement(localName.toLower());
 
 	return true;
 }
 
 bool XmlHandler::characters(const QString& characters)
 {
-	_builder.setData(characters.trimmed());
+	_builder->setData(characters.trimmed());
 
 	return true;
 }

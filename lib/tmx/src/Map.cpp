@@ -42,7 +42,7 @@ Map::Orientation Map::orientationFromString(const QString& name)
 	}
 }
 
-QSize Map::size() const
+const QSize& Map::size() const
 {
 	return _size;
 }
@@ -72,7 +72,7 @@ void Map::setHeight(int height)
 	_size.setHeight(height);
 }
 
-QSize Map::tileSize() const
+const QSize& Map::tileSize() const
 {
 	return _tileSize;
 }
@@ -112,9 +112,24 @@ void Map::setBackgroundColor(const QColor& color)
 	_backgroundColor = color;
 }
 
+void Map::setFilename(const QString& filename)
+{
+	_filename = filename;
+}
+
+const QString& Map::filename() const
+{
+	return _filename;
+}
+
 void Map::addTileset(Tileset* tileset)
 {
 	_tileMapper.addTileset(tileset);
+}
+
+const QList<Tileset*>& Map::tilesets() const
+{
+	return _tileMapper.tilesets();
 }
 
 const TileMapper& Map::tileMapper() const
@@ -126,6 +141,44 @@ void Map::addLayer(Layer* layer)
 {
 	layer->setMap(this);
 	_layers << layer;
+}
+
+const QList<Layer*>& Map::layers() const
+{
+	return _layers;
+}
+
+QList<TileLayer*> Map::tileLayers() const
+{
+	QList<TileLayer*> layers;
+
+	for (Layer* layer: _layers) {
+		if (layer->isTileLayer()) layers << layer->asTileLayer();
+	}
+
+	return layers;
+}
+
+QList<ImageLayer*> Map::imageLayers() const
+{
+	QList<ImageLayer*> layers;
+
+	for (Layer* layer: _layers) {
+		if (layer->isImageLayer()) layers << layer->asImageLayer();
+	}
+
+	return layers;
+}
+
+QList<ObjectLayer*> Map::objectLayers() const
+{
+	QList<ObjectLayer*> layers;
+
+	for (Layer* layer: _layers) {
+		if (layer->isObjectLayer()) layers << layer->asObjectLayer();
+	}
+
+	return layers;
 }
 
 QString Map::toString() const

@@ -12,6 +12,8 @@ public:
 	Tile();
 	Tile(unsigned index, Tileset* tileset);
 
+	Tileset* tileset() const;
+
 	QRect rect() const;
 protected:
 	Tileset* _tileset;

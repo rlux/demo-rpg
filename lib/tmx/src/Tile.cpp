@@ -15,6 +15,11 @@ Tile::Tile(unsigned index, Tileset* tileset)
 {
 }
 
+Tileset* Tile::tileset() const
+{
+	return _tileset;
+}
+
 QRect Tile::rect() const
 {
 	if (!_tileset) return QRect();

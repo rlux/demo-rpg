@@ -1,15 +1,14 @@
-#include <tmx/Parser.h>
+#include <QApplication>
+#include <MainWindow.h>
 
-#include <QDebug>
-
-using namespace tmx;
-
-int main()
+int main(int argc, char* argv[])
 {
-	Parser p;
-	p.parseFile("data/example.tmx");
+	QApplication app(argc, argv);
 
-	qDebug() << p.map()->toString();
+	MainWindow window;
+	window.show();
 
-	return 0;
+	window.load("data/example.tmx");
+
+	return app.exec();
 }
