@@ -5,8 +5,6 @@
 using namespace tmx;
 
 TileLayer::TileLayer()
-: _visible(true)
-, _opacity(1)
 {
 }
 
@@ -28,16 +26,6 @@ void TileLayer::setX(int x)
 void TileLayer::setY(int y)
 {
 	_position.setY(y);
-}
-
-void TileLayer::setOpacity(float opacity)
-{
-	_opacity = opacity;
-}
-
-void TileLayer::setVisible(bool visible)
-{
-	_visible = visible;
 }
 
 Cell& TileLayer::cellAt(int x, int y)

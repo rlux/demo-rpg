@@ -22,18 +22,32 @@ public:
 	virtual void finish();
 };
 
-class BaseState : public BuilderState
-{
-public:
-	virtual BuilderState* handleElement(format::Element::Type element);
-};
-
 class StartState : public BuilderState
 {
 public:
 	virtual BuilderState* handleElement(format::Element::Type element);
 
 	QList<Map*> maps;
+};
+
+class BaseState : public BuilderState
+{
+public:
+	BaseState(Base* base);
+
+	virtual BuilderState* handleElement(format::Element::Type element);
+protected:
+	Base* base;
+};
+
+class PropertiesState : public BuilderState
+{
+public:
+	PropertiesState(Base* base);
+
+	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
+protected:
+	Base* base;
 };
 
 class MapState : public BaseState

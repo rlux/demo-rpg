@@ -18,6 +18,7 @@ QHash<QString, Element::Type> createElementMap()
 	elementMap.insert("objectgroup", Element::ObjectGroup);
 	elementMap.insert("data", Element::Data);
 	elementMap.insert("tileoffset", Element::TileOffset);
+	elementMap.insert("properties", Element::Properties);
 
 	return elementMap;
 }

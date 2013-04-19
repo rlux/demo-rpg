@@ -20,7 +20,8 @@ public:
 		ObjectGroup,
 		Object,
 		Data,
-		TileOffset
+		TileOffset,
+		Properties
 	};
 
 	static Type type(const QString& name);

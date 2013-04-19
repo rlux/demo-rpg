@@ -38,11 +38,18 @@ public:
 	void setHeight(int height);
 	int height() const;
 
+	void setOpacity(float opacity);
+	float opacity() const;
+	void setVisible(bool visible);
+	bool isVisible() const;
+
 	virtual QString toString() const = 0;
 protected:
 	Map* _map;
 	QString _name;
 	QSize _size;
+	float _opacity;
+	bool _visible;
 };
 
 } // namespace tmx

@@ -8,6 +8,8 @@ using namespace tmx;
 
 Layer::Layer()
 : _map(nullptr)
+, _visible(true)
+, _opacity(1)
 {
 }
 
@@ -90,3 +92,24 @@ int Layer::height() const
 {
 	return _size.height();
 }
+
+void Layer::setOpacity(float opacity)
+{
+	_opacity = opacity;
+}
+
+float Layer::opacity() const
+{
+	return _opacity;
+}
+
+void Layer::setVisible(bool visible)
+{
+	_visible = visible;
+}
+
+bool Layer::isVisible() const
+{
+	return _visible;
+}
+

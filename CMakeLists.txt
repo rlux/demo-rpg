@@ -33,5 +33,5 @@ target_link_libraries(${target} tmx tmxrenderer ${QT_LIBRARIES})
 #copy data
 add_custom_command(
   TARGET ${target} POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data
+  COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data
 )

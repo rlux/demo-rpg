@@ -23,12 +23,6 @@ void BuilderState::finish()
 {
 }
 
-BuilderState* BaseState::handleElement(Element::Type element)
-{
-	// properties;
-	return new BuilderState();
-}
-
 BuilderState* StartState::handleElement(Element::Type element)
 {
 	if (element == Element::Map)
@@ -43,7 +37,29 @@ BuilderState* StartState::handleElement(Element::Type element)
 	}
 }
 
-MapState::MapState(Map* map) : map(map)
+BaseState::BaseState(Base* base) : base(base)
+{
+}
+
+BuilderState* BaseState::handleElement(Element::Type element)
+{
+	if (element == Element::Properties) {
+		return new PropertiesState(base);
+	} else {
+		return new BuilderState();
+	}
+}
+
+PropertiesState::PropertiesState(Base* base) : base(base)
+{
+}
+
+void PropertiesState::handleAttribute(format::Attribute::Type attribute, const QString& value)
+{
+	qDebug() << value;
+}
+
+MapState::MapState(Map* map) : BaseState(map), map(map)
 {
 }
 
@@ -104,7 +120,7 @@ BuilderState* MapState::handleElement(Element::Type element)
 	}
 }
 
-TilesetState::TilesetState(Tileset* tileset) : tileset(tileset)
+TilesetState::TilesetState(Tileset* tileset) : BaseState(tileset), tileset(tileset)
 {
 }
 
@@ -166,7 +182,7 @@ void TileOffsetState::handleAttribute(Attribute::Type attribute, const QString& 
 	}
 }
 
-LayerState::LayerState(Layer* layer) : layer(layer)
+LayerState::LayerState(Layer* layer) : BaseState(layer), layer(layer)
 {
 }
 
@@ -182,6 +198,12 @@ void LayerState::handleAttribute(format::Attribute::Type attribute, const QStrin
 			break;
 		case Attribute::Height:
 			layer->setHeight(value.toInt());
+			break;
+		case Attribute::Opacity:
+			layer->setOpacity(value.toFloat());
+			break;
+		case Attribute::Visible:
+			layer->setVisible(value.toInt()!=0);
 			break;
 	}
 }
@@ -200,12 +222,6 @@ void TileLayerState::handleAttribute(Attribute::Type attribute, const QString& v
 		case Attribute::Y:
 			tileLayer->setY(value.toInt());
 			break;
-		case Attribute::Opacity:
-			tileLayer->setOpacity(value.toFloat());
-			break;
-		case Attribute::Visible:
-			tileLayer->setVisible(value.toInt()!=0);
-			break;
 		default:
 			LayerState::handleAttribute(attribute, value);
 	}
@@ -220,7 +236,7 @@ BuilderState* TileLayerState::handleElement(Element::Type element)
 			return new DataState(data);
 		}
 		default:
-			return BaseState::handleElement(element);
+			return LayerState::handleElement(element);
 	}
 }
 
@@ -243,7 +259,7 @@ BuilderState* ImageLayerState::handleElement(format::Element::Type element)
 		case Element::Image:
 			return new ImageState(&imageLayer->image());
 		default:
-			return BaseState::handleElement(element);
+			return LayerState::handleElement(element);
 	}
 }
 
@@ -253,7 +269,7 @@ ObjectLayerState::ObjectLayerState(ObjectLayer* objectLayer) : LayerState(object
 
 BuilderState* ObjectLayerState::handleElement(format::Element::Type element)
 {
-	return BaseState::handleElement(element);
+	return LayerState::handleElement(element);
 //	switch (element)
 //	{
 //		default:

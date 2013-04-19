@@ -40,6 +40,7 @@ void Renderer::render(QPainter& painter, const QRect& destRect)
 {
 	for (Layer* layer: _map->layers())
 	{
+		if (!layer->isVisible()) continue;
 		if (layer->isTileLayer()) {
 			renderTileLayer(painter, layer->asTileLayer(), destRect);
 		} else if (layer->isImageLayer()) {
