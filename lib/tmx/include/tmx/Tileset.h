@@ -38,8 +38,6 @@ public:
 	Tile* atGid(unsigned gid);
 	Tile* at(unsigned id);
 
-
-
 	Image* image();
 
 	QString toString() const;

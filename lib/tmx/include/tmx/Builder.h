@@ -45,9 +45,22 @@ class PropertiesState : public BuilderState
 public:
 	PropertiesState(Base* base);
 
-	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
+	virtual BuilderState* handleElement(format::Element::Type element);
 protected:
 	Base* base;
+};
+
+class PropertyState : public BuilderState
+{
+public:
+	PropertyState(Base* base);
+
+	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
+	virtual void finish();
+protected:
+	Base* base;
+	QString propertyName;
+	QString propertyValue;
 };
 
 class MapState : public BaseState
@@ -82,6 +95,30 @@ public:
 	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
 protected:
 	QPoint* tileOffset;
+};
+
+class TerrainTypesState : public BuilderState
+{
+public:
+	TerrainTypesState(Tileset* tileset);
+
+	virtual BuilderState* handleElement(format::Element::Type element);
+protected:
+	Tileset* tileset;
+};
+
+class TerrainState : public BuilderState
+{
+public:
+	TerrainState(Tileset* tileset);
+
+	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
+	virtual BuilderState* handleElement(format::Element::Type element);
+	virtual void finish();
+protected:
+	Tileset* tileset;
+	unsigned tileId;
+	QString name;
 };
 
 class LayerState : public BaseState

@@ -46,7 +46,7 @@ BuilderState* BaseState::handleElement(Element::Type element)
 	if (element == Element::Properties) {
 		return new PropertiesState(base);
 	} else {
-		return new BuilderState();
+		return BuilderState::handleElement(element);
 	}
 }
 
@@ -54,10 +54,36 @@ PropertiesState::PropertiesState(Base* base) : base(base)
 {
 }
 
-void PropertiesState::handleAttribute(format::Attribute::Type attribute, const QString& value)
+BuilderState* PropertiesState::handleElement(format::Element::Type element)
 {
-	qDebug() << value;
+	if (element == Element::Property) {
+		return new PropertyState(base);
+	} else {
+		return BuilderState::handleElement(element);
+	}
 }
+
+PropertyState::PropertyState(Base* base) : base(base)
+{
+}
+
+void PropertyState::handleAttribute(format::Attribute::Type attribute, const QString& value)
+{
+	switch (attribute)
+	{
+		case Attribute::Name:
+			propertyName = value;
+			break;
+		case Attribute::Value:
+			propertyValue = value;
+			break;
+	}
+}
+
+ void PropertyState::finish()
+ {
+ 	base->setProperty(propertyName, propertyValue);
+ }
 
 MapState::MapState(Map* map) : BaseState(map), map(map)
 {
@@ -160,6 +186,8 @@ BuilderState* TilesetState::handleElement(Element::Type element)
 			return new ImageState(tileset->image());
 		case Element::TileOffset:
 			return new TileOffsetState(&tileOffset);
+		case Element::TerrainTypes:
+			return new TerrainTypesState(tileset);
 		default:
 			return BaseState::handleElement(element);
 	}
@@ -184,6 +212,59 @@ void TileOffsetState::handleAttribute(Attribute::Type attribute, const QString& 
 		case Attribute::Y:
 			tileOffset->setY(value.toInt());
 			break;
+	}
+}
+
+TerrainTypesState::TerrainTypesState(Tileset* tileset) : tileset(tileset)
+{
+}
+
+BuilderState* TerrainTypesState::handleElement(format::Element::Type element)
+{
+	if (element==Element::Terrain) {
+		return new TerrainState(tileset);
+	} else {
+		return new BuilderState();
+	}
+}
+
+TerrainState::TerrainState(Tileset* tileset) : tileset(tileset), tileId(0)
+{
+}
+
+void TerrainState::handleAttribute(format::Attribute::Type attribute, const QString& value)
+{
+	switch (attribute)
+	{
+		case Attribute::Name:
+			name = value;
+			break;
+		case Attribute::Tile:
+			tileId = value.toUInt();
+			break;
+	}
+}
+
+BuilderState* TerrainState::handleElement(format::Element::Type element)
+{
+	if (element==Element::Properties)
+	{
+		Tile* tile = tileset->at(tileId);
+		if (tile)
+		{
+			return new PropertiesState(tile);
+		}
+	}
+
+	return BuilderState::handleElement(element);
+}
+
+void TerrainState::finish()
+{
+	Tile* tile = tileset->at(tileId);
+	if (tile)
+	{
+		tile->setName(name);
 	}
 }
 

@@ -21,7 +21,10 @@ public:
 		Object,
 		Data,
 		TileOffset,
-		Properties
+		Properties,
+		Property,
+		TerrainTypes,
+		Terrain
 	};
 
 	static Type type(const QString& name);
@@ -38,6 +41,7 @@ public:
 		Gid,
 		FirstGid,
 		Name,
+		Value,
 		Orientation,
 		Width,
 		Height,
@@ -55,7 +59,8 @@ public:
 		Format,
 		Source,
 		Trans,
-		BackgroundColor
+		BackgroundColor,
+		Tile
 	};
 
 	static Type type(const QString& name);

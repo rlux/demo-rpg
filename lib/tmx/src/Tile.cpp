@@ -43,6 +43,16 @@ QRect Tile::rect() const
 	return _rect;
 }
 
+void Tile::setName(const QString& name)
+{
+	_name = name;
+}
+
+const QString& Tile::name() const
+{
+	return _name;
+}
+
 void Tile::updateRect()
 {
 	if (!_tileset)

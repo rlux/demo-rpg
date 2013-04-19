@@ -19,6 +19,9 @@ QHash<QString, Element::Type> createElementMap()
 	elementMap.insert("data", Element::Data);
 	elementMap.insert("tileoffset", Element::TileOffset);
 	elementMap.insert("properties", Element::Properties);
+	elementMap.insert("property", Element::Property);
+	elementMap.insert("terraintypes", Element::TerrainTypes);
+	elementMap.insert("terrain", Element::Terrain);
 
 	return elementMap;
 }
@@ -31,6 +34,7 @@ QHash<QString, Attribute::Type> createAttributeMap()
 	attributeMap.insert("gid", Attribute::Gid);
 	attributeMap.insert("firstgid", Attribute::FirstGid);
 	attributeMap.insert("name", Attribute::Name);
+	attributeMap.insert("value", Attribute::Value);
 	attributeMap.insert("orientation", Attribute::Orientation);
 	attributeMap.insert("width", Attribute::Width);
 	attributeMap.insert("height", Attribute::Height);
@@ -49,6 +53,7 @@ QHash<QString, Attribute::Type> createAttributeMap()
 	attributeMap.insert("source", Attribute::Source);
 	attributeMap.insert("trans", Attribute::Trans);
 	attributeMap.insert("backgroundcolor", Attribute::BackgroundColor);
+	attributeMap.insert("tile", Attribute::Tile);
 
 	return attributeMap;
 }
