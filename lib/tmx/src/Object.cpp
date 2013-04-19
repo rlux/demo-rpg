@@ -64,6 +64,11 @@ void Object::setPosition(const QPoint& position)
 	_position = position;
 }
 
+const QPoint& Object::position() const
+{
+	return _position;
+}
+
 void Object::setX(int x)
 {
 	_position.setX(x);

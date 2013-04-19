@@ -5,6 +5,17 @@
 using namespace tmx;
 using namespace tmx::format;
 
+namespace {
+
+QColor makeColor(const QString& value)
+{
+	QString colorString = "FF"+ (value.startsWith('#') ? value.mid(1) : value);
+	QColor color = colorString.toUInt(nullptr, 16);
+	return color;
+}
+
+}
+
 
 void BuilderState::handleAttribute(Attribute::type attribute, const QString& value)
 {
@@ -112,7 +123,7 @@ void MapState::handleAttribute(Attribute::type attribute, const QString& value)
 			map->setTileHeight(value.toUInt());
 			break;
 		case Attribute::BackgroundColor:
-			map->setBackgroundColor(("FF"+value).toUInt(nullptr, 16));
+			map->setBackgroundColor(makeColor(value));
 			break;
 	}
 }
@@ -348,7 +359,7 @@ void ObjectLayerState::handleAttribute(format::Attribute::type attribute, const 
 {
 	if (attribute == Attribute::Color)
 	{
-		//imageLayer->setColor();
+		objectLayer->setColor(makeColor(value));
 	}
 }
 
@@ -438,7 +449,7 @@ void ImageState::handleAttribute(Attribute::type attribute, const QString& value
 			image->setSource(value);
 			break;
 		case Attribute::Trans:
-			image->setTransparentColor(("FF"+value).toUInt(nullptr, 16));
+			image->setTransparentColor(makeColor(value));
 			break;
 		case Attribute::Width:
 			image->setWidth(value.toInt());

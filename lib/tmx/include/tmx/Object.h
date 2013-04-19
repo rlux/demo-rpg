@@ -27,6 +27,7 @@ public:
 	int height() const;
 
 	void setPosition(const QPoint& position);
+	const QPoint& position() const;
 	void setX(int x);
 	void setY(int y);
 

@@ -84,6 +84,10 @@ void Renderer::renderLayer(QPainter& painter, Layer* layer)
 	{
 		renderImageLayer(painter, layer->asImageLayer());
 	}
+	else if (layer->isObjectLayer())
+	{
+		renderObjectLayer(painter, layer->asObjectLayer());
+	}
 }
 
 void Renderer::renderTileLayer(QPainter& painter, TileLayer* layer)
@@ -99,7 +103,7 @@ void Renderer::renderTileLayer(QPainter& painter, TileLayer* layer)
 			QRect area(QPoint(x*tileSize.width(), y*tileSize.height())+_mapOffset+_viewport.topLeft(), tileSize);
 
 			renderCell(painter, layer->cellAt(x, y), area);
-			painter.drawRect(area);
+			//painter.drawRect(area);
 		}
 	}
 }
@@ -144,3 +148,35 @@ void Renderer::renderImageLayer(QPainter& painter, ImageLayer* layer)
 		painter.drawPixmap(_viewport.topLeft()+_mapOffset, *pixmap);
 	}
 }
+
+void Renderer::renderObjectLayer(QPainter& painter, ObjectLayer* layer)
+{
+	for (Object* object: layer->objects())
+	{
+		renderObject(painter, object, layer->color());
+	}
+}
+
+void Renderer::renderObject(QPainter& painter, Object* object, const QColor& color)
+{
+	QPoint pos = object->position()+_viewport.topLeft()+_mapOffset;
+	unsigned gid = object->gid();
+	if (gid>0)
+	{
+		QRect rect(pos-QPoint(0,32), QSize(32,32));
+		painter.fillRect(rect, Qt::green);
+		painter.drawRect(rect);
+	}
+	else if (object->size().isValid())
+	{
+		QRect rect(pos, object->size());
+		painter.fillRect(rect, color);
+		painter.drawRect(rect);
+	}
+	else
+	{
+		painter.fillRect(QRect(pos-QPoint(5,5), QSize(10,10)), Qt::red);
+	}
+
+}
+

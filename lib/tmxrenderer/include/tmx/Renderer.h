@@ -34,7 +34,8 @@ protected:
 	QRect visibleArea(Layer* layer);
 	void renderCell(QPainter& painter, const Cell& cell, const QRect& area);
 	void renderImageLayer(QPainter& painter, ImageLayer* layer);
-//	virtual void renderObjects(QPainter& painter, const QRect& mapRect, const QRect& destRect);
+	void renderObjectLayer(QPainter& painter, ObjectLayer* layer);
+	void renderObject(QPainter& painter, Object* object, const QColor& color);
 };
 
 } // namespace tmx

@@ -41,16 +41,16 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 	switch (event->key())
 	{
 		case Qt::Key_Left:
-			moveMap(-1,0);
-			break;
-		case Qt::Key_Right:
 			moveMap(1,0);
 			break;
+		case Qt::Key_Right:
+			moveMap(-1,0);
+			break;
 		case Qt::Key_Up:
-			moveMap(0,-1);
+			moveMap(0,1);
 			break;
 		case Qt::Key_Down:
-			moveMap(0,1);
+			moveMap(0,-1);
 			break;
 	}
 }
