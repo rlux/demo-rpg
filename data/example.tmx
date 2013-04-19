@@ -2,16 +2,34 @@
 <map version="1.0" orientation="orthogonal" width="16" height="16" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32">
   <image source="alles_by_samidare88-d6214gf.png" width="128" height="352"/>
+  <terraintypes>
+   <terrain name="grass" tile="40">
+    <properties>
+     <property name="walkable" value="1"/>
+    </properties>
+   </terrain>
+   <terrain name="bricks-horizontal" tile="3"/>
+   <terrain name="bricks" tile="7"/>
+   <terrain name="bricks" tile="11"/>
+   <terrain name="bricks" tile="15"/>
+   <terrain name="bricks" tile="19"/>
+   <terrain name="bricks" tile="23"/>
+   <terrain name="bricks" tile="27"/>
+   <terrain name="bricks" tile="31"/>
+   <terrain name="bricks" tile="35"/>
+   <terrain name="bricks" tile="39"/>
+   <terrain name="bricks-cross" tile="43"/>
+  </terraintypes>
  </tileset>
- <tileset firstgid="45" name="x" tilewidth="32" tileheight="32">
-  <image source="x.png" width="32" height="32"/>
+ <tileset firstgid="45" name="grounds" tilewidth="32" tileheight="32">
+  <image source="grounds.png" width="512" height="64"/>
  </tileset>
  <imagelayer name="background" width="16" height="16">
   <image source="background.png"/>
  </imagelayer>
  <layer name="tiles" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYBhYoAjESkCsTCZfFYjVgFgdiLXQ+Ojy2Pj4gBYJaiSAmIUMDAMcZNqPrp/U8EPXT0r4IbtPhAHhJx4S3I3NTTC3YPM/NvejuxFbWOJSiw1w4LAHWR6X+2Dy+OwhRj8+gKwfHYMAclxgwwJI+gEFYQvJ
+   eJwzYGBgMKAAO1CIFYFYCYiVGSCAVL4qEKsBsToQa6Hx0eWx8fEBLRLUSAAxCxkYBjjItB9dP6nhh66flPBDdp8IA8JPPCS4G5ubYG7B5n9s7kd3I7awxKUWG+DAYQ+yPC73weTx2UOMfnwAWT86BgHkuMCGBZD0AwA05xLJ
   </data>
  </layer>
  <objectgroup name="objects" width="16" height="16">
@@ -20,9 +38,4 @@
   <object name="woman02" type="woman" gid="7" x="411" y="214"/>
   <object name="man02" type="man" gid="22" x="442" y="438"/>
  </objectgroup>
- <layer name="walkable" width="16" height="16" visible="0">
-  <data encoding="base64" compression="zlib">
-   eJxjYBhYoIuEKeWjY2L0E3IbNdSQC8gxm1L/kxre1AC4zMNmPja1pMYpMWqJUUdIjhL9xABcaZ4U/QCAWg0D
-  </data>
- </layer>
 </map>

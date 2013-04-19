@@ -40,12 +40,17 @@ void Renderer::render(QPainter& painter, const QRect& destRect)
 {
 	for (Layer* layer: _map->layers())
 	{
-		if (!layer->isVisible()) continue;
-		if (layer->isTileLayer()) {
-			renderTileLayer(painter, layer->asTileLayer(), destRect);
-		} else if (layer->isImageLayer()) {
-			renderImageLayer(painter, layer->asImageLayer(), destRect);
-		}
+		renderLayer(painter, layer, destRect);
+	}
+}
+
+void Renderer::renderLayer(QPainter& painter, Layer* layer, const QRect& destRect)
+{
+	if (!layer->isVisible()) return;
+	if (layer->isTileLayer()) {
+		renderTileLayer(painter, layer->asTileLayer(), destRect);
+	} else if (layer->isImageLayer()) {
+		renderImageLayer(painter, layer->asImageLayer(), destRect);
 	}
 }
 
@@ -56,15 +61,16 @@ void Renderer::renderTileLayer(QPainter& painter, TileLayer* layer, const QRect&
 	{
 		for (int x=0; x<layer->width(); ++x)
 		{
+			QRect target(QPoint(x*tileSize.width(), y*tileSize.height()), tileSize);
 			Cell& cell = layer->cellAt(x, y);
 			Tile* tile = cell.tile();
-			if (!tile) continue;
-			QImage* image = _tilesetImages[tile->tileset()];
-			QRect rect = tile->rect();
+			if (tile)
+			{
+				QImage* image = _tilesetImages[tile->tileset()];
+				QRect rect = tile->rect();
+				painter.drawImage(target, *image, rect);
+			}
 
-			QRect target(QPoint(x*tileSize.width(), y*tileSize.height()), tileSize);
-
-			painter.drawImage(target, *image, rect);
 			painter.drawRect(target);
 		}
 	}
