@@ -28,5 +28,5 @@ void MainWindow::paintEvent(QPaintEvent* event)
 
 	QPainter painter(this);
 
-	_renderer.renderMap(painter, _map, rect());
+	_renderer.renderMap(painter, _map);
 }
