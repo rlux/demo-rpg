@@ -3,6 +3,7 @@
 #include <tmx/Base.h>
 
 #include <QSize>
+#include <QPoint>
 
 namespace tmx {
 
@@ -38,6 +39,10 @@ public:
 	void setHeight(int height);
 	int height() const;
 
+	void setPosition(const QPoint& position);
+	void setX(int x);
+	void setY(int y);
+
 	void setOpacity(float opacity);
 	float opacity() const;
 	void setVisible(bool visible);
@@ -48,6 +53,7 @@ protected:
 	Map* _map;
 	QString _name;
 	QSize _size;
+	QPoint _position;
 	float _opacity;
 	bool _visible;
 };

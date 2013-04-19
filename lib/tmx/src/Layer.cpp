@@ -93,6 +93,21 @@ int Layer::height() const
 	return _size.height();
 }
 
+void Layer::setPosition(const QPoint& position)
+{
+	_position = position;
+}
+
+void Layer::setX(int x)
+{
+	_position.setX(x);
+}
+
+void Layer::setY(int y)
+{
+	_position.setY(y);
+}
+
 void Layer::setOpacity(float opacity)
 {
 	_opacity = opacity;

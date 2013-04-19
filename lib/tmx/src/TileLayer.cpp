@@ -13,21 +13,6 @@ bool TileLayer::isTileLayer() const
 	return true;
 }
 
-void TileLayer::setPosition(const QPoint& position)
-{
-	_position = position;
-}
-
-void TileLayer::setX(int x)
-{
-	_position.setX(x);
-}
-
-void TileLayer::setY(int y)
-{
-	_position.setY(y);
-}
-
 Cell& TileLayer::cellAt(int x, int y)
 {
 	return _cells[_size.width()*y+x];

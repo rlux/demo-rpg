@@ -18,10 +18,6 @@ public:
 
 	virtual bool isTileLayer() const;
 
-	void setPosition(const QPoint& position);
-	void setX(int x);
-	void setY(int y);
-
 	Cell& cellAt(int x, int y);
 	Cell& cellAt(const QPoint& position);
 
@@ -29,7 +25,6 @@ public:
 
 	QString toString() const;
 protected:
-	QPoint _position;
 	QVector<Cell> _cells;
 };
 

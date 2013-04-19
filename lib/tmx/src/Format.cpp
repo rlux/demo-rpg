@@ -4,9 +4,9 @@ using namespace tmx::format;
 
 namespace {
 
-QHash<QString, Element::Type> createElementMap()
+QHash<QString, Element::type> createElementMap()
 {
-	QHash<QString, Element::Type> elementMap;
+	QHash<QString, Element::type> elementMap;
 
 	elementMap.insert("map", Element::Map);
 	elementMap.insert("tileset", Element::Tileset);
@@ -26,9 +26,9 @@ QHash<QString, Element::Type> createElementMap()
 	return elementMap;
 }
 
-QHash<QString, Attribute::Type> createAttributeMap()
+QHash<QString, Attribute::type> createAttributeMap()
 {
-	QHash<QString, Attribute::Type> attributeMap;
+	QHash<QString, Attribute::type> attributeMap;
 
 	attributeMap.insert("id", Attribute::Id);
 	attributeMap.insert("gid", Attribute::Gid);
@@ -54,22 +54,24 @@ QHash<QString, Attribute::Type> createAttributeMap()
 	attributeMap.insert("trans", Attribute::Trans);
 	attributeMap.insert("backgroundcolor", Attribute::BackgroundColor);
 	attributeMap.insert("tile", Attribute::Tile);
+	attributeMap.insert("color", Attribute::Color);
+	attributeMap.insert("type", Attribute::Type);
 
 	return attributeMap;
 }
 
 }
 
-QHash<QString, Element::Type> Element::typeMap = createElementMap();
-QHash<QString, Attribute::Type> Attribute::typeMap = createAttributeMap();
+QHash<QString, Element::type> Element::typeMap = createElementMap();
+QHash<QString, Attribute::type> Attribute::typeMap = createAttributeMap();
 
 
-Element::Type Element::type(const QString& name)
+Element::type Element::fromString(const QString& name)
 {
 	return typeMap.value(name, Unknown);
 }
 
-Attribute::Type Attribute::type(const QString& name)
+Attribute::type Attribute::fromString(const QString& name)
 {
 	return typeMap.value(name, Unknown);
 }

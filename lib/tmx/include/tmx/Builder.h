@@ -6,6 +6,7 @@
 #include <tmx/TileLayer.h>
 #include <tmx/ImageLayer.h>
 #include <tmx/Data.h>
+#include <tmx/Object.h>
 
 #include <QHash>
 #include <QStack>
@@ -16,16 +17,16 @@ namespace tmx {
 class BuilderState
 {
 public:
-	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
+	virtual void handleAttribute(format::Attribute::type attribute, const QString& value);
 	virtual void handleData(const QString& data);
-	virtual BuilderState* handleElement(format::Element::Type element);
+	virtual BuilderState* handleElement(format::Element::type element);
 	virtual void finish();
 };
 
 class StartState : public BuilderState
 {
 public:
-	virtual BuilderState* handleElement(format::Element::Type element);
+	virtual BuilderState* handleElement(format::Element::type element);
 
 	QList<Map*> maps;
 };
@@ -35,7 +36,7 @@ class BaseState : public BuilderState
 public:
 	BaseState(Base* base);
 
-	virtual BuilderState* handleElement(format::Element::Type element);
+	virtual BuilderState* handleElement(format::Element::type element);
 protected:
 	Base* base;
 };
@@ -45,7 +46,7 @@ class PropertiesState : public BuilderState
 public:
 	PropertiesState(Base* base);
 
-	virtual BuilderState* handleElement(format::Element::Type element);
+	virtual BuilderState* handleElement(format::Element::type element);
 protected:
 	Base* base;
 };
@@ -55,7 +56,7 @@ class PropertyState : public BuilderState
 public:
 	PropertyState(Base* base);
 
-	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
+	virtual void handleAttribute(format::Attribute::type attribute, const QString& value);
 	virtual void finish();
 protected:
 	Base* base;
@@ -68,8 +69,8 @@ class MapState : public BaseState
 public:
 	MapState(Map* map);
 
-	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
-	virtual BuilderState* handleElement(format::Element::Type element);
+	virtual void handleAttribute(format::Attribute::type attribute, const QString& value);
+	virtual BuilderState* handleElement(format::Element::type element);
 protected:
 	Map* map;
 };
@@ -79,8 +80,8 @@ class TilesetState : public BaseState
 public:
 	TilesetState(Tileset* tileset);
 
-	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
-	virtual BuilderState* handleElement(format::Element::Type element);
+	virtual void handleAttribute(format::Attribute::type attribute, const QString& value);
+	virtual BuilderState* handleElement(format::Element::type element);
 	virtual void finish();
 protected:
 	Tileset* tileset;
@@ -92,17 +93,17 @@ class TileOffsetState : public BuilderState
 public:
 	TileOffsetState(QPoint* tileOffset);
 
-	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
+	virtual void handleAttribute(format::Attribute::type attribute, const QString& value);
 protected:
 	QPoint* tileOffset;
 };
 
-class TerrainTypesState : public BuilderState
+class TerraintypesState : public BuilderState
 {
 public:
-	TerrainTypesState(Tileset* tileset);
+	TerraintypesState(Tileset* tileset);
 
-	virtual BuilderState* handleElement(format::Element::Type element);
+	virtual BuilderState* handleElement(format::Element::type element);
 protected:
 	Tileset* tileset;
 };
@@ -112,8 +113,8 @@ class TerrainState : public BuilderState
 public:
 	TerrainState(Tileset* tileset);
 
-	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
-	virtual BuilderState* handleElement(format::Element::Type element);
+	virtual void handleAttribute(format::Attribute::type attribute, const QString& value);
+	virtual BuilderState* handleElement(format::Element::type element);
 	virtual void finish();
 protected:
 	Tileset* tileset;
@@ -126,7 +127,7 @@ class LayerState : public BaseState
 public:
 	LayerState(Layer* layer);
 
-	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
+	virtual void handleAttribute(format::Attribute::type attribute, const QString& value);
 protected:
 	Layer* layer;
 };
@@ -136,8 +137,7 @@ class TileLayerState : public LayerState
 public:
 	TileLayerState(TileLayer* tileLayer);
 
-	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
-	virtual BuilderState* handleElement(format::Element::Type element);
+	virtual BuilderState* handleElement(format::Element::type element);
 	virtual void finish();
 protected:
 	TileLayer* tileLayer;
@@ -149,7 +149,7 @@ class ImageLayerState : public LayerState
 public:
 	ImageLayerState(ImageLayer* imageLayer);
 
-	virtual BuilderState* handleElement(format::Element::Type element);
+	virtual BuilderState* handleElement(format::Element::type element);
 protected:
 	ImageLayer* imageLayer;
 };
@@ -159,9 +159,20 @@ class ObjectLayerState : public LayerState
 public:
 	ObjectLayerState(ObjectLayer* objectLayer);
 
-	virtual BuilderState* handleElement(format::Element::Type element);
+	virtual void handleAttribute(format::Attribute::type attribute, const QString& value);
+	virtual BuilderState* handleElement(format::Element::type element);
 protected:
 	ObjectLayer* objectLayer;
+};
+
+class ObjectState : public BaseState
+{
+public:
+	ObjectState(Object* object);
+
+	virtual void handleAttribute(format::Attribute::type attribute, const QString& value);
+protected:
+	Object* object;
 };
 
 class DataState : public BuilderState
@@ -169,8 +180,8 @@ class DataState : public BuilderState
 public:
 	DataState(Data* data);
 
-	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
-		virtual void handleData(const QString& data);
+	virtual void handleAttribute(format::Attribute::type attribute, const QString& value);
+	virtual void handleData(const QString& data);
 protected:
 	Data* data;
 };
@@ -180,7 +191,7 @@ class ImageState : public BuilderState
 public:
 	ImageState(Image* image);
 
-	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
+	virtual void handleAttribute(format::Attribute::type attribute, const QString& value);
 protected:
 	Image* image;
 };

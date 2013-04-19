@@ -9,7 +9,7 @@ namespace format {
 class Element
 {
 public:
-	enum Type {
+	enum type {
 		Unknown,
 		Map,
 		Tileset,
@@ -27,15 +27,15 @@ public:
 		Terrain
 	};
 
-	static Type type(const QString& name);
+	static type fromString(const QString& name);
 protected:
-	static QHash<QString, Type> typeMap;
+	static QHash<QString, type> typeMap;
 };
 
 class Attribute
 {
 public:
-	enum Type {
+	enum type {
 		Unknown,
 		Id,
 		Gid,
@@ -60,12 +60,14 @@ public:
 		Source,
 		Trans,
 		BackgroundColor,
-		Tile
+		Tile,
+		Color,
+		Type
 	};
 
-	static Type type(const QString& name);
+	static type fromString(const QString& name);
 protected:
-	static QHash<QString, Type> typeMap;
+	static QHash<QString, type> typeMap;
 };
 
 } // namespace format

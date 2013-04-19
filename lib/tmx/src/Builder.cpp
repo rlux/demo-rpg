@@ -6,7 +6,7 @@ using namespace tmx;
 using namespace tmx::format;
 
 
-void BuilderState::handleAttribute(Attribute::Type attribute, const QString& value)
+void BuilderState::handleAttribute(Attribute::type attribute, const QString& value)
 {
 }
 
@@ -14,7 +14,7 @@ void BuilderState::handleData(const QString& data)
 {
 }
 
-BuilderState* BuilderState::handleElement(Element::Type element)
+BuilderState* BuilderState::handleElement(Element::type element)
 {
 	return new BuilderState();
 }
@@ -23,7 +23,7 @@ void BuilderState::finish()
 {
 }
 
-BuilderState* StartState::handleElement(Element::Type element)
+BuilderState* StartState::handleElement(Element::type element)
 {
 	if (element == Element::Map)
 	{
@@ -41,7 +41,7 @@ BaseState::BaseState(Base* base) : base(base)
 {
 }
 
-BuilderState* BaseState::handleElement(Element::Type element)
+BuilderState* BaseState::handleElement(Element::type element)
 {
 	if (element == Element::Properties) {
 		return new PropertiesState(base);
@@ -54,7 +54,7 @@ PropertiesState::PropertiesState(Base* base) : base(base)
 {
 }
 
-BuilderState* PropertiesState::handleElement(format::Element::Type element)
+BuilderState* PropertiesState::handleElement(format::Element::type element)
 {
 	if (element == Element::Property) {
 		return new PropertyState(base);
@@ -67,7 +67,7 @@ PropertyState::PropertyState(Base* base) : base(base)
 {
 }
 
-void PropertyState::handleAttribute(format::Attribute::Type attribute, const QString& value)
+void PropertyState::handleAttribute(format::Attribute::type attribute, const QString& value)
 {
 	switch (attribute)
 	{
@@ -89,7 +89,7 @@ MapState::MapState(Map* map) : BaseState(map), map(map)
 {
 }
 
-void MapState::handleAttribute(Attribute::Type attribute, const QString& value)
+void MapState::handleAttribute(Attribute::type attribute, const QString& value)
 {
 	switch (attribute)
 	{
@@ -117,7 +117,7 @@ void MapState::handleAttribute(Attribute::Type attribute, const QString& value)
 	}
 }
 
-BuilderState* MapState::handleElement(Element::Type element)
+BuilderState* MapState::handleElement(Element::type element)
 {
 	switch (element)
 	{
@@ -150,7 +150,7 @@ TilesetState::TilesetState(Tileset* tileset) : BaseState(tileset), tileset(tiles
 {
 }
 
-void TilesetState::handleAttribute(Attribute::Type attribute, const QString& value)
+void TilesetState::handleAttribute(Attribute::type attribute, const QString& value)
 {
 	switch (attribute)
 	{
@@ -178,7 +178,7 @@ void TilesetState::handleAttribute(Attribute::Type attribute, const QString& val
 	}
 }
 
-BuilderState* TilesetState::handleElement(Element::Type element)
+BuilderState* TilesetState::handleElement(Element::type element)
 {
 	switch (element)
 	{
@@ -187,7 +187,7 @@ BuilderState* TilesetState::handleElement(Element::Type element)
 		case Element::TileOffset:
 			return new TileOffsetState(&tileOffset);
 		case Element::TerrainTypes:
-			return new TerrainTypesState(tileset);
+			return new TerraintypesState(tileset);
 		default:
 			return BaseState::handleElement(element);
 	}
@@ -202,7 +202,7 @@ TileOffsetState::TileOffsetState(QPoint* tileOffset) : tileOffset(tileOffset)
 {
 }
 
-void TileOffsetState::handleAttribute(Attribute::Type attribute, const QString& value)
+void TileOffsetState::handleAttribute(Attribute::type attribute, const QString& value)
 {
 	switch (attribute)
 	{
@@ -215,11 +215,11 @@ void TileOffsetState::handleAttribute(Attribute::Type attribute, const QString& 
 	}
 }
 
-TerrainTypesState::TerrainTypesState(Tileset* tileset) : tileset(tileset)
+TerraintypesState::TerraintypesState(Tileset* tileset) : tileset(tileset)
 {
 }
 
-BuilderState* TerrainTypesState::handleElement(format::Element::Type element)
+BuilderState* TerraintypesState::handleElement(format::Element::type element)
 {
 	if (element==Element::Terrain) {
 		return new TerrainState(tileset);
@@ -232,7 +232,7 @@ TerrainState::TerrainState(Tileset* tileset) : tileset(tileset), tileId(0)
 {
 }
 
-void TerrainState::handleAttribute(format::Attribute::Type attribute, const QString& value)
+void TerrainState::handleAttribute(format::Attribute::type attribute, const QString& value)
 {
 	switch (attribute)
 	{
@@ -245,7 +245,7 @@ void TerrainState::handleAttribute(format::Attribute::Type attribute, const QStr
 	}
 }
 
-BuilderState* TerrainState::handleElement(format::Element::Type element)
+BuilderState* TerrainState::handleElement(format::Element::type element)
 {
 	if (element==Element::Properties)
 	{
@@ -272,12 +272,18 @@ LayerState::LayerState(Layer* layer) : BaseState(layer), layer(layer)
 {
 }
 
-void LayerState::handleAttribute(format::Attribute::Type attribute, const QString& value)
+void LayerState::handleAttribute(format::Attribute::type attribute, const QString& value)
 {
 	switch (attribute)
 	{
 		case Attribute::Name:
 			layer->setName(value);
+			break;
+		case Attribute::X:
+			layer->setX(value.toInt());
+			break;
+		case Attribute::Y:
+			layer->setY(value.toInt());
 			break;
 		case Attribute::Width:
 			layer->setWidth(value.toInt());
@@ -298,22 +304,7 @@ TileLayerState::TileLayerState(TileLayer* tileLayer) : LayerState(tileLayer), ti
 {
 }
 
-void TileLayerState::handleAttribute(Attribute::Type attribute, const QString& value)
-{
-	switch (attribute)
-	{
-		case Attribute::X:
-			tileLayer->setX(value.toInt());
-			break;
-		case Attribute::Y:
-			tileLayer->setY(value.toInt());
-			break;
-		default:
-			LayerState::handleAttribute(attribute, value);
-	}
-}
-
-BuilderState* TileLayerState::handleElement(Element::Type element)
+BuilderState* TileLayerState::handleElement(Element::type element)
 {
 	switch (element)
 	{
@@ -338,7 +329,7 @@ ImageLayerState::ImageLayerState(ImageLayer* imageLayer) : LayerState(imageLayer
 {
 }
 
-BuilderState* ImageLayerState::handleElement(format::Element::Type element)
+BuilderState* ImageLayerState::handleElement(format::Element::type element)
 {
 	switch (element)
 	{
@@ -353,21 +344,68 @@ ObjectLayerState::ObjectLayerState(ObjectLayer* objectLayer) : LayerState(object
 {
 }
 
-BuilderState* ObjectLayerState::handleElement(format::Element::Type element)
+void ObjectLayerState::handleAttribute(format::Attribute::type attribute, const QString& value)
 {
-	return LayerState::handleElement(element);
-//	switch (element)
-//	{
-//		default:
-//			return BaseState::handleElement(element);
-//	}
+	if (attribute == Attribute::Color)
+	{
+		//imageLayer->setColor();
+	}
+}
+
+BuilderState* ObjectLayerState::handleElement(format::Element::type element)
+{
+	switch (element)
+	{
+		case Element::Object: {
+			Object* object = new Object();
+			objectLayer->addObject(object);
+			return new ObjectState(object);
+		}
+		default:
+			return LayerState::handleElement(element);
+	}
+}
+
+ObjectState::ObjectState(Object* object) : BaseState(object), object(object)
+{
+}
+
+void ObjectState::handleAttribute(format::Attribute::type attribute, const QString& value)
+{
+	switch (attribute)
+	{
+		case Attribute::Name:
+			object->setName(value);
+			break;
+		case Attribute::Type:
+			object->setType(value);
+			break;
+		case Attribute::Width:
+			object->setWidth(value.toUInt());
+			break;
+		case Attribute::Height:
+			object->setHeight(value.toUInt());
+			break;
+		case Attribute::X:
+			object->setX(value.toUInt());
+			break;
+		case Attribute::Y:
+			object->setY(value.toUInt());
+			break;
+		case Attribute::Gid:
+			object->setGid(value.toUInt());
+			break;
+		case Attribute::Visible:
+			object->setVisible(value.toUInt()!=0);
+			break;
+	}
 }
 
 DataState::DataState(Data* data) : data(data)
 {
 }
 
-void DataState::handleAttribute(Attribute::Type attribute, const QString& value)
+void DataState::handleAttribute(Attribute::type attribute, const QString& value)
 {
 	switch (attribute)
 	{
@@ -389,7 +427,7 @@ ImageState::ImageState(Image* image) : image(image)
 {
 }
 
-void ImageState::handleAttribute(Attribute::Type attribute, const QString& value)
+void ImageState::handleAttribute(Attribute::type attribute, const QString& value)
 {
 	switch (attribute)
 	{
@@ -435,7 +473,7 @@ BuilderState* Builder::currentState()
 
 void Builder::createElement(const QString& elementName)
 {
-	_stateStack.push(currentState()->handleElement(Element::type(elementName)));
+	_stateStack.push(currentState()->handleElement(Element::fromString(elementName)));
 }
 
 void Builder::finishElement(const QString& elementName)
@@ -447,7 +485,7 @@ void Builder::finishElement(const QString& elementName)
 
 void Builder::setAttribute(const QString& attributeName, const QString& value)
 {
-	currentState()->handleAttribute(Attribute::type(attributeName), value);
+	currentState()->handleAttribute(Attribute::fromString(attributeName), value);
 }
 
 void Builder::setData(const QString& bytes)
