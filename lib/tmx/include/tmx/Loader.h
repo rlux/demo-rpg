@@ -6,16 +6,10 @@
 
 namespace tmx {
 
-class Parser
+class Loader
 {
 public:
-	Parser();
-
-	void parseFile(const QString& filename);
-
-	Map* map();
-protected:
-	Map* _map;
+	static Map* loadMap(const QString& filename);
 };
 
 } // namespace tmx

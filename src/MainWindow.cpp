@@ -1,6 +1,6 @@
 #include <MainWindow.h>
 
-#include <tmx/Parser.h>
+#include <tmx/Loader.h>
 
 #include <QDebug>
 
@@ -16,10 +16,7 @@ MainWindow::MainWindow()
 
 void MainWindow::load(const QString& filename)
 {
-	Parser p;
-	p.parseFile(filename);
-
-	_map = p.map();
+	_map = Loader::loadMap(filename);
 
 	_renderer = new Renderer(_map);
 

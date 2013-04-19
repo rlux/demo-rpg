@@ -16,7 +16,7 @@ include_directories("include")
 FILE(GLOB_RECURSE headers "include" *.h *.hpp)
 
 set(sources
-	src/Parser.cpp
+	src/Loader.cpp
 	src/XmlHandler.cpp
 	src/Format.cpp
 	src/Builder.cpp

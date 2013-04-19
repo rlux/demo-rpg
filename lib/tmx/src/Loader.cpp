@@ -1,4 +1,4 @@
-#include <tmx/Parser.h>
+#include <tmx/Loader.h>
 
 #include <tmx/XmlHandler.h>
 #include <tmx/Builder.h>
@@ -9,23 +9,13 @@
 
 using namespace tmx;
 
-Parser::Parser()
-: _map(nullptr)
-{
-}
-
-Map* Parser::map()
-{
-	return _map;
-}
-
-void Parser::parseFile(const QString& filename)
+Map* Loader::loadMap(const QString& filename)
 {
 	QFile file(filename);
 
 	if (!file.open(QIODevice::ReadOnly)) {
 		qDebug() << "could not open file " << filename;
-		return;
+		return nullptr;
 	}
 
 	QXmlSimpleReader xmlReader;
@@ -38,8 +28,10 @@ void Parser::parseFile(const QString& filename)
 
 	bool ok = xmlReader.parse(source);
 
-	_map = builder.map();
-	_map->setFilename(filename);
+	Map* map = builder.map();
+	map->setFilename(filename);
 
 	delete handler;
+
+	return map;
 }

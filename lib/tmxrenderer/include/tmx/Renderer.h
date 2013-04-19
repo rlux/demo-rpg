@@ -14,6 +14,9 @@ public:
 	Renderer(Map* map);
 	virtual ~Renderer();
 
+	void loadImagesFor(Map* map);
+//	void loadImagesFor(Map* map);
+
 	void render(QPainter& painter, const QRect& destRect);
 protected:
 	Map* _map;
