@@ -2,12 +2,15 @@
 
 #include <QFileInfo>
 #include <QImage>
+#include <qmath.h>
+
 #include <QDebug>
 
 using namespace tmx;
 
 Renderer::Renderer()
 {
+	_mapOffset = QPoint(-10,-10);
 }
 
 Renderer::~Renderer()
@@ -30,6 +33,26 @@ void Renderer::loadResourcesFor(Map* map)
 	}
 }
 
+void Renderer::setViewport(const QRect& viewport)
+{
+	_viewport = viewport;
+}
+
+const QRect& Renderer::viewport() const
+{
+	return _viewport;
+}
+
+void Renderer::setOffset(const QPoint& offset)
+{
+	_mapOffset = offset;
+}
+
+const QPoint& Renderer::offset() const
+{
+	return _mapOffset;
+}
+
 void Renderer::loadImage(const QString& path, Image* image)
 {
 	_pixmaps.insert(image, new QPixmap(path+"/"+image->source()));
@@ -37,6 +60,9 @@ void Renderer::loadImage(const QString& path, Image* image)
 
 void Renderer::renderMap(QPainter& painter, Map* map)
 {
+	painter.save();
+	painter.setClipRect(_viewport);
+
 	for (Layer* layer: map->layers())
 	{
 		if (layer->isVisible())
@@ -44,6 +70,8 @@ void Renderer::renderMap(QPainter& painter, Map* map)
 			renderLayer(painter, layer);
 		}
 	}
+
+	painter.restore();
 }
 
 void Renderer::renderLayer(QPainter& painter, Layer* layer)
@@ -62,16 +90,35 @@ void Renderer::renderTileLayer(QPainter& painter, TileLayer* layer)
 {
 	const QSize& tileSize = layer->map()->tileSize();
 
-	for (int y=0; y<layer->height(); ++y)
+	QRect area = visibleArea(layer);
+
+	for (int y=area.top(); y<area.bottom(); ++y)
 	{
-		for (int x=0; x<layer->width(); ++x)
+		for (int x=area.left(); x<area.right(); ++x)
 		{
-			QRect area(QPoint(x*tileSize.width(), y*tileSize.height()), tileSize);
+			QRect area(QPoint(x*tileSize.width(), y*tileSize.height())+_mapOffset+_viewport.topLeft(), tileSize);
 
 			renderCell(painter, layer->cellAt(x, y), area);
 			painter.drawRect(area);
 		}
 	}
+}
+
+QRect Renderer::visibleArea(Layer* layer)
+{
+	const QSize& tileSize = layer->map()->tileSize();
+
+	int left = -_mapOffset.x()/tileSize.width();
+	int top = -_mapOffset.y()/tileSize.height();
+	int right = left+qCeil((float)_viewport.width()/tileSize.width());
+	int bottom = top+qCeil((float)_viewport.height()/tileSize.height());
+
+	left = qBound(0, left, layer->width());
+	right = qBound(0, right, layer->width());
+	top = qBound(0, top, layer->height());
+	bottom = qBound(0, bottom, layer->height());
+
+	return QRect(QPoint(left, top), QPoint(right, bottom));
 }
 
 void Renderer::renderCell(QPainter& painter, const Cell& cell, const QRect& area)
@@ -94,6 +141,6 @@ void Renderer::renderImageLayer(QPainter& painter, ImageLayer* layer)
 	QPixmap* pixmap = _pixmaps[layer->image()];
 	if (pixmap)
 	{
-		painter.drawPixmap(QPoint(), *pixmap);
+		painter.drawPixmap(_viewport.topLeft()+_mapOffset, *pixmap);
 	}
 }

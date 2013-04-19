@@ -3,6 +3,7 @@
 #include <QMainWindow>
 #include <QString>
 #include <QPaintEvent>
+#include <QKeyEvent>
 
 #include <tmx/Renderer.h>
 
@@ -14,7 +15,10 @@ public:
 	void load(const QString& filename);
 
 	virtual void paintEvent(QPaintEvent* event);
+	virtual void keyPressEvent(QKeyEvent* event);
 protected:
 	tmx::Map* _map;
 	tmx::Renderer _renderer;
+
+	void moveMap(int dx, int dy);
 };
