@@ -22,7 +22,7 @@ public:
 	virtual void finish();
 };
 
-class DefaultState : public BuilderState
+class BaseState : public BuilderState
 {
 public:
 	virtual BuilderState* handleElement(format::Element::Type element);
@@ -36,7 +36,7 @@ public:
 	QList<Map*> maps;
 };
 
-class MapState : public DefaultState
+class MapState : public BaseState
 {
 public:
 	MapState(Map* map);
@@ -47,7 +47,7 @@ protected:
 	Map* map;
 };
 
-class TilesetState : public DefaultState
+class TilesetState : public BaseState
 {
 public:
 	TilesetState(Tileset* tileset);
@@ -68,7 +68,17 @@ protected:
 	QPoint* tileOffset;
 };
 
-class TileLayerState : public DefaultState
+class LayerState : public BaseState
+{
+public:
+	LayerState(Layer* layer);
+
+	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
+protected:
+	Layer* layer;
+};
+
+class TileLayerState : public LayerState
 {
 public:
 	TileLayerState(TileLayer* tileLayer);
@@ -81,7 +91,7 @@ protected:
 	Data* data;
 };
 
-class ImageLayerState : public DefaultState
+class ImageLayerState : public LayerState
 {
 public:
 	ImageLayerState(ImageLayer* imageLayer);
@@ -91,7 +101,7 @@ protected:
 	ImageLayer* imageLayer;
 };
 
-class ObjectLayerState : public DefaultState
+class ObjectLayerState : public LayerState
 {
 public:
 	ObjectLayerState(ObjectLayer* objectLayer);

@@ -50,3 +50,43 @@ ObjectLayer* Layer::asObjectLayer()
 {
 	return dynamic_cast<ObjectLayer*>(this);
 }
+
+void Layer::setName(const QString& name)
+{
+	_name = name;
+}
+
+const QString& Layer::name() const
+{
+	return _name;
+}
+
+void Layer::setSize(const QSize& size)
+{
+	_size = size;
+}
+
+const QSize& Layer::size() const
+{
+	return _size;
+}
+
+void Layer::setWidth(int width)
+{
+	_size.setWidth(width);
+}
+
+int Layer::width() const
+{
+	return _size.width();
+}
+
+void Layer::setHeight(int height)
+{
+	_size.setHeight(height);
+}
+
+int Layer::height() const
+{
+	return _size.height();
+}

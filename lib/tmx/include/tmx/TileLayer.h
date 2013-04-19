@@ -18,19 +18,11 @@ public:
 
 	virtual bool isTileLayer() const;
 
-	void setName(const QString& name);
-	void setSize(const QSize& size);
-	void setWidth(int width);
-	void setHeight(int height);
 	void setPosition(const QPoint& position);
 	void setX(int x);
 	void setY(int y);
 	void setOpacity(float opacity);
 	void setVisible(bool visible);
-
-	const QSize& size() const;
-	int width() const;
-	int height() const;
 
 	Cell& cellAt(int x, int y);
 	Cell& cellAt(const QPoint& position);
@@ -39,9 +31,7 @@ public:
 
 	QString toString() const;
 protected:
-	QString _name;
 	QPoint _position;
-	QSize _size;
 	float _opacity;
 	bool _visible;
 	QVector<Cell> _cells;

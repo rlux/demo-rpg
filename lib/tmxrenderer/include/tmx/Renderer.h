@@ -18,7 +18,8 @@ public:
 protected:
 	Map* _map;
 	QPoint _offset;
-	QHash<Tileset*, QImage*> _images;
+	QHash<Tileset*, QImage*> _tilesetImages;
+	QHash<ImageLayer*, QImage*> _images;
 
 	void loadImages();
 	QImage* loadImage(Image& image);

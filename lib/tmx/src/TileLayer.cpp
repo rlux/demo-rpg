@@ -15,26 +15,6 @@ bool TileLayer::isTileLayer() const
 	return true;
 }
 
-void TileLayer::setName(const QString& name)
-{
-	_name = name;
-}
-
-void TileLayer::setSize(const QSize& size)
-{
-	_size = size;
-}
-
-void TileLayer::setWidth(int width)
-{
-	_size.setWidth(width);
-}
-
-void TileLayer::setHeight(int height)
-{
-	_size.setHeight(height);
-}
-
 void TileLayer::setPosition(const QPoint& position)
 {
 	_position = position;
@@ -58,21 +38,6 @@ void TileLayer::setOpacity(float opacity)
 void TileLayer::setVisible(bool visible)
 {
 	_visible = visible;
-}
-
-const QSize& TileLayer::size() const
-{
-	return _size;
-}
-
-int TileLayer::width() const
-{
-	return _size.width();
-}
-
-int TileLayer::height() const
-{
-	return _size.height();
 }
 
 Cell& TileLayer::cellAt(int x, int y)

@@ -181,6 +181,15 @@ QList<ObjectLayer*> Map::objectLayers() const
 	return layers;
 }
 
+Layer* Map::layerNamed(const QString& name) const
+{
+	for (Layer* layer: _layers) {
+		if (layer->name()==name) return layer;
+	}
+
+	return nullptr;
+}
+
 QString Map::toString() const
 {
 	QString sets;

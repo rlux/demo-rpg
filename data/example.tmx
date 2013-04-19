@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="20" height="20" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" width="16" height="16" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32">
   <image source="alles_by_samidare88-d6214gf.png" width="128" height="352"/>
  </tileset>
- <tileset firstgid="45" name="grounds" tilewidth="32" tileheight="32">
-  <image source="grounds.png" width="512" height="64"/>
- </tileset>
- <imagelayer name="background" width="20" height="20">
+ <imagelayer name="background" width="16" height="16">
   <image source="background.png"/>
  </imagelayer>
- <layer name="tiles" width="20" height="20">
+ <layer name="tiles" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJwzYGBgMKAAowMHCjE6UARiJSBWJpOPDlSBWA2I1YFYC42PLo+NTwrQokCPBBCzkIFxAQ4quQ/dPErjA908UuIDn/tFGBBhwkPAbkIA3Q8wt2Kznxj/ovsJW9zgUksM4CDgDnzux2UePneQYx4x8tjM00LDIIAc19iwAInuGwXEAwCMgxLJ
+   eJxjYBhYoAjESkCsTCZfFYjVgFgdiLXQ+Ojy2Pj4gBYJaiSAmIUMDAMcZNqPrp/U8EPXT0r4IbtPhAHhJx4S3I3NTTC3YPM/NvejuxFbWOJSiw1w4LAHWR6X+2Dy+OwhRj8+gKwfHYMAclxgwwJI+gEFYQvJ
   </data>
  </layer>
- <objectgroup name="objects" width="20" height="20">
+ <objectgroup name="objects" width="16" height="16">
   <object name="man01" type="man" gid="18" x="346" y="332"/>
   <object name="woman01" type="woman" gid="2" x="25" y="264"/>
   <object name="woman02" type="woman" gid="7" x="411" y="214"/>

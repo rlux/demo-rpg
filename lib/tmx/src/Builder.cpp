@@ -23,7 +23,7 @@ void BuilderState::finish()
 {
 }
 
-BuilderState* DefaultState::handleElement(Element::Type element)
+BuilderState* BaseState::handleElement(Element::Type element)
 {
 	// properties;
 	return new BuilderState();
@@ -100,7 +100,7 @@ BuilderState* MapState::handleElement(Element::Type element)
 			return new ObjectLayerState(objectLayer);
 		}
 		default:
-			return DefaultState::handleElement(element);
+			return BaseState::handleElement(element);
 	}
 }
 
@@ -145,7 +145,7 @@ BuilderState* TilesetState::handleElement(Element::Type element)
 		case Element::TileOffset:
 			return new TileOffsetState(&tileset->tileOffset());
 		default:
-			return DefaultState::handleElement(element);
+			return BaseState::handleElement(element);
 	}
 }
 
@@ -166,7 +166,27 @@ void TileOffsetState::handleAttribute(Attribute::Type attribute, const QString& 
 	}
 }
 
-TileLayerState::TileLayerState(TileLayer* tileLayer) : tileLayer(tileLayer), data(nullptr)
+LayerState::LayerState(Layer* layer) : layer(layer)
+{
+}
+
+void LayerState::handleAttribute(format::Attribute::Type attribute, const QString& value)
+{
+	switch (attribute)
+	{
+		case Attribute::Name:
+			layer->setName(value);
+			break;
+		case Attribute::Width:
+			layer->setWidth(value.toInt());
+			break;
+		case Attribute::Height:
+			layer->setHeight(value.toInt());
+			break;
+	}
+}
+
+TileLayerState::TileLayerState(TileLayer* tileLayer) : LayerState(tileLayer), tileLayer(tileLayer), data(nullptr)
 {
 }
 
@@ -174,20 +194,11 @@ void TileLayerState::handleAttribute(Attribute::Type attribute, const QString& v
 {
 	switch (attribute)
 	{
-		case Attribute::Name:
-			tileLayer->setName(value);
-			break;
 		case Attribute::X:
 			tileLayer->setX(value.toInt());
 			break;
 		case Attribute::Y:
 			tileLayer->setY(value.toInt());
-			break;
-		case Attribute::Width:
-			tileLayer->setWidth(value.toInt());
-			break;
-		case Attribute::Height:
-			tileLayer->setHeight(value.toInt());
 			break;
 		case Attribute::Opacity:
 			tileLayer->setOpacity(value.toFloat());
@@ -195,6 +206,8 @@ void TileLayerState::handleAttribute(Attribute::Type attribute, const QString& v
 		case Attribute::Visible:
 			tileLayer->setVisible(value.toInt()!=0);
 			break;
+		default:
+			LayerState::handleAttribute(attribute, value);
 	}
 }
 
@@ -207,7 +220,7 @@ BuilderState* TileLayerState::handleElement(Element::Type element)
 			return new DataState(data);
 		}
 		default:
-			return DefaultState::handleElement(element);
+			return BaseState::handleElement(element);
 	}
 }
 
@@ -219,7 +232,7 @@ void TileLayerState::finish()
 	}
 }
 
-ImageLayerState::ImageLayerState(ImageLayer* imageLayer) : imageLayer(imageLayer)
+ImageLayerState::ImageLayerState(ImageLayer* imageLayer) : LayerState(imageLayer), imageLayer(imageLayer)
 {
 }
 
@@ -230,23 +243,22 @@ BuilderState* ImageLayerState::handleElement(format::Element::Type element)
 		case Element::Image:
 			return new ImageState(&imageLayer->image());
 		default:
-			return DefaultState::handleElement(element);
+			return BaseState::handleElement(element);
 	}
 }
 
-ObjectLayerState::ObjectLayerState(ObjectLayer* objectLayer) : objectLayer(objectLayer)
+ObjectLayerState::ObjectLayerState(ObjectLayer* objectLayer) : LayerState(objectLayer), objectLayer(objectLayer)
 {
 }
 
 BuilderState* ObjectLayerState::handleElement(format::Element::Type element)
 {
-	switch (element)
-	{
-//		case Element::Image:
-//			return new ImageState(&imageLayer->image());
-		default:
-			return DefaultState::handleElement(element);
-	}
+	return BaseState::handleElement(element);
+//	switch (element)
+//	{
+//		default:
+//			return BaseState::handleElement(element);
+//	}
 }
 
 DataState::DataState(Data* data) : data(data)

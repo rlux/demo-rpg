@@ -60,6 +60,7 @@ public:
 	QList<TileLayer*> tileLayers() const;
 	QList<ImageLayer*> imageLayers() const;
 	QList<ObjectLayer*> objectLayers() const;
+	Layer* layerNamed(const QString& name) const;
 
 	QString toString() const;
 

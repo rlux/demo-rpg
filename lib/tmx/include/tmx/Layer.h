@@ -2,6 +2,8 @@
 
 #include <tmx/Base.h>
 
+#include <QSize>
+
 namespace tmx {
 
 class TileLayer;
@@ -26,9 +28,21 @@ public:
 	ImageLayer* asImageLayer();
 	ObjectLayer* asObjectLayer();
 
+	void setName(const QString& name);
+	const QString& name() const;
+
+	void setSize(const QSize& size);
+	const QSize& size() const;
+	void setWidth(int width);
+	int width() const;
+	void setHeight(int height);
+	int height() const;
+
 	virtual QString toString() const = 0;
 protected:
 	Map* _map;
+	QString _name;
+	QSize _size;
 };
 
 } // namespace tmx
