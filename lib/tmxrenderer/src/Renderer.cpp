@@ -6,39 +6,40 @@
 
 using namespace tmx;
 
-Renderer::Renderer(Map* map)
-: _map(map)
+Renderer::Renderer()
 {
-	loadImages();
 }
 
 Renderer::~Renderer()
 {
-	qDeleteAll(_tilesetImages);
 	qDeleteAll(_images);
 }
 
-void Renderer::loadImages()
+void Renderer::loadResourcesFor(Map* map)
 {
-	for (Tileset* tileset: _map->tilesets())
+	QString path = QFileInfo(map->filename()).path();
+
+	for (Tileset* tileset: map->tilesets())
 	{
-		_tilesetImages.insert(tileset, loadImage(tileset->image()));
+		//_tilesetImages.insert(tileset, loadImage(tileset->image()));
+		loadImage(path, tileset->image());
 	}
-	for (ImageLayer* imageLayer: _map->imageLayers())
+	for (ImageLayer* imageLayer: map->imageLayers())
 	{
-		_images.insert(imageLayer, loadImage(imageLayer->image()));
+		//_images.insert(imageLayer, loadImage(imageLayer->image()));
+		loadImage(path, imageLayer->image());
 	}
 }
 
-QImage* Renderer::loadImage(Image& image)
+void Renderer::loadImage(const QString& path, Image* image)
 {
-	QString path = QFileInfo(_map->filename()).path();
-	return new QImage(path+"/"+image.source());
+	QImage* img = new QImage(path+"/"+image->source());
+	_images.insert(image, img);
 }
 
-void Renderer::render(QPainter& painter, const QRect& destRect)
+void Renderer::renderMap(QPainter& painter, Map* map, const QRect& destRect)
 {
-	for (Layer* layer: _map->layers())
+	for (Layer* layer: map->layers())
 	{
 		renderLayer(painter, layer, destRect);
 	}
@@ -56,7 +57,7 @@ void Renderer::renderLayer(QPainter& painter, Layer* layer, const QRect& destRec
 
 void Renderer::renderTileLayer(QPainter& painter, TileLayer* layer, const QRect& destRect)
 {
-	const QSize& tileSize = _map->tileSize();
+	const QSize& tileSize = layer->map()->tileSize();
 	for (int y=0; y<layer->height(); ++y)
 	{
 		for (int x=0; x<layer->width(); ++x)
@@ -66,9 +67,12 @@ void Renderer::renderTileLayer(QPainter& painter, TileLayer* layer, const QRect&
 			Tile* tile = cell.tile();
 			if (tile)
 			{
-				QImage* image = _tilesetImages[tile->tileset()];
-				QRect rect = tile->rect();
-				painter.drawImage(target, *image, rect);
+				QImage* image = _images[tile->tileset()->image()];
+				if (image)
+				{
+					QRect rect = tile->rect();
+					painter.drawImage(target, *image, rect);
+				}
 			}
 
 			painter.drawRect(target);
@@ -78,6 +82,9 @@ void Renderer::renderTileLayer(QPainter& painter, TileLayer* layer, const QRect&
 
 void Renderer::renderImageLayer(QPainter& painter, ImageLayer* layer, const QRect& destRect)
 {
-	QImage* image = _images[layer];
-	painter.drawImage(QPoint(), *image);
+	QImage* image = _images[layer->image()];
+	if (image)
+	{
+		painter.drawImage(QPoint(), *image);
+	}
 }

@@ -16,5 +16,5 @@ public:
 	virtual void paintEvent(QPaintEvent* event);
 protected:
 	tmx::Map* _map;
-	tmx::Renderer* _renderer;
+	tmx::Renderer _renderer;
 };

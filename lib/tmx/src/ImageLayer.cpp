@@ -7,9 +7,9 @@ bool ImageLayer::isImageLayer() const
 	return true;
 }
 
-Image& ImageLayer::image()
+Image* ImageLayer::image()
 {
-	return _image;
+	return &_image;
 }
 
 QString ImageLayer::toString() const

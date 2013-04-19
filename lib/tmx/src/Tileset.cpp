@@ -83,14 +83,19 @@ void Tileset::setTileHeight(int height)
 	_tileSize.setHeight(height);
 }
 
-QPoint& Tileset::tileOffset()
+const QPoint& Tileset::tileOffset() const
 {
 	return _tileOffset;
 }
 
-Image& Tileset::image()
+void Tileset::setTileOffset(const QPoint& offset)
 {
-	return _image;
+	_tileOffset = offset;
+}
+
+Image* Tileset::image()
+{
+	return &_image;
 }
 
 Tile* Tileset::atGid(unsigned gid)

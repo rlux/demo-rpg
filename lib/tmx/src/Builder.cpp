@@ -157,12 +157,17 @@ BuilderState* TilesetState::handleElement(Element::Type element)
 	switch (element)
 	{
 		case Element::Image:
-			return new ImageState(&tileset->image());
+			return new ImageState(tileset->image());
 		case Element::TileOffset:
-			return new TileOffsetState(&tileset->tileOffset());
+			return new TileOffsetState(&tileOffset);
 		default:
 			return BaseState::handleElement(element);
 	}
+}
+
+void TilesetState::finish()
+{
+	tileset->setTileOffset(tileOffset);
 }
 
 TileOffsetState::TileOffsetState(QPoint* tileOffset) : tileOffset(tileOffset)
@@ -257,7 +262,7 @@ BuilderState* ImageLayerState::handleElement(format::Element::Type element)
 	switch (element)
 	{
 		case Element::Image:
-			return new ImageState(&imageLayer->image());
+			return new ImageState(imageLayer->image());
 		default:
 			return LayerState::handleElement(element);
 	}

@@ -68,8 +68,10 @@ public:
 
 	virtual void handleAttribute(format::Attribute::Type attribute, const QString& value);
 	virtual BuilderState* handleElement(format::Element::Type element);
+	virtual void finish();
 protected:
 	Tileset* tileset;
+	QPoint tileOffset;
 };
 
 class TileOffsetState : public BuilderState

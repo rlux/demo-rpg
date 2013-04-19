@@ -11,23 +11,18 @@ namespace tmx {
 class Renderer
 {
 public:
-	Renderer(Map* map);
+	Renderer();
 	virtual ~Renderer();
 
-	void loadImagesFor(Map* map);
-//	void loadImagesFor(Map* map);
+	void loadResourcesFor(Map* map);
 
-	void render(QPainter& painter, const QRect& destRect);
-protected:
-	Map* _map;
-	QPoint _offset;
-	QHash<Tileset*, QImage*> _tilesetImages;
-	QHash<ImageLayer*, QImage*> _images;
-
-	void loadImages();
-	QImage* loadImage(Image& image);
-
+	void renderMap(QPainter& painter, Map* map, const QRect& destRect);
 	void renderLayer(QPainter& painter, Layer* layer, const QRect& destRect);
+protected:
+	QHash<Image*, QImage*> _images;
+
+	void loadImage(const QString& path, Image* image);
+
 	void renderTileLayer(QPainter& painter, TileLayer* layer, const QRect& destRect);
 	void renderImageLayer(QPainter& painter, ImageLayer* layer, const QRect& destRect);
 //	virtual void renderObjects(QPainter& painter, const QRect& mapRect, const QRect& destRect);

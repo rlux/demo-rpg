@@ -8,7 +8,6 @@ using namespace tmx;
 
 MainWindow::MainWindow()
 : QMainWindow()
-, _renderer(nullptr)
 , _map(nullptr)
 {
 	resize(400,400);
@@ -18,7 +17,7 @@ void MainWindow::load(const QString& filename)
 {
 	_map = Loader::loadMap(filename);
 
-	_renderer = new Renderer(_map);
+	_renderer.loadResourcesFor(_map);
 
 //	qDebug() << p.map()->toString();
 }
@@ -29,7 +28,5 @@ void MainWindow::paintEvent(QPaintEvent* event)
 
 	QPainter painter(this);
 
-	if (_renderer) {
-		_renderer->render(painter, rect());
-	}
+	_renderer.renderMap(painter, _map, rect());
 }

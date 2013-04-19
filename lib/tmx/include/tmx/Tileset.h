@@ -23,6 +23,7 @@ public:
 	int spacing() const;
 	int margin() const;
 	const QSize& tileSize() const;
+	const QPoint& tileOffset() const;
 
 	void setFirstGid(unsigned gid);
 	void setSource(const QString& source);
@@ -32,12 +33,14 @@ public:
 	void setTileSize(const QSize& size);
 	void setTileWidth(int width);
 	void setTileHeight(int height);
+	void setTileOffset(const QPoint& offset);
 
 	Tile* atGid(unsigned gid);
 	Tile* at(unsigned id);
 
-	QPoint& tileOffset();
-	Image& image();
+
+
+	Image* image();
 
 	QString toString() const;
 protected:
