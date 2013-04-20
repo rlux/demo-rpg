@@ -22,6 +22,9 @@ QHash<QString, Element::type> createElementMap()
 	elementMap.insert("property", Element::Property);
 	elementMap.insert("terraintypes", Element::TerrainTypes);
 	elementMap.insert("terrain", Element::Terrain);
+	elementMap.insert("ellipse", Element::Ellipse);
+	elementMap.insert("polygon", Element::Polygon);
+	elementMap.insert("polyline", Element::Polyline);
 
 	return elementMap;
 }
@@ -56,6 +59,7 @@ QHash<QString, Attribute::type> createAttributeMap()
 	attributeMap.insert("tile", Attribute::Tile);
 	attributeMap.insert("color", Attribute::Color);
 	attributeMap.insert("type", Attribute::Type);
+	attributeMap.insert("points", Attribute::Points);
 
 	return attributeMap;
 }

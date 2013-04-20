@@ -24,7 +24,10 @@ public:
 		Properties,
 		Property,
 		TerrainTypes,
-		Terrain
+		Terrain,
+		Ellipse,
+		Polygon,
+		Polyline
 	};
 
 	static type fromString(const QString& name);
@@ -62,7 +65,8 @@ public:
 		BackgroundColor,
 		Tile,
 		Color,
-		Type
+		Type,
+		Points
 	};
 
 	static type fromString(const QString& name);

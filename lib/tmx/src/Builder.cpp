@@ -370,14 +370,14 @@ BuilderState* ObjectLayerState::handleElement(format::Element::type element)
 		case Element::Object: {
 			Object* object = new Object();
 			objectLayer->addObject(object);
-			return new ObjectState(object);
+			return new ObjectState(object, &objectLayer->map()->tileMapper());
 		}
 		default:
 			return LayerState::handleElement(element);
 	}
 }
 
-ObjectState::ObjectState(Object* object) : BaseState(object), object(object)
+ObjectState::ObjectState(Object* object, const TileMapper* tileMapper) : BaseState(object), object(object), tileMapper(tileMapper)
 {
 }
 
@@ -404,11 +404,52 @@ void ObjectState::handleAttribute(format::Attribute::type attribute, const QStri
 			object->setY(value.toUInt());
 			break;
 		case Attribute::Gid:
-			object->setGid(value.toUInt());
+			object->setShape(Object::TileShape);
+			object->setTile(tileMapper->tile(value.toUInt()));
 			break;
 		case Attribute::Visible:
 			object->setVisible(value.toUInt()!=0);
 			break;
+	}
+}
+
+BuilderState* ObjectState::handleElement(format::Element::type element)
+{
+	switch (element)
+	{
+		case Element::Ellipse:
+			object->setShape(Object::Ellipse);
+			return BaseState::handleElement(element);
+		case Element::Polygon:
+			object->setShape(Object::Polygon);
+			return new PointsState(&points);
+		case Element::Polyline:
+			object->setShape(Object::Polyline);
+			return new PointsState(&points);
+		default:
+			return BaseState::handleElement(element);
+	}
+}
+
+void ObjectState::finish()
+{
+	object->setPoints(points);
+}
+
+PointsState::PointsState(QVector<QPoint>* points) : points(points)
+{
+}
+
+void PointsState::handleAttribute(format::Attribute::type attribute, const QString& value)
+{
+	if (attribute == Attribute::Points) {
+		QStringList pairs = value.split(' ');
+		for (const QString& pair: pairs) {
+			int index = pair.indexOf(',');
+			int x = pair.left(index).toInt();
+			int y = pair.mid(index+1).toInt();
+			*points << QPoint(x, y);
+		}
 	}
 }
 

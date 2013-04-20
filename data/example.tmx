@@ -24,10 +24,15 @@
  <tileset firstgid="45" name="grounds" tilewidth="32" tileheight="32">
   <image source="grounds.png" width="512" height="64"/>
  </tileset>
- <imagelayer name="background" width="16" height="16">
-  <image source="background.png" trans="8ed129"/>
- </imagelayer>
- <layer name="tiles" width="16" height="16">
+ <tileset firstgid="77" name="walkable" tilewidth="32" tileheight="32">
+  <image source="semitrans.png" width="32" height="32"/>
+ </tileset>
+ <layer name="ground" width="16" height="16">
+  <data encoding="base64" compression="zlib">
+   eJzTZGBg0BzFo3gUj0gMAFrOKQE=
+  </data>
+ </layer>
+ <layer name="decoration" width="16" height="16">
   <data encoding="base64" compression="zlib">
    eJwzYGBgMKAAO1CIFYFYCYiVGSCAVL4qEKsBsToQa6Hx0eWx8fEBLRLUSAAxCxkYBjjItB9dP6nhh66flPBDdp8IA8JPPCS4G5ubYG7B5n9s7kd3I7awxKUWG+DAYQ+yPC73weTx2UOMfnwAWT86BgHkuMCGBZD0AwA05xLJ
   </data>
@@ -48,4 +53,10 @@
    <polyline points="0,0 63,46 117,49 162,1 255,93"/>
   </object>
  </objectgroup>
+ <layer name="walkable" width="16" height="16">
+  <data encoding="base64" compression="zlib">
+   eJxjYBhY4IuEKeWjY2L0E3IbNdSQC8gxm1L/kxre1AC4zMNmPja1pMYpMWqJUUdIjhL9xABcaZ4U/QBV9xZD
+  </data>
+ </layer>
+ <objectgroup name="events" width="16" height="16"/>
 </map>

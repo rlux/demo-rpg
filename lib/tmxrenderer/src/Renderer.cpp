@@ -160,23 +160,45 @@ void Renderer::renderObjectLayer(QPainter& painter, ObjectLayer* layer)
 void Renderer::renderObject(QPainter& painter, Object* object, const QColor& color)
 {
 	QPoint pos = object->position()+_viewport.topLeft()+_mapOffset;
-	unsigned gid = object->gid();
-	if (gid>0)
+
+	painter.save();
+	painter.translate(pos);
+	painter.setBrush(QColor(color.red(), color.green(), color.blue(), 100));
+	QPen pen(color);
+	pen.setWidth(2);
+	painter.setPen(pen);
+
+	switch (object->shape())
 	{
-		QRect rect(pos-QPoint(0,32), QSize(32,32));
-		painter.fillRect(rect, Qt::green);
-		painter.drawRect(rect);
-	}
-	else if (object->size().isValid())
-	{
-		QRect rect(pos, object->size());
-		painter.fillRect(rect, color);
-		painter.drawRect(rect);
-	}
-	else
-	{
-		painter.fillRect(QRect(pos-QPoint(5,5), QSize(10,10)), Qt::red);
+		case Object::Rectangle:
+			painter.drawRect(QRect(QPoint(0,0), object->size()));
+			break;
+		case Object::Ellipse:
+			painter.drawEllipse(QRect(QPoint(), object->size()));
+			break;
+		case Object::Polygon:
+			painter.drawPolygon(object->points());
+			break;
+		case Object::Polyline:
+			painter.drawPolyline(object->points());
+			break;
+		case Object::TileShape: {
+			QRect rect(-QPoint(0,32), QSize(32,32));
+			Tile* tile = object->tile();
+			if (tile)
+			{
+				QPixmap* pixmap = _pixmaps[tile->tileset()->image()];
+				if (pixmap)
+				{
+					painter.drawPixmap(rect, *pixmap,  tile->rect());
+				}
+			} else {
+				painter.fillRect(rect, Qt::red);
+			}
+			break;
+		}
 	}
 
+	painter.restore();
 }
 

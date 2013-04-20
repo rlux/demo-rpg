@@ -168,11 +168,25 @@ protected:
 class ObjectState : public BaseState
 {
 public:
-	ObjectState(Object* object);
+	ObjectState(Object* object, const TileMapper* tileMapper);
+
+	virtual void handleAttribute(format::Attribute::type attribute, const QString& value);
+	virtual BuilderState* handleElement(format::Element::type element);
+	virtual void finish();
+protected:
+	Object* object;
+	const TileMapper* tileMapper;
+	QVector<QPoint> points;
+};
+
+class PointsState : public BuilderState
+{
+public:
+	PointsState(QVector<QPoint>* points);
 
 	virtual void handleAttribute(format::Attribute::type attribute, const QString& value);
 protected:
-	Object* object;
+	QVector<QPoint>* points;
 };
 
 class DataState : public BuilderState

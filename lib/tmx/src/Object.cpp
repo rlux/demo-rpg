@@ -4,7 +4,8 @@ using namespace tmx;
 
 Object::Object()
 : _visible(true)
-, _gid(0)
+, _tile(nullptr)
+, _shape(Rectangle)
 {
 }
 
@@ -89,12 +90,32 @@ bool Object::isVisible() const
 	return _visible;
 }
 
-void Object::setGid(unsigned gid)
+void Object::setTile(Tile* tile)
 {
-	_gid = gid;
+	_tile = tile;
 }
 
-unsigned Object::gid() const
+Tile* Object::tile() const
 {
-	return _gid;
+	return _tile;
+}
+
+void Object::setPoints(const QVector<QPoint>& points)
+{
+	_points = points;
+}
+
+const QVector<QPoint>& Object::points()
+{
+	return _points;
+}
+
+Object::Shape Object::shape() const
+{
+	return _shape;
+}
+
+void Object::setShape(Object::Shape shape)
+{
+	_shape = shape;
 }
