@@ -18,6 +18,11 @@ FILE(GLOB_RECURSE headers "include" *.h *.hpp)
 set(sources
 	src/main.cpp
 	src/MainWindow.cpp
+	src/Game.cpp
+	src/GameWidget.cpp
+	src/GameRenderer.cpp
+	src/AnimatedObject.cpp
+	src/Engine.cpp
 )
 
 #QT4_WRAP_CPP(moc_sources ...)

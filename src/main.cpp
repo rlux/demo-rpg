@@ -8,7 +8,5 @@ int main(int argc, char* argv[])
 	MainWindow window;
 	window.show();
 
-	window.load("data/example.tmx");
-
 	return app.exec();
 }
