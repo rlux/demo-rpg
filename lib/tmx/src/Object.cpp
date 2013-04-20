@@ -9,7 +9,6 @@ Object::Object()
 {
 }
 
-
 void Object::setName(const QString& name)
 {
 	_name = name;

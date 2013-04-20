@@ -63,6 +63,19 @@ void Renderer::renderMap(QPainter& painter, Map* map)
 	painter.save();
 	painter.setClipRect(_viewport);
 
+	renderBackground(painter, map);
+	renderLayers(painter, map);
+
+	painter.restore();
+}
+
+void Renderer::renderBackground(QPainter& painter, Map* map)
+{
+	painter.fillRect(_viewport, map->backgroundColor());
+}
+
+void Renderer::renderLayers(QPainter& painter, Map* map)
+{
 	for (Layer* layer: map->layers())
 	{
 		if (layer->isVisible())
@@ -70,8 +83,6 @@ void Renderer::renderMap(QPainter& painter, Map* map)
 			renderLayer(painter, layer);
 		}
 	}
-
-	painter.restore();
 }
 
 void Renderer::renderLayer(QPainter& painter, Layer* layer)
@@ -94,7 +105,7 @@ void Renderer::renderTileLayer(QPainter& painter, TileLayer* layer)
 {
 	const QSize& tileSize = layer->map()->tileSize();
 
-	QRect area = visibleArea(layer);
+	QRect area = visibleTileArea(layer);
 
 	for (int y=area.top(); y<area.bottom(); ++y)
 	{
@@ -103,12 +114,11 @@ void Renderer::renderTileLayer(QPainter& painter, TileLayer* layer)
 			QRect area(QPoint(x*tileSize.width(), y*tileSize.height())+_mapOffset+_viewport.topLeft(), tileSize);
 
 			renderCell(painter, layer->cellAt(x, y), area);
-			//painter.drawRect(area);
 		}
 	}
 }
 
-QRect Renderer::visibleArea(Layer* layer)
+QRect Renderer::visibleTileArea(TileLayer* layer)
 {
 	const QSize& tileSize = layer->map()->tileSize();
 
@@ -127,17 +137,17 @@ QRect Renderer::visibleArea(Layer* layer)
 
 void Renderer::renderCell(QPainter& painter, const Cell& cell, const QRect& area)
 {
-	Tile* tile = cell.tile();
+	renderTile(painter, cell.tile(), area);
+}
 
-	if (tile)
-	{
-		QPixmap* pixmap = _pixmaps[tile->tileset()->image()];
-		if (pixmap)
-		{
-			QRect rect = tile->rect();
-			painter.drawPixmap(area, *pixmap, rect);
-		}
-	}
+void Renderer::renderTile(QPainter& painter, Tile* tile, const QRect& area)
+{
+	if (!tile) return;
+
+	QPixmap* pixmap = _pixmaps[tile->tileset()->image()];
+	if (!pixmap) return;
+
+	painter.drawPixmap(area, *pixmap, tile->rect());
 }
 
 void Renderer::renderImageLayer(QPainter& painter, ImageLayer* layer)
@@ -187,11 +197,7 @@ void Renderer::renderObject(QPainter& painter, Object* object, const QColor& col
 			Tile* tile = object->tile();
 			if (tile)
 			{
-				QPixmap* pixmap = _pixmaps[tile->tileset()->image()];
-				if (pixmap)
-				{
-					painter.drawPixmap(rect, *pixmap,  tile->rect());
-				}
+				renderTile(painter, tile, rect);
 			} else {
 				painter.fillRect(rect, Qt::red);
 			}
