@@ -21,6 +21,8 @@ public:
 	void addObject(Object* object);
 	const QList<Object*> objects() const;
 
+	Object* objectNamed(const QString& name) const;
+
 	QString toString() const;
 protected:
 	QColor _color;

@@ -32,6 +32,14 @@ const QList<Object*> ObjectLayer::objects() const
 	return _objects;
 }
 
+Object* ObjectLayer::objectNamed(const QString& name) const
+{
+	for (Object* object: _objects) {
+		if (object->name()==name) return object;
+	}
+	return nullptr;
+}
+
 QString ObjectLayer::toString() const
 {
 	return QString("ObjectLayer");

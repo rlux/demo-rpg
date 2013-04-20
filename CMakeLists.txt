@@ -23,6 +23,7 @@ set(sources
 	src/GameRenderer.cpp
 	src/AnimatedObject.cpp
 	src/Engine.cpp
+	src/Player.cpp
 )
 
 #QT4_WRAP_CPP(moc_sources ...)

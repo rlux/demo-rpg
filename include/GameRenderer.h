@@ -3,12 +3,19 @@
 #include <tmx/Renderer.h>
 
 class Game;
+class Player;
 
 class GameRenderer : public tmx::Renderer
 {
 public:
-	void renderGame(QPainter& painter, Game* game);
+	GameRenderer(Game* game);
+
+	void renderGame(QPainter& painter);
 protected:
+	Game* _game;
+
 	virtual void renderLayers(QPainter& painter, tmx::Map* map);
-	virtual void renderLayerNamed(QPainter& painter, tmx::Map* map, const QString& name);
+	void renderLayerNamed(QPainter& painter, tmx::Map* map, const QString& name);
+
+	void renderPlayer(QPainter& painter, Player* player);
 };

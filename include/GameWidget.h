@@ -21,7 +21,7 @@ public:
 	virtual void resizeEvent(QResizeEvent* event);
 protected:
 	Game* _game;
-	GameRenderer _renderer;
+	GameRenderer* _renderer;
 
-	void moveMap(int dx, int dy);
+	void movePlayer(int dx, int dy);
 };
