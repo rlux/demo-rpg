@@ -10,7 +10,6 @@ using namespace tmx;
 
 Renderer::Renderer()
 {
-	_mapOffset = QPoint(-10,-10);
 }
 
 Renderer::~Renderer()

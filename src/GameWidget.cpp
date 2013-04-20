@@ -56,5 +56,5 @@ void GameWidget::moveMap(int dx, int dy)
 void GameWidget::paintEvent(QPaintEvent* event)
 {
 	QPainter painter(this);
-	_renderer.renderMap(painter, _game->map());
+	_renderer.renderGame(painter, _game);
 }

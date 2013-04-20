@@ -361,6 +361,10 @@ void ObjectLayerState::handleAttribute(format::Attribute::type attribute, const 
 	{
 		objectLayer->setColor(makeColor(value));
 	}
+	else
+	{
+		LayerState::handleAttribute(attribute, value);
+	}
 }
 
 BuilderState* ObjectLayerState::handleElement(format::Element::type element)

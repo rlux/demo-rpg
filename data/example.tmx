@@ -34,7 +34,7 @@
  </layer>
  <layer name="decoration" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJwzYGBgMKAAO1CIFYFYCYiVGSCAVL4qEKsBsToQa6Hx0eWx8fEBLRLUSAAxCxkYBjjItB9dP6nhh66flPBDdp8IA8JPPCS4G5ubYG7B5n9s7kd3I7awxKUWG+DAYQ+yPC73weTx2UOMfnwAWT86BgHkuMCGBZD0AwA05xLJ
+   eJzTYmBg0KIAUwoUgVgJiJXJ5KsCsRoQq0Pdg8xHl8fGxweI8R9MjQQQs5CBYYCDTPvR9ZMafuj6SQk/ZPeJMCD8xEOCu7G5CeYWbP7H5n50N2ILS1xqsQEOHPYgy+NyH0wenz3E6McHkPVjy4/IcYENCyDpBwA3Nw5p
   </data>
  </layer>
  <objectgroup color="#7e7e81" name="objects" width="16" height="16">
@@ -42,21 +42,24 @@
   <object name="woman01" type="woman" gid="2" x="25" y="264"/>
   <object name="woman02" type="woman" gid="7" x="411" y="214"/>
   <object name="man02" type="man" gid="22" x="442" y="438"/>
-  <object x="378" y="446" width="38" height="34"/>
-  <object x="307" y="453" width="58" height="27">
+  <object x="376" y="441" width="38" height="34"/>
+  <object name="an_ellipse" type="ellipse" x="299" y="411" width="58" height="27">
    <ellipse/>
   </object>
-  <object x="38" y="401">
+  <object name="poly" type="poly" x="25" y="396">
    <polygon points="0,0 108,2 111,69 71,28 8,63"/>
   </object>
-  <object x="144" y="327">
+  <object name="line" x="144" y="327">
    <polyline points="0,0 63,46 117,49 162,1 255,93"/>
   </object>
  </objectgroup>
  <layer name="walkable" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYBhY4IuEKeWjY2L0E3IbNdSQC8gxm1L/kxre1AC4zMNmPja1pMYpMWqJUUdIjhL9xABcaZ4U/QBV9xZD
+   eJzzZWBg8KUAUwrQzaKEj81thPiE3EYNNeQCcsym1P+khjc1AC7zsJmPTS2pcUqMWmLUEZKjRD8xgNL8CFIPAAa0GxM=
   </data>
  </layer>
  <objectgroup name="events" width="16" height="16"/>
+ <objectgroup name="spawn" width="16" height="16">
+  <object name="player" type="spawn" x="64" y="160" width="32" height="32"/>
+ </objectgroup>
 </map>
