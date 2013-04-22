@@ -2,6 +2,8 @@
 
 #include <Game.h>
 
+#include <QList>
+
 class Engine
 {
 public:
@@ -12,8 +14,11 @@ protected:
 	Game* _game;
 
 	void moveObjects(double delta);
+	void moveObject(AnimatedObject* object, double delta);
+
+	QList<double> splitStep(double start, double d, double step);
 
 	tmx::TileLayer* walkableLayer();
-	bool canMoveTo(AnimatedObject* object, const QPointF& pos);
+	bool canBeAt(AnimatedObject* object, const QPointF& pos);
 	bool inMap(const QRectF& rect);
 };

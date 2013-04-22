@@ -19,7 +19,7 @@ Game::Game()
 
 	_player = new Player();
 	_player->setPosition(pos);
-	_player->setVelocity(3*32);
+	_player->setVelocity(6*32);
 }
 
 Game::~Game()
