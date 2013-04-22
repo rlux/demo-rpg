@@ -24,7 +24,7 @@ void GameRenderer::renderLayers(QPainter& painter, tmx::Map* map)
 	renderLayerNamed(painter, map, "decoration");
 	renderPlayer(painter, _game->player());
 	renderLayerNamed(painter, map, "top");
-	renderLayerNamed(painter, map, "walkable");
+	//renderLayerNamed(painter, map, "walkable");
 }
 
 void GameRenderer::renderLayerNamed(QPainter& painter, tmx::Map* map, const QString& name)
