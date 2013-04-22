@@ -57,3 +57,8 @@ AnimatedObject::Direction AnimatedObject::direction() const
 {
 	return _direction;
 }
+
+Animation* AnimatedObject::animation()
+{
+	return &_animation;
+}

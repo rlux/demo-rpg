@@ -38,7 +38,8 @@ void GameRenderer::renderPlayer(QPainter& painter, Player* player)
 {
 	painter.save();
 	painter.translate(_mapOffset+_viewport.topLeft());
-	painter.fillRect(player->rect(), Qt::green);
-	painter.fillRect(player->marginedRect(), Qt::red);
+//	painter.fillRect(player->rect(), Qt::green);
+//	painter.fillRect(player->marginedRect(), Qt::red);
+	player->animation()->render(painter, player->rect());
 	painter.restore();
 }

@@ -4,6 +4,8 @@
 #include <QSize>
 #include <QRectF>
 
+#include <Animation.h>
+
 class AnimatedObject
 {
 public:
@@ -30,10 +32,13 @@ public:
 
 	void setDirection(Direction direction);
 	Direction direction() const;
+
+	Animation* animation();
 protected:
 	QPointF _position;
 	double _velocity;
 	Direction _direction;
 	QSize _size;
 	int _margin;
+	Animation _animation;
 };

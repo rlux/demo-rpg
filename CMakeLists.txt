@@ -24,6 +24,7 @@ set(sources
 	src/AnimatedObject.cpp
 	src/Engine.cpp
 	src/Player.cpp
+	src/Animation.cpp
 )
 
 QT4_WRAP_CPP(moc_sources
