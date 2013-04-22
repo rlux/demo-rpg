@@ -42,12 +42,12 @@ const QRect& Renderer::viewport() const
 	return _viewport;
 }
 
-void Renderer::setOffset(const QPoint& offset)
+void Renderer::setMapOffset(const QPointF& mapOffset)
 {
-	_mapOffset = offset;
+	_mapOffset = mapOffset;
 }
 
-const QPoint& Renderer::offset() const
+const QPointF& Renderer::mapOffset() const
 {
 	return _mapOffset;
 }
@@ -104,25 +104,25 @@ void Renderer::renderTileLayer(QPainter& painter, TileLayer* layer)
 {
 	const QSize& tileSize = layer->map()->tileSize();
 
-	QRect area = layer->tileArea(QRect(-_mapOffset, _viewport.size()));
+	QRect area = layer->tileArea(QRect(-_mapOffset.toPoint(), _viewport.size()));
 
 	for (int y=area.top(); y<=area.bottom(); ++y)
 	{
 		for (int x=area.left(); x<=area.right(); ++x)
 		{
-			QRect area(QPoint(x*tileSize.width(), y*tileSize.height())+_mapOffset+_viewport.topLeft(), tileSize);
+			QRectF area(QPoint(x*tileSize.width(), y*tileSize.height())+_mapOffset+_viewport.topLeft(), tileSize);
 
 			renderCell(painter, layer->cellAt(x, y), area);
 		}
 	}
 }
 
-void Renderer::renderCell(QPainter& painter, const Cell& cell, const QRect& area)
+void Renderer::renderCell(QPainter& painter, const Cell& cell, const QRectF& area)
 {
 	renderTile(painter, cell.tile(), area);
 }
 
-void Renderer::renderTile(QPainter& painter, Tile* tile, const QRect& area)
+void Renderer::renderTile(QPainter& painter, Tile* tile, const QRectF& area)
 {
 	if (!tile) return;
 
@@ -151,7 +151,7 @@ void Renderer::renderObjectLayer(QPainter& painter, ObjectLayer* layer)
 
 void Renderer::renderObject(QPainter& painter, Object* object, const QColor& color)
 {
-	QPoint pos = object->position()+_viewport.topLeft()+_mapOffset;
+	QPointF pos = object->position()+_viewport.topLeft()+_mapOffset;
 
 	painter.save();
 	painter.translate(pos);

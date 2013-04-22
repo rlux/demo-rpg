@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QRect>
 #include <QPixmap>
+#include <QPointF>
 
 namespace tmx {
 
@@ -18,15 +19,15 @@ public:
 	void loadResourcesFor(Map* map);
 	void setViewport(const QRect& viewport);
 	const QRect& viewport() const;
-	void setOffset(const QPoint& offset);
-	const QPoint& offset() const;
+	void setMapOffset(const QPointF& mapOffset);
+	const QPointF& mapOffset() const;
 
 	void renderMap(QPainter& painter, Map* map);
 	void renderLayer(QPainter& painter, Layer* layer);
 protected:
 	QHash<Image*, QPixmap*> _pixmaps;
 	QRect _viewport;
-	QPoint _mapOffset;
+	QPointF _mapOffset;
 
 	void loadImage(const QString& path, Image* image);
 
@@ -34,8 +35,8 @@ protected:
 	virtual void renderLayers(QPainter& painter, Map* map);
 
 	void renderTileLayer(QPainter& painter, TileLayer* layer);
-	void renderCell(QPainter& painter, const Cell& cell, const QRect& area);
-	void renderTile(QPainter& painter, Tile* tile, const QRect& area);
+	void renderCell(QPainter& painter, const Cell& cell, const QRectF& area);
+	void renderTile(QPainter& painter, Tile* tile, const QRectF& area);
 	void renderImageLayer(QPainter& painter, ImageLayer* layer);
 	void renderObjectLayer(QPainter& painter, ObjectLayer* layer);
 	void renderObject(QPainter& painter, Object* object, const QColor& color);

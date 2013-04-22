@@ -63,6 +63,8 @@ void Engine::moveObject(AnimatedObject* object, double delta)
 			break;
 		}
 	}
+	//if ( object->position()!=pos) qDebug() << pos;
+
 	object->setPosition(pos);
 }
 
