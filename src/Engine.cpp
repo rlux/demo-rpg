@@ -75,8 +75,11 @@ tmx::TileLayer* Engine::walkableLayer()
 
 bool Engine::inMap(const QRectF& rect)
 {
-	QSize size = _game->map()->size();
-	return true;
+	if (rect.left()<0 || rect.top()<0) return false;
+	const QSize& mapSize = _game->map()->size();
+	const QSize& tileSize = _game->map()->tileSize();
+	QSize size(mapSize.width()*tileSize.width(), mapSize.height()*tileSize.height());
+	return rect.right()<=size.width() && rect.bottom()<=size.height();
 }
 
 bool Engine::canMoveTo(AnimatedObject* object, const QPointF& pos)
