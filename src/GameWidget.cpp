@@ -1,5 +1,6 @@
 #include <GameWidget.h>
 
+#include <QTimer>
 #include <QDebug>
 
 GameWidget::GameWidget(QWidget* parent)
@@ -10,7 +11,14 @@ GameWidget::GameWidget(QWidget* parent)
 	_renderer->loadResourcesFor(_game->map());
 	_renderer->setViewport(rect());
 
+	_engine = new Engine(_game);
+
 	setFocusPolicy(Qt::StrongFocus);
+
+	QTimer* timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(updateGame()));
+	_time.start();
+	timer->start(20);
 }
 
 GameWidget::~GameWidget()
@@ -24,37 +32,27 @@ QSize GameWidget::sizeHint() const
 	return QSize(800,600);
 }
 
+void GameWidget::updateGame()
+{
+	_engine->update(_time.elapsed()/1000.0);
+	_time.restart();
+	repaint();
+}
+
 void GameWidget::keyPressEvent(QKeyEvent* event)
 {
-	switch (event->key())
-	{
-		case Qt::Key_Left:
-			movePlayer(-1,0);
-			break;
-		case Qt::Key_Right:
-			movePlayer(1,0);
-			break;
-		case Qt::Key_Up:
-			movePlayer(0,-1);
-			break;
-		case Qt::Key_Down:
-			movePlayer(0,1);
-			break;
-	}
+	_game->handleKeyPress(event);
+}
+
+void GameWidget::keyReleaseEvent(QKeyEvent* event)
+{
+	_game->handleKeyRelease(event);
 }
 
 void GameWidget::resizeEvent(QResizeEvent* event)
 {
 	_renderer->setViewport(rect());
 }
-
-void GameWidget::movePlayer(int dx, int dy)
-{
-//	_renderer->setOffset(_renderer->offset()+QPoint(dx,dy)*10);
-	_game->player()->setPosition(_game->player()->position()+QPoint(dx,dy)*32);
-	repaint();
-}
-
 
 void GameWidget::paintEvent(QPaintEvent* event)
 {

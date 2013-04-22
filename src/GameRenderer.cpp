@@ -18,6 +18,8 @@ void GameRenderer::renderLayers(QPainter& painter, tmx::Map* map)
 	renderLayerNamed(painter, map, "ground");
 	renderLayerNamed(painter, map, "decoration");
 	renderPlayer(painter, _game->player());
+	renderLayerNamed(painter, map, "above");
+	//renderLayerNamed(painter, map, "walkable");
 }
 
 void GameRenderer::renderLayerNamed(QPainter& painter, tmx::Map* map, const QString& name)
@@ -29,6 +31,7 @@ void GameRenderer::renderLayerNamed(QPainter& painter, tmx::Map* map, const QStr
 
 void GameRenderer::renderPlayer(QPainter& painter, Player* player)
 {
-	QPoint pos = player->position();
-	painter.fillRect(QRect(pos, QSize(32,32)), Qt::blue);
+	QPoint pos = player->position().toPoint();
+	painter.fillRect(player->rect(), Qt::green);
+	painter.fillRect(player->marginedRect(), Qt::red);
 }

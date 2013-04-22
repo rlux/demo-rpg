@@ -1,12 +1,10 @@
 #pragma once
 
+#include <AnimatedObject.h>
 #include <QPoint>
 
-class Player
+class Player : public AnimatedObject
 {
 public:
-	void setPosition(const QPoint& position);
-	const QPoint& position() const;
-protected:
-	QPoint _position;
+	Player();
 };

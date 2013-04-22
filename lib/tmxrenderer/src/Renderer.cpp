@@ -104,34 +104,17 @@ void Renderer::renderTileLayer(QPainter& painter, TileLayer* layer)
 {
 	const QSize& tileSize = layer->map()->tileSize();
 
-	QRect area = visibleTileArea(layer);
+	QRect area = layer->tileArea(QRect(-_mapOffset, _viewport.size()));
 
-	for (int y=area.top(); y<area.bottom(); ++y)
+	for (int y=area.top(); y<=area.bottom(); ++y)
 	{
-		for (int x=area.left(); x<area.right(); ++x)
+		for (int x=area.left(); x<=area.right(); ++x)
 		{
 			QRect area(QPoint(x*tileSize.width(), y*tileSize.height())+_mapOffset+_viewport.topLeft(), tileSize);
 
 			renderCell(painter, layer->cellAt(x, y), area);
 		}
 	}
-}
-
-QRect Renderer::visibleTileArea(TileLayer* layer)
-{
-	const QSize& tileSize = layer->map()->tileSize();
-
-	int left = -_mapOffset.x()/tileSize.width();
-	int top = -_mapOffset.y()/tileSize.height();
-	int right = left+qCeil((float)_viewport.width()/tileSize.width());
-	int bottom = top+qCeil((float)_viewport.height()/tileSize.height());
-
-	left = qBound(0, left, layer->width());
-	right = qBound(0, right, layer->width());
-	top = qBound(0, top, layer->height());
-	bottom = qBound(0, bottom, layer->height());
-
-	return QRect(QPoint(left, top), QPoint(right, bottom));
 }
 
 void Renderer::renderCell(QPainter& painter, const Cell& cell, const QRect& area)
@@ -192,6 +175,7 @@ void Renderer::renderObject(QPainter& painter, Object* object, const QColor& col
 			painter.drawPolyline(object->points());
 			break;
 		case Object::TileShape: {
+			// todo use tileSize
 			QRect rect(-QPoint(0,32), QSize(32,32));
 			Tile* tile = object->tile();
 			if (tile)

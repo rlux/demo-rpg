@@ -8,6 +8,7 @@
 #include <QSize>
 #include <QPoint>
 #include <QVector>
+#include <QRectF>
 
 namespace tmx {
 
@@ -22,6 +23,8 @@ public:
 	Cell& cellAt(const QPoint& position);
 
 	void setCellData(Data* data);
+
+	QRect tileArea(const QRectF& pixelRect);
 
 	QString toString() const;
 protected:

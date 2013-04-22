@@ -2,6 +2,8 @@
 #include <tmx/TileMapper.h>
 #include <tmx/Map.h>
 
+#include <qmath.h>
+
 using namespace tmx;
 
 TileLayer::TileLayer()
@@ -34,6 +36,23 @@ void TileLayer::setCellData(Data* data)
 
 		_cells[i] = Cell::fromRawData(rawData, mapper);
 	}
+}
+
+QRect TileLayer::tileArea(const QRectF& pixelRect)
+{
+	const QSize& tileSize = _map->tileSize();
+
+	int left = pixelRect.left()/tileSize.width();
+	int top = pixelRect.top()/tileSize.height();
+	int right = qCeil((float)pixelRect.right()/tileSize.width());
+	int bottom = qCeil((float)pixelRect.bottom()/tileSize.height());
+
+	left = qBound(0, left, width());
+	right = qBound(0, right, width());
+	top = qBound(0, top, height());
+	bottom = qBound(0, bottom, height());
+
+	return QRect(QPoint(left, top), QSize(right-left, bottom-top));
 }
 
 QString TileLayer::toString() const

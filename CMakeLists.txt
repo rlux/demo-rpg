@@ -11,7 +11,7 @@ ENDIF(NOT MSVC)
 find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
 include(${QT_USE_FILE})
 
-include_directories("include" "lib/tmx/include" "lib/tmxrenderer/include")
+include_directories("include" "lib/tmx/include" "lib/tmxrenderer/include" )
 
 FILE(GLOB_RECURSE headers "include" *.h *.hpp)
 
@@ -26,12 +26,14 @@ set(sources
 	src/Player.cpp
 )
 
-#QT4_WRAP_CPP(moc_sources ...)
+QT4_WRAP_CPP(moc_sources
+  include/GameWidget.h
+)
 #QT4_WRAP_UI(ui_headers ...)
 
 add_subdirectory("lib")
 
-add_executable(${target} ${sources} ${headers})
+add_executable(${target} ${sources} ${moc_sources} ${headers})
 
 target_link_libraries(${target} tmx tmxrenderer ${QT_LIBRARIES})
 

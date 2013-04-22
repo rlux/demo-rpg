@@ -29,7 +29,6 @@ protected:
 	QPoint _mapOffset;
 
 	void loadImage(const QString& path, Image* image);
-	QRect visibleTileArea(TileLayer* layer);
 
 	virtual void renderBackground(QPainter& painter, Map* map);
 	virtual void renderLayers(QPainter& painter, Map* map);

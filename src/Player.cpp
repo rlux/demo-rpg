@@ -1,12 +1,6 @@
 #include <Player.h>
 
-
-void Player::setPosition(const QPoint& position)
+Player::Player()
 {
-	_position = position;
-}
-
-const QPoint& Player::position() const
-{
-	return _position;
+	_margin = 2;
 }

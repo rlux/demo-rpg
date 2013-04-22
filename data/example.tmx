@@ -34,7 +34,7 @@
  </layer>
  <layer name="decoration" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJzTYmBg0KIAUwoUgVgJiJXJ5KsCsRoQq0Pdg8xHl8fGxweI8R9MjQQQs5CBYYCDTPvR9ZMafuj6SQk/ZPeJMCD8xEOCu7G5CeYWbP7H5n50N2ILS1xqsQEOHPYgy+NyH0wenz3E6McHkPVjy4/IcYENCyDpBwA3Nw5p
+   eJzTYmBg0KIADzRQBWI1IFZngLgHmY8uj42PDxDjP5gaCSBmIQPDAAeZ9uPTTwqA6Scl/JDdJ8KA8BMPldxCrP/R3YgvLIiJf0JhSch9HATsIUY/sfZjy4/IcYENCyDpBwDVKQpt
   </data>
  </layer>
  <objectgroup color="#7e7e81" name="objects" width="16" height="16">
@@ -55,11 +55,16 @@
  </objectgroup>
  <layer name="walkable" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJzzZWBg8KUAUwrQzaKEj81thPiE3EYNNeQCcsym1P+khjc1AC7zsJmPTS2pcUqMWmLUEZKjRD8xgNL8CFIPAAa0GxM=
+   eJzzZWBg8KUADzQg5DZCfEJmU0MNuWAgwpeU8KO1+4g1n9Q4pZbb8ZlBjD2UuoHS/AhSDwDGFhIN
   </data>
  </layer>
  <objectgroup name="events" width="16" height="16"/>
  <objectgroup name="spawn" width="16" height="16">
   <object name="player" type="spawn" x="64" y="160" width="32" height="32"/>
  </objectgroup>
+ <layer name="above" width="16" height="16">
+  <data encoding="base64" compression="zlib">
+   eJxjYBhYoAjESkCsTCZ/FKCCoRh+pLiJXu4fjOFECwAAZf8D/Q==
+  </data>
+ </layer>
 </map>
