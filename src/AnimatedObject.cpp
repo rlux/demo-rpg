@@ -51,6 +51,29 @@ void AnimatedObject::setVelocity(double velocity)
 void AnimatedObject::setDirection(Direction direction)
 {
 	_direction = direction;
+
+	switch (_direction)
+	{
+		case None:
+			_animation.setRunning(false);
+			break;
+		case Left:
+			_animation.setRunning(true);
+			_animation.setDirection(Animation::Left);
+			break;
+		case Right:
+			_animation.setRunning(true);
+			_animation.setDirection(Animation::Right);
+			break;
+		case Up:
+			_animation.setRunning(true);
+			_animation.setDirection(Animation::Up);
+			break;
+		case Down:
+			_animation.setRunning(true);
+			_animation.setDirection(Animation::Down);
+			break;
+	}
 }
 
 AnimatedObject::Direction AnimatedObject::direction() const

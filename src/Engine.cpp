@@ -63,9 +63,9 @@ void Engine::moveObject(AnimatedObject* object, double delta)
 			break;
 		}
 	}
-	//if ( object->position()!=pos) qDebug() << pos;
 
 	object->setPosition(pos);
+	object->animation()->update(delta);
 }
 
 QList<double> Engine::splitStep(double start, double d, double step)
