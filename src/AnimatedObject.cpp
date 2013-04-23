@@ -3,7 +3,6 @@
 AnimatedObject::AnimatedObject()
 : _velocity(1.0)
 , _direction(None)
-, _margin(0)
 {
 	_size = QSize(32,32);
 }
@@ -23,6 +22,11 @@ const QSize& AnimatedObject::size() const
 	return _size;
 }
 
+void AnimatedObject::setSize(const QSize& size)
+{
+	_size = size;
+}
+
 QRectF AnimatedObject::rect() const
 {
 	return QRectF(_position, _size);
@@ -30,12 +34,17 @@ QRectF AnimatedObject::rect() const
 
 QRectF AnimatedObject::marginedRect() const
 {
-	return rect().adjusted(_margin, _margin, -_margin, -_margin);
+	return rect().adjusted(_margins.left(), _margins.top(), _margins.right(), _margins.bottom());
 }
 
-int AnimatedObject::margin() const
+const QMargins&  AnimatedObject::margins() const
 {
-	return _margin;
+	return _margins;
+}
+
+void AnimatedObject::setMargins(const QMargins& margins)
+{
+	_margins = margins;
 }
 
 double AnimatedObject::velocity() const

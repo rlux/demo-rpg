@@ -3,6 +3,7 @@
 #include <QPointF>
 #include <QSize>
 #include <QRectF>
+#include <QMargins>
 
 #include <Animation.h>
 
@@ -24,9 +25,11 @@ public:
 
 	QRectF rect() const;
 	QRectF marginedRect() const;
-	int margin() const;
+	const QMargins& margins() const;
+	void setMargins(const QMargins& margins);
 
 	const QSize& size() const;
+	void setSize(const QSize& size);
 	double velocity() const;
 	void setVelocity(double velocity);
 
@@ -39,6 +42,6 @@ protected:
 	double _velocity;
 	Direction _direction;
 	QSize _size;
-	int _margin;
+	QMargins _margins;
 	Animation _animation;
 };

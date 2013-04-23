@@ -115,8 +115,8 @@ bool Engine::inMap(const QRectF& rect)
 
 bool Engine::canBeAt(AnimatedObject* object, const QPointF& pos)
 {
-	int margin = object->margin();
-	QRectF rect = QRectF(pos, object->size()).adjusted(margin,margin,-margin,-margin);
+	const QMargins& margins = object->margins();
+	QRectF rect = QRectF(pos, object->size()).adjusted(margins.left(), margins.top(), margins.right(), margins.bottom());
 
 	if (!inMap(rect)) return false;
 
