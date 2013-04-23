@@ -4,7 +4,7 @@
 #include <QSize>
 #include <QRectF>
 #include <QPainter>
-#include <QHash>
+#include <QList>
 
 class Animation
 {
@@ -23,7 +23,7 @@ public:
 
 	void setSize(const QSize& size);
 	void setDuration(double duration);
-	void setSteps(unsigned steps);
+	void setSteps(const QList<unsigned>& steps);
 	void setRunning(bool running);
 	void setDirection(Direction direction);
 
@@ -38,7 +38,7 @@ protected:
 	double _current;
 	unsigned _currentStep;
 	QSize _size;
-	unsigned _steps;
+	QList<unsigned> _steps;
 	QPixmap* _pixmap;
 	bool _running;
 

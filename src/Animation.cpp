@@ -6,7 +6,6 @@ Animation::Animation()
 : _direction(Down)
 , _running(false)
 , _duration(1)
-, _steps(3)
 , _currentStep(0)
 , _pixmap(nullptr)
 {
@@ -32,7 +31,7 @@ void Animation::setDuration(double duration)
 	_duration = duration;
 }
 
-void Animation::setSteps(unsigned steps)
+void Animation::setSteps(const QList<unsigned>& steps)
 {
 	_steps = steps;
 }
@@ -50,7 +49,7 @@ void Animation::setDirection(Direction direction)
 void Animation::update(double delta)
 {
 	_current = fmod(_current + delta, _duration);
-	_currentStep = (unsigned)(_steps*_current/_duration);
+	_currentStep = (unsigned)(_steps.size()*_current/_duration);
 }
 
 void Animation::render(QPainter& painter, const QRectF& area)
@@ -63,7 +62,7 @@ void Animation::render(QPainter& painter, const QRectF& area)
 
 QRect Animation::rect() const
 {
-	return QRect(QPoint((_running?_currentStep:1)*_size.width(), indexOf(_direction)*_size.height()), _size);
+	return QRect(QPoint((_running?_steps[_currentStep]:1)*_size.width(), indexOf(_direction)*_size.height()), _size);
 }
 
 unsigned Animation::indexOf(Direction direction) const
