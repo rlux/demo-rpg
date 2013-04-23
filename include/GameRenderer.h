@@ -18,6 +18,6 @@ protected:
 
 	virtual void renderLayers(QPainter& painter, tmx::Map* map);
 	void renderLayerNamed(QPainter& painter, tmx::Map* map, const QString& name);
-
+	void renderObjects(QPainter& painter);
 	void renderObject(QPainter& painter, AnimatedObject* object);
 };

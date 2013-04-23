@@ -11,8 +11,12 @@ GameRenderer::GameRenderer(Game* game)
 
 void GameRenderer::renderGame(QPainter& painter)
 {
-	calculateOffset();
-	renderMap(painter, _game->map());
+	tmx::Map* map = _game->map();
+	if (map)
+	{
+		calculateOffset();
+		renderMap(painter, map);
+	}
 }
 
 void GameRenderer::calculateOffset()
@@ -42,7 +46,7 @@ void GameRenderer::renderLayers(QPainter& painter, tmx::Map* map)
 {
 	renderLayerNamed(painter, map, "ground");
 	renderLayerNamed(painter, map, "decoration");
-	renderObject(painter, _game->player());
+	renderObjects(painter);
 	renderLayerNamed(painter, map, "top");
 	//renderLayerNamed(painter, map, "walkable");
 }
@@ -51,6 +55,14 @@ void GameRenderer::renderLayerNamed(QPainter& painter, tmx::Map* map, const QStr
 {
 	tmx::Layer* layer = map->layerNamed(name);
 	if (layer) renderLayer(painter, layer);
+}
+
+void GameRenderer::renderObjects(QPainter& painter)
+{
+	for (AnimatedObject* object: _game->objects())
+	{
+		renderObject(painter, object);
+	}
 }
 
 void GameRenderer::renderObject(QPainter& painter, AnimatedObject* object)

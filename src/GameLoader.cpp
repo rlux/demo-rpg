@@ -15,11 +15,19 @@ Game* GameLoader::newGame()
 	QString filename = "data/main.xml";
 
 	QDomDocument document = load(filename);
-	_path = QFileInfo(filename).path();
 
 	QDomElement node = document.documentElement();
 
-	return createGame(node);
+	Game* game = createGame(node);
+
+	_paths.pop();
+
+	return game;
+}
+
+QString GameLoader::path()
+{
+	return _paths.top();
 }
 
 QDomDocument GameLoader::load(const QString& filename)
@@ -37,6 +45,8 @@ QDomDocument GameLoader::load(const QString& filename)
 	}
 	file.close();
 
+	_paths.push(QFileInfo(filename).path());
+
 	return document;
 }
 
@@ -45,7 +55,7 @@ Game* GameLoader::createGame(const QDomElement& element)
 	if (element.tagName()!="game") return nullptr;
 
 	QString mapSource = element.attribute("startmap");
-	tmx::Map* map = tmx::Loader::loadMap(_path+"/"+mapSource);
+	tmx::Map* map = tmx::Loader::loadMap(path()+"/"+mapSource);
 
 	if (!map) return nullptr;
 
@@ -66,7 +76,20 @@ Game* GameLoader::createGame(const QDomElement& element)
 	}
 	game->player()->setPosition(pos);
 
-	qDebug() << loadNpcs(element.firstChildElement("npcs"));
+	QDomNodeList children = element.childNodes();
+	for (int i=0; i<children.size(); ++i)
+	{
+		QDomElement child = children.at(i).toElement();
+		if (child.tagName()=="npcs")
+		{
+			for (NPC* npc: loadNpcs(child))
+			{
+				game->npcFactory()->addPrototype(npc->name(), npc);
+			}
+		}
+	}
+
+	game->initializeMap();
 
 	return game;
 }
@@ -119,19 +142,20 @@ void GameLoader::initializeAnimation(const QDomElement& element, Animation* anim
 	animation->setSize(size);
 	animation->setDuration(duration);
 	animation->setSteps(steps);
-	animation->setImage(_path+"/"+image);
+	animation->setImage(path()+"/"+image);
 }
 
 QList<NPC*> GameLoader::loadNpcs(const QDomElement& element)
 {
+	QList<NPC*> npcs;
 	QString source = element.attribute("source");
 	if (!source.isNull())
 	{
-		QDomDocument document = load(_path+"/"+source);
-		return loadNpcs(document.documentElement());
+		QDomDocument document = load(path()+"/"+source);
+		npcs = loadNpcs(document.documentElement());
+		_paths.pop();
+		return npcs;
 	}
-
-	QList<NPC*> npcs;
 
 	QDomNodeList children = element.childNodes();
 	for (int i=0; i<children.size(); ++i)
@@ -140,12 +164,11 @@ QList<NPC*> GameLoader::loadNpcs(const QDomElement& element)
 		if (child.tagName()=="npc")
 		{
 			NPC* npc = new NPC();
-			npc->setType(child.attribute("type"));
+			npc->setName(child.attribute("name"));
 			initializeObject(child, npc);
 			npcs << npc;
 		}
 	}
-
 
 	return npcs;
 }

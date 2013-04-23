@@ -8,8 +8,8 @@ class NPC : public AnimatedObject
 public:
 	NPC();
 
-	const QString& type() const;
-	void setType(const QString& type);
+	const QString& name() const;
+	void setName(const QString& name);
 protected:
-	QString _type;
+	QString _name;
 };

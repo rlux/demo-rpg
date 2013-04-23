@@ -1,11 +1,13 @@
 #pragma once
 
 #include <QKeyEvent>
+#include <QList>
 
 #include <tmx/Map.h>
 
 #include <Player.h>
 #include <NPC.h>
+#include <NPCFactory.h>
 
 class Game
 {
@@ -15,11 +17,17 @@ public:
 
 	tmx::Map* map();
 	Player* player();
+	const QList<AnimatedObject*>& objects() const;
+
+	NPCFactory* npcFactory();
 
 	void handleKeyPress(QKeyEvent* event);
 	void handleKeyRelease(QKeyEvent* event);
+
+	void initializeMap();
 protected:
 	tmx::Map* _map;
-	Player _player;
+	Player* _player;
 	QList<AnimatedObject*> _animatedObjects;
+	NPCFactory _npcFactory;
 };

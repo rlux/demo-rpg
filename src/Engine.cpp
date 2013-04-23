@@ -15,8 +15,11 @@ void Engine::update(double delta)
 
 void Engine::moveObjects(double delta)
 {
-	Player* player = _game->player();
-	moveObject(player, delta);
+	if (_game->map())
+	{
+		Player* player = _game->player();
+		moveObject(player, delta);
+	}
 }
 
 void Engine::moveObject(AnimatedObject* object, double delta)

@@ -4,12 +4,12 @@ NPC::NPC()
 {
 }
 
-const QString& NPC::type() const
+const QString& NPC::name() const
 {
-	return _type;
+	return _name;
 }
 
-void NPC::setType(const QString& type)
+void NPC::setName(const QString& name)
 {
-	_type = type;
+	_name = name;
 }

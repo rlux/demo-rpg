@@ -13,16 +13,18 @@ Animation::Animation()
 
 Animation::~Animation()
 {
-	delete _pixmap;
 }
 
 void Animation::setImage(const QString& filename)
 {
-	_pixmap = new QPixmap(filename);
-	if (_pixmap->isNull())
+	QPixmap* pixmap = new QPixmap(filename);
+	if (pixmap->isNull())
 	{
-		delete _pixmap;
-		_pixmap = nullptr;
+		delete pixmap;
+	}
+	else
+	{
+		_pixmap = QSharedPointer<QPixmap>(pixmap);
 	}
 }
 
@@ -64,7 +66,7 @@ void Animation::update(double delta)
 
 QPixmap* Animation::pixmap()
 {
-	return _pixmap;
+	return _pixmap.data();
 }
 
 QRect Animation::rect() const

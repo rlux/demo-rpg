@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QList>
 #include <QMap>
+#include <QSharedPointer>
 
 class Animation
 {
@@ -40,7 +41,7 @@ protected:
 	unsigned _currentStep;
 	QSize _size;
 	QList<unsigned> _steps;
-	QPixmap* _pixmap;
+	QSharedPointer<QPixmap> _pixmap;
 	bool _running;
 	QMap<Direction, unsigned> _directionOffsets;
 };

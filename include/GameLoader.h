@@ -4,6 +4,7 @@
 
 #include <QDomDocument>
 #include <QString>
+#include <QStack>
 
 class GameLoader
 {
@@ -12,7 +13,9 @@ public:
 
 	Game* newGame();
 protected:
-	QString _path;
+	QStack<QString> _paths;
+
+	QString path();
 
 	QDomDocument load(const QString& filename);
 
