@@ -25,6 +25,7 @@ set(sources
 	src/AnimatedObject.cpp
 	src/Engine.cpp
 	src/Player.cpp
+	src/NPC.cpp
 	src/Animation.cpp
 )
 

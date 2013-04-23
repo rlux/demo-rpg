@@ -1,5 +1,7 @@
 #include <tmx/Renderer.h>
 
+#include <tmx/error.xpm>
+
 #include <QFileInfo>
 #include <QImage>
 #include <qmath.h>
@@ -10,11 +12,13 @@ using namespace tmx;
 
 Renderer::Renderer()
 {
+	_errorPixmap = new QPixmap(error_xpm);
 }
 
 Renderer::~Renderer()
 {
 	qDeleteAll(_pixmaps);
+	delete _errorPixmap;
 }
 
 void Renderer::loadResourcesFor(Map* map)
@@ -54,7 +58,15 @@ const QPointF& Renderer::mapOffset() const
 
 void Renderer::loadImage(const QString& path, Image* image)
 {
-	_pixmaps.insert(image, new QPixmap(path+"/"+image->source()));
+	QPixmap* pixmap = new QPixmap(path+"/"+image->source());
+	if (!pixmap->isNull())
+	{
+		_pixmaps.insert(image, pixmap);
+	}
+	else
+	{
+		delete pixmap;
+	}
 }
 
 void Renderer::renderMap(QPainter& painter, Map* map)
@@ -127,9 +139,14 @@ void Renderer::renderTile(QPainter& painter, Tile* tile, const QRectF& area)
 	if (!tile) return;
 
 	QPixmap* pixmap = _pixmaps[tile->tileset()->image()];
-	if (!pixmap) return;
-
-	painter.drawPixmap(area, *pixmap, tile->rect());
+	if (pixmap)
+	{
+		painter.drawPixmap(area, *pixmap, tile->rect());
+	}
+	else
+	{
+		renderError(painter, area);
+	}
 }
 
 void Renderer::renderImageLayer(QPainter& painter, ImageLayer* layer)
@@ -139,17 +156,21 @@ void Renderer::renderImageLayer(QPainter& painter, ImageLayer* layer)
 	{
 		painter.drawPixmap(_viewport.topLeft()+_mapOffset, *pixmap);
 	}
+	else
+	{
+		renderError(painter, _viewport);
+	}
 }
 
 void Renderer::renderObjectLayer(QPainter& painter, ObjectLayer* layer)
 {
 	for (Object* object: layer->objects())
 	{
-		renderObject(painter, object, layer->color());
+		renderObject(painter, object, layer->color(), layer->map()->tileSize());
 	}
 }
 
-void Renderer::renderObject(QPainter& painter, Object* object, const QColor& color)
+void Renderer::renderObject(QPainter& painter, Object* object, const QColor& color, const QSize& tileSize)
 {
 	QPointF pos = object->position()+_viewport.topLeft()+_mapOffset;
 
@@ -175,14 +196,13 @@ void Renderer::renderObject(QPainter& painter, Object* object, const QColor& col
 			painter.drawPolyline(object->points());
 			break;
 		case Object::TileShape: {
-			// todo use tileSize
-			QRect rect(-QPoint(0,32), QSize(32,32));
+			QRect rect(-QPoint(0,tileSize.width()), tileSize);
 			Tile* tile = object->tile();
 			if (tile)
 			{
 				renderTile(painter, tile, rect);
 			} else {
-				painter.fillRect(rect, Qt::red);
+				renderError(painter, rect);
 			}
 			break;
 		}
@@ -191,3 +211,7 @@ void Renderer::renderObject(QPainter& painter, Object* object, const QColor& col
 	painter.restore();
 }
 
+void Renderer::renderError(QPainter& painter, const QRectF& area)
+{
+	painter.drawPixmap(area, *_errorPixmap, _errorPixmap->rect());
+}

@@ -31,8 +31,7 @@ public:
 
 	void update(double delta);
 
-	void render(QPainter& painter, const QRectF& area);
-
+	QPixmap* pixmap();
 	QRect rect() const;
 protected:
 	Direction _direction;

@@ -19,6 +19,11 @@ Animation::~Animation()
 void Animation::setImage(const QString& filename)
 {
 	_pixmap = new QPixmap(filename);
+	if (_pixmap->isNull())
+	{
+		delete _pixmap;
+		_pixmap = nullptr;
+	}
 }
 
 void Animation::setSize(const QSize& size)
@@ -57,12 +62,9 @@ void Animation::update(double delta)
 	_currentStep = (unsigned)(_steps.size()*_current/_duration);
 }
 
-void Animation::render(QPainter& painter, const QRectF& area)
+QPixmap* Animation::pixmap()
 {
-	if (_pixmap)
-	{
-		painter.drawPixmap(area, *_pixmap, rect());
-	}
+	return _pixmap;
 }
 
 QRect Animation::rect() const

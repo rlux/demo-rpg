@@ -5,7 +5,7 @@
 #include <tmx/Map.h>
 
 #include <Player.h>
-#include <AnimatedObject.h>
+#include <NPC.h>
 
 class Game
 {

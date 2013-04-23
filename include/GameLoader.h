@@ -2,7 +2,7 @@
 
 #include <Game.h>
 
-#include <QDomElement>
+#include <QDomDocument>
 #include <QString>
 
 class GameLoader
@@ -14,7 +14,10 @@ public:
 protected:
 	QString _path;
 
+	QDomDocument load(const QString& filename);
+
 	Game* createGame(const QDomElement& element);
-	void initializePlayer(const QDomElement& element, Player* player);
+	void initializeObject(const QDomElement& element, AnimatedObject* object);
 	void initializeAnimation(const QDomElement& element, Animation* animation);
+	QList<NPC*> loadNpcs(const QDomElement& element);
 };

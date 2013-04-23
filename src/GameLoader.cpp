@@ -12,23 +12,32 @@ GameLoader::GameLoader()
 
 Game* GameLoader::newGame()
 {
-	QFile file("data/main.xml");
-	QDomDocument document;
+	QString filename = "data/main.xml";
 
-	if (!file.open(QIODevice::ReadOnly)) {
-		return nullptr;
-	}
-	if (!document.setContent(&file)) {
-		file.close();
-		return nullptr;
-	}
-	file.close();
-
-	_path = QFileInfo(file).path();
+	QDomDocument document = load(filename);
+	_path = QFileInfo(filename).path();
 
 	QDomElement node = document.documentElement();
 
 	return createGame(node);
+}
+
+QDomDocument GameLoader::load(const QString& filename)
+{
+	QFile file(filename);
+	QDomDocument document;
+
+	if (!file.open(QIODevice::ReadOnly))
+	{
+		qDebug() << "couldn't open file" << filename;
+	}
+	if (!document.setContent(&file))
+	{
+		qDebug() << "error in file" << filename;
+	}
+	file.close();
+
+	return document;
 }
 
 Game* GameLoader::createGame(const QDomElement& element)
@@ -41,35 +50,40 @@ Game* GameLoader::createGame(const QDomElement& element)
 	if (!map) return nullptr;
 
 	Game* game = new Game(map);
-	initializePlayer(element.firstChildElement("player"), game->player());
+	initializeObject(element.firstChildElement("player"), game->player());
 
 	QString spawnPoint = element.attribute("spawnpoint");
 	QPoint pos;
-	if (tmx::Layer* layer = map->layerNamed("spawn")) {
-		if (tmx::ObjectLayer* oLayer = layer->asObjectLayer()) {
-			if (tmx::Object* o = oLayer->objectNamed(spawnPoint)) {
+	if (tmx::Layer* layer = map->layerNamed("spawn"))
+	{
+		if (tmx::ObjectLayer* oLayer = layer->asObjectLayer())
+		{
+			if (tmx::Object* o = oLayer->objectNamed(spawnPoint))
+			{
 				pos = o->position();
 			}
 		}
 	}
 	game->player()->setPosition(pos);
 
+	qDebug() << loadNpcs(element.firstChildElement("npcs"));
+
 	return game;
 }
 
-void GameLoader::initializePlayer(const QDomElement& element, Player* player)
+void GameLoader::initializeObject(const QDomElement& element, AnimatedObject* object)
 {
 	QSize size(element.attribute("width").toUInt(), element.attribute("height").toUInt());
 	double velocity = element.attribute("velocity").toDouble();
 
-	player->setSize(size);
-	player->setVelocity(velocity);
+	object->setSize(size);
+	object->setVelocity(velocity);
 
 	QDomElement marginsElement = element.firstChildElement("margins");
 	QMargins margins(marginsElement.attribute("left").toInt(), marginsElement.attribute("top").toInt(), marginsElement.attribute("right").toInt(), marginsElement.attribute("bottom").toInt());
-	player->setMargins(margins);
+	object->setMargins(margins);
 
-	initializeAnimation(element.firstChildElement("animation"), player->animation());
+	initializeAnimation(element.firstChildElement("animation"), object->animation());
 }
 
 void GameLoader::initializeAnimation(const QDomElement& element, Animation* animation)
@@ -107,3 +121,32 @@ void GameLoader::initializeAnimation(const QDomElement& element, Animation* anim
 	animation->setSteps(steps);
 	animation->setImage(_path+"/"+image);
 }
+
+QList<NPC*> GameLoader::loadNpcs(const QDomElement& element)
+{
+	QString source = element.attribute("source");
+	if (!source.isNull())
+	{
+		QDomDocument document = load(_path+"/"+source);
+		return loadNpcs(document.documentElement());
+	}
+
+	QList<NPC*> npcs;
+
+	QDomNodeList children = element.childNodes();
+	for (int i=0; i<children.size(); ++i)
+	{
+		QDomElement child = children.at(i).toElement();
+		if (child.tagName()=="npc")
+		{
+			NPC* npc = new NPC();
+			npc->setType(child.attribute("type"));
+			initializeObject(child, npc);
+			npcs << npc;
+		}
+	}
+
+
+	return npcs;
+}
+

@@ -42,7 +42,7 @@ void GameRenderer::renderLayers(QPainter& painter, tmx::Map* map)
 {
 	renderLayerNamed(painter, map, "ground");
 	renderLayerNamed(painter, map, "decoration");
-	renderPlayer(painter, _game->player());
+	renderObject(painter, _game->player());
 	renderLayerNamed(painter, map, "top");
 	//renderLayerNamed(painter, map, "walkable");
 }
@@ -51,15 +51,24 @@ void GameRenderer::renderLayerNamed(QPainter& painter, tmx::Map* map, const QStr
 {
 	tmx::Layer* layer = map->layerNamed(name);
 	if (layer) renderLayer(painter, layer);
-	else qDebug() << name;
 }
 
-void GameRenderer::renderPlayer(QPainter& painter, Player* player)
+void GameRenderer::renderObject(QPainter& painter, AnimatedObject* object)
 {
 	painter.save();
 	painter.translate(_mapOffset+_viewport.topLeft());
-//	painter.fillRect(player->rect(), Qt::green);
-//	painter.fillRect(player->marginedRect(), Qt::red);
-	player->animation()->render(painter, player->rect());
+
+	//painter.fillRect(object->marginedRect(), Qt::blue);
+
+	QPixmap* pixmap = object->animation()->pixmap();
+	if (pixmap)
+	{
+		painter.drawPixmap(object->rect(), *pixmap, object->animation()->rect());
+	}
+	else
+	{
+		renderError(painter, object->rect());
+	}
+
 	painter.restore();
 }
