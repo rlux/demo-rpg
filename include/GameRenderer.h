@@ -14,6 +14,8 @@ public:
 protected:
 	Game* _game;
 
+	void calculateOffset();
+
 	virtual void renderLayers(QPainter& painter, tmx::Map* map);
 	void renderLayerNamed(QPainter& painter, tmx::Map* map, const QString& name);
 

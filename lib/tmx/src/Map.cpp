@@ -102,6 +102,11 @@ void Map::setTileHeight(int height)
 	_tileSize.setHeight(height);
 }
 
+QSize Map::pixelSize() const
+{
+	return QSize(_size.width()*_tileSize.width(), _size.height()*_tileSize.height());
+}
+
 const QColor& Map::backgroundColor() const
 {
 	return _backgroundColor;

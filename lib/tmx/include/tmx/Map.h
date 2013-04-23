@@ -37,6 +37,7 @@ public:
 	void setSize(const QSize& size);
 	void setWidth(int width);
 	void setHeight(int height);
+	QSize pixelSize() const;
 
 	const QSize& tileSize() const;
 	int tileWidth() const;

@@ -1,6 +1,7 @@
 #include <GameRenderer.h>
 #include <Game.h>
 
+#include <qmath.h>
 #include <QDebug>
 
 GameRenderer::GameRenderer(Game* game)
@@ -10,12 +11,31 @@ GameRenderer::GameRenderer(Game* game)
 
 void GameRenderer::renderGame(QPainter& painter)
 {
-	QPointF pos = _game->player()->position();
-	QPointF size = QPointF(_viewport.width(), _viewport.height());
-	QPointF offset = _viewport.topLeft()-pos+size/2.0;
-	setMapOffset(offset);
-
+	calculateOffset();
 	renderMap(painter, _game->map());
+}
+
+void GameRenderer::calculateOffset()
+{
+	QPointF pos = _game->player()->position();
+	QSizeF mapSize = _game->map()->pixelSize();
+
+	double offsetX = _viewport.center().x()-pos.x();
+	double offsetY = _viewport.center().y()-pos.y();
+
+	if (mapSize.width()<_viewport.width()) {
+		offsetX = _viewport.center().x()-mapSize.width()/2.0;
+	} else {
+		offsetX = -qBound(0.0, -offsetX, mapSize.width()-_viewport.width());
+	}
+
+	if (mapSize.height()<_viewport.height()) {
+		offsetY = _viewport.center().y()-mapSize.height()/2.0;
+	} else {
+		offsetY = -qBound(0.0, -offsetY, mapSize.height()-_viewport.height());
+	}
+
+	setMapOffset(QPointF(offsetX, offsetY));
 }
 
 void GameRenderer::renderLayers(QPainter& painter, tmx::Map* map)
