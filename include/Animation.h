@@ -5,6 +5,7 @@
 #include <QRectF>
 #include <QPainter>
 #include <QList>
+#include <QMap>
 
 class Animation
 {
@@ -26,6 +27,7 @@ public:
 	void setSteps(const QList<unsigned>& steps);
 	void setRunning(bool running);
 	void setDirection(Direction direction);
+	void setOffset(Direction direction, unsigned offset);
 
 	void update(double delta);
 
@@ -41,6 +43,5 @@ protected:
 	QList<unsigned> _steps;
 	QPixmap* _pixmap;
 	bool _running;
-
-	unsigned indexOf(Direction direction) const;
+	QMap<Direction, unsigned> _directionOffsets;
 };

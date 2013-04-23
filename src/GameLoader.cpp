@@ -81,12 +81,29 @@ void GameLoader::initializeAnimation(const QDomElement& element, Animation* anim
 	{
 		steps << step.toUInt();
 	}
-
-	QDomElement image = element.firstChildElement("image");
-	QString imageSource = image.attribute("source");
+	QString image = element.attribute("image");
+	QString layout = element.attribute("layout");
+	for (int i=0; i<layout.size(); ++i)
+	{
+		switch (layout[i].toLower().toAscii())
+		{
+			case 'l':
+				animation->setOffset(Animation::Left, i);
+				break;
+			case 'r':
+				animation->setOffset(Animation::Right, i);
+				break;
+			case 'u':
+				animation->setOffset(Animation::Up, i);
+				break;
+			case 'd':
+				animation->setOffset(Animation::Down, i);
+				break;
+		}
+	}
 
 	animation->setSize(size);
 	animation->setDuration(duration);
 	animation->setSteps(steps);
-	animation->setImage(_path+"/"+imageSource);
+	animation->setImage(_path+"/"+image);
 }

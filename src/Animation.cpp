@@ -36,6 +36,11 @@ void Animation::setSteps(const QList<unsigned>& steps)
 	_steps = steps;
 }
 
+void Animation::setOffset(Direction direction, unsigned offset)
+{
+	_directionOffsets.insert(direction, offset);
+}
+
 void Animation::setRunning(bool running)
 {
 	_running = running;
@@ -62,23 +67,6 @@ void Animation::render(QPainter& painter, const QRectF& area)
 
 QRect Animation::rect() const
 {
-	return QRect(QPoint((_running?_steps[_currentStep]:1)*_size.width(), indexOf(_direction)*_size.height()), _size);
-}
-
-unsigned Animation::indexOf(Direction direction) const
-{
-	switch (direction)
-	{
-		case Down:
-			return 0;
-		case Left:
-			return 1;
-		case Right:
-			return 2;
-		case Up:
-			return 3;
-		default:
-			return 0;
-	}
+	return QRect(QPoint((_running?_steps[_currentStep]:1)*_size.width(), _directionOffsets.value(_direction, 0)*_size.height()), _size);
 }
 

@@ -1,8 +1,6 @@
 <game startmap="maps/example.tmx" spawnpoint="player">
   <player width="32" height="32" velocity="192">
     <margins left="5" top="12" right="-5" bottom="0" />
-    <animation width="32" height="32" duration="0.5" steps="0 1 2 1">
-      <image source="charsets/man.png" />
-    </animation>
+    <animation width="32" height="32" duration="0.4" steps="0 1 2 1" image="charsets/man.png" layout="dlru" />
   </player>
 </game>
