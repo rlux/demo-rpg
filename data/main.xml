@@ -1,0 +1,8 @@
+<game startmap="example.tmx" spawnpoint="player">
+  <player width="32" height="32" velocity="192">
+    <margins left="5" top="12" right="-5" bottom="0" />
+    <animation width="32" height="32" duration="0.5" steps="0 1 2 1">
+      <image source="spieler_by_samidare88-d6214g5.png" />
+    </animation>
+  </player>
+</game>

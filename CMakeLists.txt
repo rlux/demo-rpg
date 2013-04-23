@@ -8,7 +8,7 @@ IF(NOT MSVC)
 ENDIF(NOT MSVC)
 
 
-find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
+find_package(Qt4 COMPONENTS QtCore QtGui QtXml REQUIRED)
 include(${QT_USE_FILE})
 
 include_directories("include" "lib/tmx/include" "lib/tmxrenderer/include" )
@@ -19,6 +19,7 @@ set(sources
 	src/main.cpp
 	src/MainWindow.cpp
 	src/Game.cpp
+	src/GameLoader.cpp
 	src/GameWidget.cpp
 	src/GameRenderer.cpp
 	src/AnimatedObject.cpp

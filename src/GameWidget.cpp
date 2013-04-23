@@ -1,12 +1,15 @@
 #include <GameWidget.h>
 
+#include <GameLoader.h>
+
 #include <QTimer>
 #include <QDebug>
 
 GameWidget::GameWidget(QWidget* parent)
 : QWidget(parent)
 {
-	_game = new Game();
+	_game = GameLoader().newGame();
+
 	_renderer = new GameRenderer(_game);
 	_renderer->loadResourcesFor(_game->map());
 	_renderer->setViewport(rect());
