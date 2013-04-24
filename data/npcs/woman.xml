@@ -3,4 +3,12 @@
     <margins left="5" top="12" right="-5" bottom="0" />
     <animation width="32" height="32" duration="0.4" steps="0 1 2 1" image="../charsets/woman.png" layout="dlru" />
   </npc>
+  <npc name="woman2" width="32" height="32" velocity="192">
+    <margins left="5" top="12" right="-5" bottom="0" />
+    <animation width="32" height="32" duration="0.4" steps="0 1 2 1" image="../charsets/woman2.png" layout="dlru" />
+  </npc>
+  <npc name="woman3" width="32" height="32" velocity="192">
+    <margins left="5" top="12" right="-5" bottom="0" />
+    <animation width="32" height="32" duration="0.4" steps="0 1 2 1" image="../charsets/woman3.png" layout="dlru" />
+  </npc>
 </npcs>
