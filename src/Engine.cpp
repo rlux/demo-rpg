@@ -1,6 +1,7 @@
 #include <Engine.h>
 
 #include <qmath.h>
+#include <QtAlgorithms>
 #include <QDebug>
 
 Engine::Engine(Game* game)
@@ -26,49 +27,68 @@ void Engine::moveObject(AnimatedObject* object, double delta)
 {
 	const QSize& tileSize = _game->map()->tileSize();
 
+	object->animation()->update(delta);
+
+	if (object->direction()==AnimatedObject::None) return;
+
 	double velocity = object->velocity();
 
-	double d = velocity*delta;
+	double distance = velocity*delta;
 
-	QRectF rect = object->marginedRect();
+	QList<QPointF> points = wayPoints(object, distance);
 
-	QList<double> steps;
-	QPointF dir(0,0);
-
-	switch (object->direction())
+	for (const QPointF point: points)
 	{
-		case AnimatedObject::Left:
-			steps = splitStep(rect.left(), -d, tileSize.width());
-			dir.setX(1);
-			break;
-		case AnimatedObject::Right:
-			steps = splitStep(rect.right(), d, tileSize.width());
-			dir.setX(1);
-			break;
-		case AnimatedObject::Up:
-			steps = splitStep(rect.top(), -d, tileSize.height());
-			dir.setY(1);
-			break;
-		case AnimatedObject::Down:
-			steps = splitStep(rect.bottom(), d, tileSize.height());
-			dir.setY(1);
-			break;
-	}
-
-	QPointF pos = object->position();
-
-	for (double step: steps)
-	{
-		QPointF dp = dir*step;
-		if (canBeAt(object, pos+dp)) {
-			pos+=dp;
-		} else {
+		if (canBeAt(object, point))
+		{
+			object->setPosition(point);
+		}
+		else
+		{
 			break;
 		}
 	}
 
-	object->setPosition(pos);
-	object->animation()->update(delta);
+//	qDebug() << points;
+//
+//	QRectF rect = object->marginedRect();
+//
+//	QList<double> steps;
+//	QPointF dir(0,0);
+//
+//	switch (object->direction())
+//	{
+//		case AnimatedObject::Left:
+//			steps = splitStep(rect.left(), -distance, tileSize.width());
+//			dir.setX(1);
+//			break;
+//		case AnimatedObject::Right:
+//			steps = splitStep(rect.right(), distance, tileSize.width());
+//			dir.setX(1);
+//			break;
+//		case AnimatedObject::Up:
+//			steps = splitStep(rect.top(), -distance, tileSize.height());
+//			dir.setY(1);
+//			break;
+//		case AnimatedObject::Down:
+//			steps = splitStep(rect.bottom(), distance, tileSize.height());
+//			dir.setY(1);
+//			break;
+//	}
+//
+//	QPointF pos = object->position();
+//
+//	for (double step: steps)
+//	{
+//		QPointF dp = dir*step;
+//		if (canBeAt(object, pos+dp)) {
+//			pos+=dp;
+//		} else {
+//			break;
+//		}
+//	}
+//
+//	object->setPosition(pos);
 }
 
 QList<double> Engine::splitStep(double start, double d, double step)
@@ -136,6 +156,116 @@ bool Engine::canBeAt(AnimatedObject* object, const QPointF& pos)
 		}
 	}
 
+	for (AnimatedObject* o: objectsIn(rect))
+	{
+		if (o!=object) {
+			return false;
+		}
+	}
+
 	return true;
+}
+
+QList<QPointF> Engine::wayPoints(AnimatedObject* object, double distance)
+{
+	QList<QPointF> points;
+
+	bool horizontal = object->direction()==AnimatedObject::Left || object->direction()==AnimatedObject::Right;
+	bool ascending = object->direction()==AnimatedObject::Down || object->direction()==AnimatedObject::Right;
+
+	QRectF rect = object->rect();
+	QRectF start = object->marginedRect();
+	QRectF goal = horizontal ? start.translated(ascending ? distance : -distance, 0) : start.translated(0, ascending ? distance : -distance);
+
+	QRectF area = start.united(goal);
+
+	QList<double> positions;
+	for (const QRectF& obstacle: obstaclesIn(area, object))
+	{
+		if (horizontal) {
+			positions << obstacle.left() << obstacle.right();
+		} else {
+			positions << obstacle.top() << obstacle.bottom();
+		}
+	}
+
+	if (ascending)
+	{
+		qSort(positions.begin(), positions.end(), qLess<double>());
+	}
+	else
+	{
+		qSort(positions.begin(), positions.end(), qGreater<double>());
+	}
+
+	double first = horizontal ? rect.left() : rect.top();
+	double offset = ascending ? (horizontal ? rect.width() : rect.height()) : 0;
+
+	points << rect.topLeft();
+
+	for (double position: positions)
+	{
+		int value = position-offset;
+
+		bool incorrect = ascending ? value<first : value>first;
+		if (incorrect) {
+			continue;
+		}
+
+
+		QPointF point = horizontal ? QPointF(value, rect.top()) : QPointF(rect.left(), value);
+
+		points << point;
+	}
+
+	points << (horizontal ? rect.translated(ascending ? distance : -distance, 0) : rect.translated(0, ascending ? distance : -distance)).topLeft();
+
+
+	return points;
+}
+
+QList<QRectF> Engine::obstaclesIn(const QRectF& area, AnimatedObject* object)
+{
+	QList<QRectF> obstacles;
+
+	tmx::TileLayer* walkable = walkableLayer();
+	QRect tileArea = walkable->tileArea(area);
+
+	const QSize& tileSize = _game->map()->tileSize();
+	for (int y=tileArea.top(); y<=tileArea.bottom(); ++y)
+	{
+		for (int x=tileArea.left(); x<=tileArea.right(); ++x)
+		{
+			if (walkable->cellAt(x,y).tile())
+			{
+				QRect rect(QPoint(x*tileSize.width(), y*tileSize.height()), tileSize);
+				obstacles << rect;
+			}
+		}
+	}
+
+	for (AnimatedObject* o: objectsIn(area))
+	{
+		if (o!=object) {
+			obstacles << o->rect();
+		}
+	}
+
+	return obstacles;
+}
+
+QList<AnimatedObject*> Engine::objectsIn(const QRectF& area)
+{
+	QList<AnimatedObject*> objects;
+
+	for (AnimatedObject* o: _game->objects())
+	{
+		if (o->marginedRect().intersects(area))
+		{
+			objects << o;
+		}
+	}
+
+	return objects;
 }
 

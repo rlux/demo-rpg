@@ -59,7 +59,11 @@ void GameRenderer::renderLayerNamed(QPainter& painter, tmx::Map* map, const QStr
 
 void GameRenderer::renderObjects(QPainter& painter)
 {
-	for (AnimatedObject* object: _game->objects())
+	QList<AnimatedObject*> os = _game->objects();
+	qSort(os.begin(), os.end(), [](const AnimatedObject* o1, const AnimatedObject* o2) {
+		return o1->position().y()<o2->position().y();
+	});
+	for (AnimatedObject* object: os)
 	{
 		renderObject(painter, object);
 	}
