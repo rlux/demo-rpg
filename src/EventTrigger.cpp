@@ -59,6 +59,10 @@ void EventTrigger::enter(AnimatedObject* object)
 	{
 		trigger(new MapChangeEvent(object, _properties["map"], _properties["target"]));
 	}
+	else if (_type=="teleport")
+	{
+		trigger(new TeleportEvent(object, _properties["target"]));
+	}
 }
 
 void EventTrigger::exit(AnimatedObject* object)

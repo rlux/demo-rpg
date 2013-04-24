@@ -4,6 +4,8 @@
 #include <QSet>
 #include <QHash>
 
+#include <GameRenderer.h>
+#include <Engine.h>
 #include <Map.h>
 #include <Player.h>
 #include <NPC.h>
@@ -17,14 +19,18 @@ public:
 	Game();
 	~Game();
 
-	Map* currentMap();
-	Player* player();
-	NPCFactory* npcFactory();
-
-	void changeMap(const QString& map, const QString& target);
+	void update(double delta);
+	void render(QPainter& painter);
 
 	void handleKeyPress(QKeyEvent* event);
 	void handleKeyRelease(QKeyEvent* event);
+
+	Map* currentMap();
+	Player* player();
+	NPCFactory* npcFactory();
+	GameRenderer* renderer();
+
+	void changeMap(const QString& map, const QString& target);
 signals:
 	void mapChanged();
 protected slots:
@@ -35,6 +41,8 @@ protected:
 	QSet<Player::Direction> _directions;
 	NPCFactory _npcFactory;
 	QHash<QString, Map*> _maps;
+	Engine* _engine;
+	GameRenderer* _renderer;
 
 	Map* obtainMap(const QString& name);
 };

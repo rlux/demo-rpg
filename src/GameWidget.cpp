@@ -10,11 +10,6 @@ GameWidget::GameWidget(QWidget* parent)
 {
 	_game = GameLoader().newGame();
 
-	_renderer = new GameRenderer(_game);
-	_renderer->setViewport(rect());
-
-	_engine = new Engine(_game);
-
 	setFocusPolicy(Qt::StrongFocus);
 
 	QTimer* timer = new QTimer(this);
@@ -25,7 +20,6 @@ GameWidget::GameWidget(QWidget* parent)
 
 GameWidget::~GameWidget()
 {
-	delete _renderer;
 	delete _game;
 }
 
@@ -36,7 +30,7 @@ QSize GameWidget::sizeHint() const
 
 void GameWidget::updateGame()
 {
-	_engine->update(_time.elapsed()/1000.0);
+	_game->update(_time.elapsed()/1000.0);
 	_time.restart();
 	repaint();
 }
@@ -53,11 +47,11 @@ void GameWidget::keyReleaseEvent(QKeyEvent* event)
 
 void GameWidget::resizeEvent(QResizeEvent* event)
 {
-	_renderer->setViewport(rect());
+	_game->renderer()->setViewport(rect());
 }
 
 void GameWidget::paintEvent(QPaintEvent* event)
 {
 	QPainter painter(this);
-	_renderer->renderGame(painter);
+	_game->render(painter);
 }

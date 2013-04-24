@@ -1,10 +1,15 @@
 #pragma once
 
-#include <Game.h>
+#include <AnimatedObject.h>
+#include <EventTrigger.h>
+
+#include <tmx/TileLayer.h>
 
 #include <QList>
 #include <QHash>
 #include <QSet>
+
+class Game;
 
 class Engine : public QObject
 {

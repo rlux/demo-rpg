@@ -7,8 +7,6 @@
 #include <QTime>
 
 #include <Game.h>
-#include <GameRenderer.h>
-#include <Engine.h>
 
 class GameWidget : public QWidget
 {
@@ -25,8 +23,6 @@ public:
 	virtual void resizeEvent(QResizeEvent* event);
 protected:
 	Game* _game;
-	GameRenderer* _renderer;
-	Engine* _engine;
 	QTime _time;
 protected slots:
 	void updateGame();

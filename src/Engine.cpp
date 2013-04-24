@@ -1,5 +1,7 @@
 #include <Engine.h>
 
+#include <Game.h>
+
 #include <qmath.h>
 #include <QtAlgorithms>
 
@@ -46,7 +48,7 @@ void Engine::moveObject(AnimatedObject* object, double delta)
 
 	for (const QPointF point: points)
 	{
-		if (canBeAt(object, point))
+		if (canBeAt(object, point) || !canBeAt(object, object->position()))
 		{
 			object->setPosition(point);
 			checkTriggers(object);

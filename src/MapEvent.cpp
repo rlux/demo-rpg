@@ -16,6 +16,16 @@ const AnimatedObject* MapEvent::trigger() const
 	return _trigger;
 }
 
+TeleportEvent::TeleportEvent(AnimatedObject* trigger, const QString& target)
+: MapEvent(trigger)
+, _target(target)
+{
+}
+
+const QString& TeleportEvent::target() const
+{
+	return _target;
+}
 
 MapChangeEvent::MapChangeEvent(AnimatedObject* trigger, const QString& mapName, const QString& target)
 : MapEvent(trigger)

@@ -14,10 +14,14 @@ public:
 	GameRenderer(Game* game);
 
 	void renderGame(QPainter& painter);
+
+	void setDebug(bool b);
+	bool debug() const;
 protected slots:
 	void mapChanged();
 protected:
 	Game* _game;
+	bool _debug;
 
 	void calculateOffset();
 

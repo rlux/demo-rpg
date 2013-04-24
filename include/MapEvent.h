@@ -26,3 +26,14 @@ protected:
 	QString _mapName;
 	QString _target;
 };
+
+class TeleportEvent : public MapEvent
+{
+public:
+	TeleportEvent(AnimatedObject* trigger, const QString& target);
+
+	const QString& target() const;
+protected:
+	QString _target;
+};
+

@@ -6,35 +6,26 @@
 
 Game::Game()
 : _currentMap(nullptr)
+, _engine(new Engine(this))
+, _renderer(new GameRenderer(this))
 {
 }
 
 Game::~Game()
 {
 	qDeleteAll(_maps);
+	delete _engine;
+	delete _renderer;
 }
 
-Map* Game::currentMap()
+void Game::update(double delta)
 {
-	return _currentMap;
+	_engine->update(delta);
 }
 
-Player* Game::player()
+void Game::render(QPainter& painter)
 {
-	return &_player;
-}
-
-NPCFactory* Game::npcFactory()
-{
-	return &_npcFactory;
-}
-
-void Game::changeMap(const QString& map, const QString& target)
-{
-//	qDebug() << "change map"<<map<< target;
-	_currentMap = obtainMap(map);
-	_player.setPosition(_currentMap->target(target));
-	emit(mapChanged());
+	_renderer->renderGame(painter);
 }
 
 void Game::handleKeyPress(QKeyEvent* event)
@@ -56,6 +47,9 @@ void Game::handleKeyPress(QKeyEvent* event)
 		case Qt::Key_Down:
 			_player.setDirection(Player::Down);
 			_directions.insert(Player::Down);
+			break;
+		case Qt::Key_D:
+			_renderer->setDebug(!_renderer->debug());
 			break;
 	}
 }
@@ -89,13 +83,44 @@ void Game::handleKeyRelease(QKeyEvent* event)
 
 void Game::processMapEvent(MapEvent* event)
 {
-	MapChangeEvent* e = dynamic_cast<MapChangeEvent*>(event);
-
-	if (e) {
+	if (MapChangeEvent* e = dynamic_cast<MapChangeEvent*>(event))
+	{
 		changeMap(e->mapName(), e->target());
+	}
+	else if (TeleportEvent* e = dynamic_cast<TeleportEvent*>(event))
+	{
+		_player.setPosition(_currentMap->target(e->target()));
 	}
 
 	delete event;
+}
+
+Map* Game::currentMap()
+{
+	return _currentMap;
+}
+
+Player* Game::player()
+{
+	return &_player;
+}
+
+NPCFactory* Game::npcFactory()
+{
+	return &_npcFactory;
+}
+
+GameRenderer* Game::renderer()
+{
+	return _renderer;
+}
+
+void Game::changeMap(const QString& map, const QString& target)
+{
+//	qDebug() << "change map"<<map<< target;
+	_currentMap = obtainMap(map);
+	_player.setPosition(_currentMap->target(target));
+	emit(mapChanged());
 }
 
 Map* Game::obtainMap(const QString& name)

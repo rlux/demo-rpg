@@ -6,8 +6,8 @@
 
 GameRenderer::GameRenderer(Game* game)
 : _game(game)
+, _debug(false)
 {
-	if (_game->currentMap()->isValid()) loadResourcesFor(_game->currentMap()->internalMap());
 	connect(_game, SIGNAL(mapChanged()), this, SLOT(mapChanged()));
 }
 
@@ -24,6 +24,16 @@ void GameRenderer::renderGame(QPainter& painter)
 		calculateOffset();
 		renderMap(painter, map);
 	}
+}
+
+void GameRenderer::setDebug(bool b)
+{
+	_debug = b;
+}
+
+bool GameRenderer::debug() const
+{
+	return _debug;
 }
 
 void GameRenderer::calculateOffset()
@@ -53,7 +63,7 @@ void GameRenderer::renderLayers(QPainter& painter, tmx::Map* map)
 {
 	renderLayerNamed(painter, map, "ground");
 	renderLayerNamed(painter, map, "decoration");
-	renderEventTriggers(painter);
+	if (_debug) renderEventTriggers(painter);
 	renderObjects(painter);
 	renderLayerNamed(painter, map, "top");
 	//renderLayerNamed(painter, map, "walkable");
@@ -114,7 +124,9 @@ void GameRenderer::renderEventTrigger(QPainter& painter, EventTrigger* trigger)
 	painter.fillRect(rect, QColor(color.red(), color.green(), color.blue(), 100));
 	painter.setPen(color);
 	painter.drawRect(rect);
+	painter.setPen(Qt::white);
 	QString name = trigger->name();
-	painter.drawText(rect, Qt::TextSingleLine, painter.fontMetrics().elidedText(name, Qt::ElideRight, rect.width()));
+//	painter.drawText(rect, Qt::TextSingleLine, painter.fontMetrics().elidedText(name, Qt::ElideRight, rect.width()));
+	painter.drawText(rect.topLeft()+QPointF(2,painter.fontMetrics().height()), name);
 	painter.restore();
 }

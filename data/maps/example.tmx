@@ -12,6 +12,12 @@
  <tileset firstgid="58" name="tileset03" tilewidth="32" tileheight="32">
   <image source="../tilesets/tileset03.png" width="128" height="256"/>
  </tileset>
+ <tileset firstgid="90" name="stone" tilewidth="32" tileheight="32">
+  <image source="../tilesets/stone.gif" width="32" height="64"/>
+ </tileset>
+ <tileset firstgid="92" name="misc" tilewidth="32" tileheight="32">
+  <image source="../tilesets/misc.gif" width="256" height="256"/>
+ </tileset>
  <layer name="ground" width="32" height="32">
   <data encoding="base64" compression="zlib">
    eJztwwEJAAAMBKGr8/0LrsdQcNVUVVXV1w+k76QB
@@ -19,7 +25,7 @@
  </layer>
  <layer name="decoration" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzNl7sOwjAMRTMwdOjAwMDAwMBLFd+BYGDg/3+GSsQiuvIzSRFXskJbnBMnjttMKaWpwUpNwm9Og+M/S+pf+MfZTrOdmevkuC7F+XP3Sr6mJeeH+MTYzrbqZBfHszXENzBj9MQ/MW0ZG9rA+Er8Wkl9efiR/JP2fw1/k75rNAr+knAcUm5rfPTXnluK8nGOtVyw9r+HjzmLsnLRmp8e86/FyfExl3usvyTkt+Tfa7Znbl/5/j7p9W2tjB/X2OLfCiN+NP9b4tf4FkcS1t8ov6xFNXZQntHaafxfSeJH3nsRlpffkyP5U25459/bb0Qa/5Et0pele7YWfnRctXwUxSfxcb9LZxT0kfg1eUffsPSNOTL9YD2K7H8rlkFoNZ+W+oN979Mn7mtud4Zf7/n/dfzYF703qP7jGcPD187aS9gbLxA7ww==
+   eJzNl7kOgzAMhjN0YGBg6NChA0MvoT5Htw6deZU+fEHFIvplO3aSHpasQFPz+UoCQwhhKNBHpINwzWmz/OdX8i/846SnSc/MfTDcx8LZc7/FfE0+mR/iE2M36aaSXgxzHcTXMD5a4h+YMY4NtWFsJX6uSM+y8D39h/mh+xz+Nqw1agV7SdAPqbc1Ptpr8ynx8jHHWi+k1r+Fjz2LkurFVH5q5F+Lk+NjL9eovyTIL+m/+Sy8h/VcnKUP+v7WKf5jjVP8W6TE9/Z/SfwaP8WRBPdfLz/ei3L0oMxR7TT+t0Tie849D8vKr8mR7Kk3rPm3PtcjNeuf44+FPxb4VINv9QPXO7f+PXziPRPc+Fn0DkvvmC3DH8HGU38tB/G+j6NkW9p/GFsf3nFfl3Ev2JEvlvzjteaLFv8sWMva64/ODdr/8RuDs0F+zjd4ib4AuXc/Vg==
   </data>
  </layer>
  <objectgroup color="#7e7e81" name="objects" width="32" height="32">
@@ -32,7 +38,7 @@
  </objectgroup>
  <layer name="walkable" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzNVkEOwCAI80P+/3u7mkUKpUBsYjY3tRRB3GutLbQT23i3EBnTiRf4Pd96fbSe9e0c79nXCUvHFCr0b/Bk8mUCEX4m/tR4qtJv6VD5FfsYfpTTtzVQ/kf4/88s0HzV/xGfIL0V++8B+THK/4+BDH/WJrafsaOSj/HPLX6q9FbhVf6Ou1s2H1Ueaz5bvzr2Cq3JngdM7VD4lTsbm4+3f55dTE319DNAcRblUM4/q7Z3xrQSBx5/1pZJ/ZG5LP90+wDgTijJ
+   eJzNltkNwCAMQ1mI/dfrL0K1iRNzREIVVeElrjl6a61faG143ooX+BGNWJ/Nh96N36/y2xmojlPhqH/2MtI9o787InzFf1U/uepHdVT5lfwUPlvTf3Ow9R/hu/ZfNr6qf0QTVq/j/6+C6Rjlzx7I8LM5qf1MHk6eos+ff1z1uuJVvnLuZVmM7+Sg8er5teNfOefMjN2hv5sfzWN1b1H5Dn+rjMr+x+6haGzVf1lvoJyQNsp+pNxxTqw/lX+6fRDHKVA=
   </data>
  </layer>
  <objectgroup name="events" width="32" height="32">
@@ -42,13 +48,23 @@
     <property name="target" value="south"/>
    </properties>
   </object>
+  <object name="left" type="teleport" x="256" y="832" width="32" height="32">
+   <properties>
+    <property name="target" value="right"/>
+   </properties>
+  </object>
+  <object name="right" type="teleport" x="864" y="928" width="32" height="32">
+   <properties>
+    <property name="target" value="left"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="spawn" width="32" height="32">
   <object name="player" type="spawn" x="64" y="160" width="32" height="32"/>
  </objectgroup>
  <layer name="top" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzt0jEOAEAERFFXYe9/x9WorVXOf8kUChLCTJtnInM+627eSw9Qtv+HuclNVe6vsicAAICaC9qiBMk=
+   eJxjYBjZQBGIlYBYmUw+IfOI0TMKRgEMUJr+RgHpgJQwHSnhP1L8OQpGwSgYBYMVRA20A6CA3u6glX2UmDtQeqkNiHFLFA72KBheAAD4IQfz
   </data>
  </layer>
 </map>
