@@ -20,6 +20,9 @@ public:
 
 	AnimatedObject();
 
+	virtual bool isPlayer() const;
+	virtual bool isNPC() const;
+
 	const QPointF& position() const;
 	void setPosition(const QPointF& position);
 
@@ -35,6 +38,8 @@ public:
 
 	void setDirection(Direction direction);
 	Direction direction() const;
+
+	virtual void hitObstacle();
 
 	Animation* animation();
 protected:

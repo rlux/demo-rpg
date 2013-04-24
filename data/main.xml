@@ -3,6 +3,5 @@
     <margins left="5" top="12" right="-5" bottom="0" />
     <animation width="32" height="32" duration="0.4" steps="0 1 2 1" image="charsets/man.png" layout="dlru" />
   </player>
-  <npcs source="npcs/woman.xml" />
-  <npcs source="npcs/man.xml" />
+  <npcs source="npcs/villagers.xml" />
 </game>

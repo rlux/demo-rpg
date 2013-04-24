@@ -7,6 +7,16 @@ AnimatedObject::AnimatedObject()
 	_size = QSize(32,32);
 }
 
+bool AnimatedObject::isPlayer() const
+{
+	return false;
+}
+
+bool AnimatedObject::isNPC() const
+{
+	return false;
+}
+
 const QPointF& AnimatedObject::position() const
 {
 	return _position;
@@ -93,4 +103,8 @@ AnimatedObject::Direction AnimatedObject::direction() const
 Animation* AnimatedObject::animation()
 {
 	return &_animation;
+}
+
+void AnimatedObject::hitObstacle()
+{
 }

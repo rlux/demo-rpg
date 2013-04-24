@@ -16,8 +16,6 @@ protected:
 	void moveObjects(double delta);
 	void moveObject(AnimatedObject* object, double delta);
 
-	QList<double> splitStep(double start, double d, double step);
-
 	tmx::TileLayer* walkableLayer();
 	bool canBeAt(AnimatedObject* object, const QPointF& pos);
 	bool inMap(const QRectF& rect);

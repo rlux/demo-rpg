@@ -2,6 +2,7 @@
 
 #include <qmath.h>
 #include <QtAlgorithms>
+
 #include <QDebug>
 
 Engine::Engine(Game* game)
@@ -18,8 +19,10 @@ void Engine::moveObjects(double delta)
 {
 	if (_game->map())
 	{
-		Player* player = _game->player();
-		moveObject(player, delta);
+		for (AnimatedObject* object: _game->objects())
+		{
+			moveObject(object, delta);
+		}
 	}
 }
 
@@ -45,81 +48,12 @@ void Engine::moveObject(AnimatedObject* object, double delta)
 		}
 		else
 		{
+			object->hitObstacle();
 			break;
 		}
 	}
-
-//	qDebug() << points;
-//
-//	QRectF rect = object->marginedRect();
-//
-//	QList<double> steps;
-//	QPointF dir(0,0);
-//
-//	switch (object->direction())
-//	{
-//		case AnimatedObject::Left:
-//			steps = splitStep(rect.left(), -distance, tileSize.width());
-//			dir.setX(1);
-//			break;
-//		case AnimatedObject::Right:
-//			steps = splitStep(rect.right(), distance, tileSize.width());
-//			dir.setX(1);
-//			break;
-//		case AnimatedObject::Up:
-//			steps = splitStep(rect.top(), -distance, tileSize.height());
-//			dir.setY(1);
-//			break;
-//		case AnimatedObject::Down:
-//			steps = splitStep(rect.bottom(), distance, tileSize.height());
-//			dir.setY(1);
-//			break;
-//	}
-//
-//	QPointF pos = object->position();
-//
-//	for (double step: steps)
-//	{
-//		QPointF dp = dir*step;
-//		if (canBeAt(object, pos+dp)) {
-//			pos+=dp;
-//		} else {
-//			break;
-//		}
-//	}
-//
-//	object->setPosition(pos);
 }
 
-QList<double> Engine::splitStep(double start, double d, double step)
-{
-	QList<double> steps;
-
-	if (d<0)
-	{
-		steps = splitStep(-start, -d, step);
-		for (int i=0;i<steps.size();++i)
-		steps[i] *= -1;
-		return steps;
-	}
-
-	double next = step * qCeil(start/step);
-
-	if (next>start + d)
-	{
-		steps << d;
-	}
-	else
-	{
-		steps << next - start;
-		int f = (start + d - next)/step;
-		for (int i=0;i<f;++i) steps << step;
-		int remainder = start + d - (next + f*step);
-		if (remainder>0) steps << remainder;
-	}
-
-	return steps;
-}
 
 tmx::TileLayer* Engine::walkableLayer()
 {
