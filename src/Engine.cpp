@@ -92,12 +92,14 @@ bool Engine::canBeAt(AnimatedObject* object, const QPointF& pos)
 		}
 	}
 
-	for (AnimatedObject* o: objectsIn(rect))
+	for (AnimatedObject* o: _game->currentMap()->objectsIn(rect))
 	{
 		if (o!=object) {
 			return false;
 		}
 	}
+
+	if (object!=_game->player() && _game->player()->marginedRect().intersects(rect)) return false;
 
 	return true;
 }
@@ -180,28 +182,14 @@ QList<QRectF> Engine::obstaclesIn(const QRectF& area, AnimatedObject* object)
 		}
 	}
 
-	for (AnimatedObject* o: objectsIn(area))
+	for (AnimatedObject* o: _game->currentMap()->objectsIn(area))
 	{
 		if (o!=object) {
 			obstacles << o->rect();
 		}
 	}
+	if (object!=_game->player() && _game->player()->marginedRect().intersects(area)) obstacles << _game->player()->marginedRect();
 
 	return obstacles;
-}
-
-QList<AnimatedObject*> Engine::objectsIn(const QRectF& area)
-{
-	QList<AnimatedObject*> objects;
-
-	for (AnimatedObject* o: _game->currentMap()->objects())
-	{
-		if (o->marginedRect().intersects(area))
-		{
-			objects << o;
-		}
-	}
-
-	return objects;
 }
 

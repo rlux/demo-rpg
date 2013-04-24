@@ -22,5 +22,4 @@ protected:
 
 	QList<QPointF> wayPoints(AnimatedObject* object, double distance);
 	QList<QRectF> obstaclesIn(const QRectF& area, AnimatedObject* object);
-	QList<AnimatedObject*> objectsIn(const QRectF& area);
 };

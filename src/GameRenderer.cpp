@@ -60,7 +60,7 @@ void GameRenderer::renderLayerNamed(QPainter& painter, tmx::Map* map, const QStr
 
 void GameRenderer::renderObjects(QPainter& painter)
 {
-	QList<AnimatedObject*> os = _game->currentMap()->objectsIn(QRectF(_mapOffset, _viewport.size()));
+	QList<AnimatedObject*> os = _game->currentMap()->objectsIn(QRect(-_mapOffset.toPoint(), _viewport.size()));
 	os << _game->player();
 	qSort(os.begin(), os.end(), [](const AnimatedObject* o1, const AnimatedObject* o2) {
 		return o1->position().y()<o2->position().y();
