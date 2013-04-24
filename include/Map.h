@@ -5,6 +5,7 @@
 #include <EventTrigger.h>
 
 #include <QList>
+#include <QSet>
 #include <tmx/Map.h>
 
 class Map
@@ -20,7 +21,8 @@ public:
 	const QList<AnimatedObject*>& objects() const;
 	const QList<EventTrigger*>& triggers() const;
 
-	QList<AnimatedObject*> objectsIn(const QRectF& rect) const;
+	QSet<AnimatedObject*> objectsIn(const QRectF& rect) const;
+	QSet<EventTrigger*> triggersIn(const QRectF& rect) const;
 protected:
 	tmx::Map* _map;
 	QList<AnimatedObject*> _objects;

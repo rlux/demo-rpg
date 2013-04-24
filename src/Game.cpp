@@ -53,6 +53,9 @@ void Game::handleKeyPress(QKeyEvent* event)
 			_player.setDirection(Player::Down);
 			_directions.insert(Player::Down);
 			break;
+		case Qt::Key_Backspace:
+			_player.setPosition(QPointF(100,200));
+			break;
 	}
 }
 

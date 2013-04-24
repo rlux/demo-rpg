@@ -3,6 +3,8 @@
 #include <Game.h>
 
 #include <QList>
+#include <QHash>
+#include <QSet>
 
 class Engine
 {
@@ -12,9 +14,12 @@ public:
 	void update(double delta);
 protected:
 	Game* _game;
+	QHash<AnimatedObject*, QSet<EventTrigger*>> _currentTriggers;
 
 	void moveObjects(double delta);
 	void moveObject(AnimatedObject* object, double delta);
+
+	void checkTriggers(AnimatedObject* object);
 
 	tmx::TileLayer* walkableLayer();
 	bool canBeAt(AnimatedObject* object, const QPointF& pos);

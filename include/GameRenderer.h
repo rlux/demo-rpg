@@ -5,6 +5,7 @@
 class Game;
 class Map;
 class AnimatedObject;
+class EventTrigger;
 
 class GameRenderer : public tmx::Renderer
 {
@@ -21,4 +22,7 @@ protected:
 	void renderLayerNamed(QPainter& painter, tmx::Map* map, const QString& name);
 	void renderObjects(QPainter& painter);
 	void renderObject(QPainter& painter, AnimatedObject* object);
+
+	void renderEventTriggers(QPainter& painter);
+	void renderEventTrigger(QPainter& painter, EventTrigger* trigger);
 };

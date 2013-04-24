@@ -27,6 +27,16 @@ void AnimatedObject::setPosition(const QPointF& position)
 	_position = position;
 }
 
+void AnimatedObject::moveBy(const QPointF& d)
+{
+	_position += d;
+}
+
+void AnimatedObject::moveBy(double dx, double dy)
+{
+	moveBy(QPointF(dx, dy));
+}
+
 const QSize& AnimatedObject::size() const
 {
 	return _size;

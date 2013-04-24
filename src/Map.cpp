@@ -44,8 +44,11 @@ void Map::initialize(const NPCFactory& npcFactory)
 		{
 			for (tmx::Object* object: eventLayer->objects())
 			{
-
-				qDebug() << object->type() << object->name();
+				EventTrigger* trigger = new EventTrigger();
+				trigger->setPosition(object->position());
+				trigger->setSize(object->size());
+				trigger->setName(object->name());
+				_triggers << trigger;
 			}
 		}
 	}
@@ -56,9 +59,9 @@ const QList<AnimatedObject*>& Map::objects() const
 	return _objects;
 }
 
-QList<AnimatedObject*> Map::objectsIn(const QRectF& rect) const
+QSet<AnimatedObject*> Map::objectsIn(const QRectF& rect) const
 {
-	QList<AnimatedObject*> objects;
+	QSet<AnimatedObject*> objects;
 
 	for (AnimatedObject* object: _objects)
 	{
@@ -74,4 +77,19 @@ QList<AnimatedObject*> Map::objectsIn(const QRectF& rect) const
 const QList<EventTrigger*>& Map::triggers() const
 {
 	return _triggers;
+}
+
+QSet<EventTrigger*> Map::triggersIn(const QRectF& rect) const
+{
+	QSet<EventTrigger*> triggers;
+
+	for (EventTrigger* trigger: _triggers)
+	{
+		if (trigger->rect().intersects(rect))
+		{
+			triggers << trigger;
+		}
+	}
+
+	return triggers;
 }

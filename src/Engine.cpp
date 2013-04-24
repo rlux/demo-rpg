@@ -30,15 +30,11 @@ void Engine::moveObjects(double delta)
 
 void Engine::moveObject(AnimatedObject* object, double delta)
 {
-	const QSize& tileSize = _game->currentMap()->internalMap()->tileSize();
-
 	object->animation()->update(delta);
 
 	if (object->direction()==AnimatedObject::None) return;
 
-	double velocity = object->velocity();
-
-	double distance = velocity*delta;
+	double distance = object->velocity()*delta;
 
 	QList<QPointF> points = wayPoints(object, distance);
 
@@ -47,6 +43,13 @@ void Engine::moveObject(AnimatedObject* object, double delta)
 		if (canBeAt(object, point))
 		{
 			object->setPosition(point);
+			checkTriggers(object);
+
+			if (object->position()!=point)
+			{
+				checkTriggers(object);
+				break;
+			}
 		}
 		else
 		{
@@ -56,6 +59,20 @@ void Engine::moveObject(AnimatedObject* object, double delta)
 	}
 }
 
+void Engine::checkTriggers(AnimatedObject* object)
+{
+	QSet<EventTrigger*>& oldTriggers = _currentTriggers[object];
+	QSet<EventTrigger*> newTriggers = _game->currentMap()->triggersIn(object->marginedRect());
+	for (EventTrigger* trigger: newTriggers-oldTriggers)
+	{
+		trigger->enter(object);
+	}
+	for (EventTrigger* trigger: oldTriggers-newTriggers)
+	{
+		trigger->exit(object);
+	}
+	oldTriggers = newTriggers;
+}
 
 tmx::TileLayer* Engine::walkableLayer()
 {
@@ -137,6 +154,7 @@ QList<QPointF> Engine::wayPoints(AnimatedObject* object, double distance)
 	}
 
 	double first = horizontal ? rect.left() : rect.top();
+	double last = first + distance;
 	double offset = ascending ? (horizontal ? rect.width() : rect.height()) : 0;
 
 	points << rect.topLeft();
@@ -145,7 +163,7 @@ QList<QPointF> Engine::wayPoints(AnimatedObject* object, double distance)
 	{
 		int value = position-offset;
 
-		bool incorrect = ascending ? value<first : value>first;
+		bool incorrect = (ascending ? value<first : value>first) || (ascending ? value>last : value<last);
 		if (incorrect) {
 			continue;
 		}
@@ -189,6 +207,8 @@ QList<QRectF> Engine::obstaclesIn(const QRectF& area, AnimatedObject* object)
 		}
 	}
 	if (object!=_game->player() && _game->player()->marginedRect().intersects(area)) obstacles << _game->player()->marginedRect();
+
+	for (EventTrigger* trigger: _game->currentMap()->triggersIn(area)) obstacles << trigger->rect();
 
 	return obstacles;
 }

@@ -26,6 +26,9 @@ public:
 	const QPointF& position() const;
 	void setPosition(const QPointF& position);
 
+	void moveBy(const QPointF& d);
+	void moveBy(double dx, double dy);
+
 	QRectF rect() const;
 	QRectF marginedRect() const;
 	const QMargins& margins() const;

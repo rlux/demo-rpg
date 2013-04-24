@@ -47,6 +47,7 @@ void GameRenderer::renderLayers(QPainter& painter, tmx::Map* map)
 {
 	renderLayerNamed(painter, map, "ground");
 	renderLayerNamed(painter, map, "decoration");
+	renderEventTriggers(painter);
 	renderObjects(painter);
 	renderLayerNamed(painter, map, "top");
 	//renderLayerNamed(painter, map, "walkable");
@@ -60,7 +61,7 @@ void GameRenderer::renderLayerNamed(QPainter& painter, tmx::Map* map, const QStr
 
 void GameRenderer::renderObjects(QPainter& painter)
 {
-	QList<AnimatedObject*> os = _game->currentMap()->objectsIn(QRect(-_mapOffset.toPoint(), _viewport.size()));
+	QList<AnimatedObject*> os = _game->currentMap()->objectsIn(QRect(-_mapOffset.toPoint(), _viewport.size())).toList();
 	os << _game->player();
 	qSort(os.begin(), os.end(), [](const AnimatedObject* o1, const AnimatedObject* o2) {
 		return o1->position().y()<o2->position().y();
@@ -88,5 +89,26 @@ void GameRenderer::renderObject(QPainter& painter, AnimatedObject* object)
 		renderError(painter, object->rect());
 	}
 
+	painter.restore();
+}
+
+void GameRenderer::renderEventTriggers(QPainter& painter)
+{
+	for (EventTrigger* trigger: _game->currentMap()->triggers())
+	{
+		renderEventTrigger(painter, trigger);
+	}
+}
+
+void GameRenderer::renderEventTrigger(QPainter& painter, EventTrigger* trigger)
+{
+	painter.save();
+	QRectF rect = trigger->rect().translated(_mapOffset+_viewport.topLeft());
+	QColor color(255, 100, 100);
+	painter.fillRect(rect, QColor(color.red(), color.green(), color.blue(), 100));
+	painter.setPen(color);
+	painter.drawRect(rect);
+	QString name = trigger->name();
+	painter.drawText(rect, Qt::TextSingleLine, painter.fontMetrics().elidedText(name, Qt::ElideRight, rect.width()));
 	painter.restore();
 }
