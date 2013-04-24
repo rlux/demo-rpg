@@ -10,7 +10,7 @@ public:
 	MapEvent(AnimatedObject* trigger);
 	virtual ~MapEvent();
 
-	const AnimatedObject* trigger() const;
+	AnimatedObject* trigger();
 protected:
 	AnimatedObject* _trigger;
 };

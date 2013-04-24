@@ -11,7 +11,7 @@ MapEvent::~MapEvent()
 
 }
 
-const AnimatedObject* MapEvent::trigger() const
+AnimatedObject* MapEvent::trigger()
 {
 	return _trigger;
 }

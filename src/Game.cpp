@@ -89,7 +89,7 @@ void Game::processMapEvent(MapEvent* event)
 	}
 	else if (TeleportEvent* e = dynamic_cast<TeleportEvent*>(event))
 	{
-		_player.setPosition(_currentMap->target(e->target()));
+		e->trigger()->setPosition(_currentMap->target(e->target()));
 	}
 
 	delete event;
