@@ -28,6 +28,7 @@ public:
 protected:
 	tmx::Map* _map;
 	Player* _player;
+	QSet<Player::Direction> _directions;
 	QList<AnimatedObject*> _animatedObjects;
 	NPCFactory _npcFactory;
 };
