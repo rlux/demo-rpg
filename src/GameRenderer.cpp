@@ -7,11 +7,12 @@
 GameRenderer::GameRenderer(Game* game)
 : _game(game)
 {
+	loadResourcesFor(_game->currentMap()->internalMap());
 }
 
 void GameRenderer::renderGame(QPainter& painter)
 {
-	tmx::Map* map = _game->map();
+	tmx::Map* map = _game->currentMap()->internalMap();
 	if (map)
 	{
 		calculateOffset();
@@ -22,7 +23,7 @@ void GameRenderer::renderGame(QPainter& painter)
 void GameRenderer::calculateOffset()
 {
 	QPointF pos = _game->player()->position();
-	QSizeF mapSize = _game->map()->pixelSize();
+	QSizeF mapSize = _game->currentMap()->internalMap()->pixelSize();
 
 	double offsetX = _viewport.center().x()-pos.x();
 	double offsetY = _viewport.center().y()-pos.y();
@@ -59,7 +60,8 @@ void GameRenderer::renderLayerNamed(QPainter& painter, tmx::Map* map, const QStr
 
 void GameRenderer::renderObjects(QPainter& painter)
 {
-	QList<AnimatedObject*> os = _game->objects();
+	QList<AnimatedObject*> os = _game->currentMap()->objectsIn(QRectF(_mapOffset, _viewport.size()));
+	os << _game->player();
 	qSort(os.begin(), os.end(), [](const AnimatedObject* o1, const AnimatedObject* o2) {
 		return o1->position().y()<o2->position().y();
 	});

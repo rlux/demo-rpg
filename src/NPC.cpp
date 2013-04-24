@@ -2,7 +2,7 @@
 
 NPC::NPC()
 {
-	setDirection(Right);
+	hitObstacle();
 }
 
 bool NPC::isNPC() const

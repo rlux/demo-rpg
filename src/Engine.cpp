@@ -17,9 +17,11 @@ void Engine::update(double delta)
 
 void Engine::moveObjects(double delta)
 {
-	if (_game->map())
+	if (_game->currentMap())
 	{
-		for (AnimatedObject* object: _game->objects())
+		moveObject(_game->player(), delta);
+
+		for (AnimatedObject* object: _game->currentMap()->objects())
 		{
 			moveObject(object, delta);
 		}
@@ -28,7 +30,7 @@ void Engine::moveObjects(double delta)
 
 void Engine::moveObject(AnimatedObject* object, double delta)
 {
-	const QSize& tileSize = _game->map()->tileSize();
+	const QSize& tileSize = _game->currentMap()->internalMap()->tileSize();
 
 	object->animation()->update(delta);
 
@@ -57,15 +59,15 @@ void Engine::moveObject(AnimatedObject* object, double delta)
 
 tmx::TileLayer* Engine::walkableLayer()
 {
-	tmx::Layer* layer = _game->map()->layerNamed("walkable");
+	tmx::Layer* layer = _game->currentMap()->internalMap()->layerNamed("walkable");
 	return layer ? layer->asTileLayer() : nullptr;
 }
 
 bool Engine::inMap(const QRectF& rect)
 {
 	if (rect.left()<0 || rect.top()<0) return false;
-	const QSize& mapSize = _game->map()->size();
-	const QSize& tileSize = _game->map()->tileSize();
+	const QSize& mapSize = _game->currentMap()->internalMap()->size();
+	const QSize& tileSize = _game->currentMap()->internalMap()->tileSize();
 	QSize size(mapSize.width()*tileSize.width(), mapSize.height()*tileSize.height());
 	return rect.right()<=size.width() && rect.bottom()<=size.height();
 }
@@ -165,7 +167,7 @@ QList<QRectF> Engine::obstaclesIn(const QRectF& area, AnimatedObject* object)
 	tmx::TileLayer* walkable = walkableLayer();
 	QRect tileArea = walkable->tileArea(area);
 
-	const QSize& tileSize = _game->map()->tileSize();
+	const QSize& tileSize = _game->currentMap()->internalMap()->tileSize();
 	for (int y=tileArea.top(); y<=tileArea.bottom(); ++y)
 	{
 		for (int x=tileArea.left(); x<=tileArea.right(); ++x)
@@ -192,7 +194,7 @@ QList<AnimatedObject*> Engine::objectsIn(const QRectF& area)
 {
 	QList<AnimatedObject*> objects;
 
-	for (AnimatedObject* o: _game->objects())
+	for (AnimatedObject* o: _game->currentMap()->objects())
 	{
 		if (o->marginedRect().intersects(area))
 		{

@@ -1,7 +1,5 @@
 #include <GameLoader.h>
 
-#include <tmx/Loader.h>
-
 #include <QDomDocument>
 #include <QFileInfo>
 #include <QDebug>
@@ -55,16 +53,14 @@ Game* GameLoader::createGame(const QDomElement& element)
 	if (element.tagName()!="game") return nullptr;
 
 	QString mapSource = element.attribute("startmap");
-	tmx::Map* map = tmx::Loader::loadMap(path()+"/"+mapSource);
+	Map* map = new Map(path()+"/"+mapSource);
 
-	if (!map) return nullptr;
-
-	Game* game = new Game(map);
+	Game* game = new Game();
 	initializeObject(element.firstChildElement("player"), game->player());
 
 	QString spawnPoint = element.attribute("spawnpoint");
 	QPoint pos;
-	if (tmx::Layer* layer = map->layerNamed("spawn"))
+	if (tmx::Layer* layer = map->internalMap()->layerNamed("spawn"))
 	{
 		if (tmx::ObjectLayer* oLayer = layer->asObjectLayer())
 		{
@@ -89,7 +85,7 @@ Game* GameLoader::createGame(const QDomElement& element)
 		}
 	}
 
-	game->initializeMap();
+	game->setCurrentMap(map);
 
 	return game;
 }

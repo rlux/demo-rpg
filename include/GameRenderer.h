@@ -3,6 +3,7 @@
 #include <tmx/Renderer.h>
 
 class Game;
+class Map;
 class AnimatedObject;
 
 class GameRenderer : public tmx::Renderer

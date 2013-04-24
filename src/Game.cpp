@@ -1,35 +1,31 @@
 #include <Game.h>
 
-#include <tmx/Loader.h>
-
 #include <QDebug>
 
-Game::Game(tmx::Map* map)
-: _map(map)
-, _player(new Player())
+Game::Game()
+: _map(nullptr)
 {
-	_animatedObjects << _player;
 }
 
 Game::~Game()
 {
-	qDeleteAll(_animatedObjects);
 	delete _map;
 }
 
-tmx::Map* Game::map()
+Map* Game::currentMap()
 {
 	return _map;
 }
 
-Player* Game::player()
+void Game::setCurrentMap(Map* map)
 {
-	return _player;
+	_map = map;
+	_map->initialize(_npcFactory);
 }
 
-const QList<AnimatedObject*>& Game::objects() const
+Player* Game::player()
 {
-	return _animatedObjects;
+	return &_player;
 }
 
 NPCFactory* Game::npcFactory()
@@ -42,19 +38,19 @@ void Game::handleKeyPress(QKeyEvent* event)
 	switch (event->key())
 	{
 		case Qt::Key_Left:
-			_player->setDirection(Player::Left);
+			_player.setDirection(Player::Left);
 			_directions.insert(Player::Left);
 			break;
 		case Qt::Key_Right:
-			_player->setDirection(Player::Right);
+			_player.setDirection(Player::Right);
 			_directions.insert(Player::Right);
 			break;
 		case Qt::Key_Up:
-			_player->setDirection(Player::Up);
+			_player.setDirection(Player::Up);
 			_directions.insert(Player::Up);
 			break;
 		case Qt::Key_Down:
-			_player->setDirection(Player::Down);
+			_player.setDirection(Player::Down);
 			_directions.insert(Player::Down);
 			break;
 	}
@@ -79,29 +75,10 @@ void Game::handleKeyRelease(QKeyEvent* event)
 	}
 	if (_directions.isEmpty())
 	{
-		_player->setDirection(Player::None);
+		_player.setDirection(Player::None);
 	}
-	else if (!_directions.contains(_player->direction()))
+	else if (!_directions.contains(_player.direction()))
 	{
-		_player->setDirection(*_directions.begin());
-	}
-}
-
-void Game::initializeMap()
-{
-	if (tmx::Layer* layer = _map->layerNamed("objects"))
-	{
-		if (tmx::ObjectLayer* oLayer = layer->asObjectLayer())
-		{
-			for (tmx::Object* object: oLayer->objects())
-			{
-				if (object->type()=="npc") {
-					QPointF pos = object->position();
-					if (object->shape()==tmx::Object::TileShape) pos.setY(pos.y()-_map->tileSize().height());
-					NPC* npc = _npcFactory.createNpc(object->name(), pos);
-					_animatedObjects << npc;
-				}
-			}
-		}
+		_player.setDirection(*_directions.begin());
 	}
 }

@@ -11,7 +11,6 @@ GameWidget::GameWidget(QWidget* parent)
 	_game = GameLoader().newGame();
 
 	_renderer = new GameRenderer(_game);
-	_renderer->loadResourcesFor(_game->map());
 	_renderer->setViewport(rect());
 
 	_engine = new Engine(_game);

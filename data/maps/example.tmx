@@ -44,16 +44,6 @@
   <object name="man" type="npc" gid="18" x="346" y="332"/>
   <object name="woman" type="npc" gid="7" x="411" y="214"/>
   <object name="man02" type="man" gid="22" x="442" y="438"/>
-  <object x="376" y="441" width="38" height="34"/>
-  <object name="an_ellipse" type="ellipse" x="299" y="411" width="58" height="27">
-   <ellipse/>
-  </object>
-  <object name="poly" type="poly" x="25" y="396">
-   <polygon points="0,0 108,2 111,69 71,28 8,63"/>
-  </object>
-  <object name="line" x="144" y="327">
-   <polyline points="0,0 63,46 117,49 162,1 255,93"/>
-  </object>
   <object name="woman" type="npc" gid="7" x="960" y="832"/>
   <object name="woman" type="npc" gid="14" x="384" y="992"/>
   <object name="woman2" type="npc" gid="85" x="41" y="313"/>
@@ -63,7 +53,9 @@
    eJzNVkEOwCAI84P+/zu7mkVqC8XYxGxuQinC5hxjzMJYMYP7CMyaTrzAf8rtaY78Rc/W9af4OhHpuAWH/gmuSr/cAMOv1F+1nlz6Ix1V/kp8Cj/q6Z0P1P8M//+aBbKv5p/JCdLr2P8TUB5ZftRPLH82JnWeicPJp+Rnl1OXXhde5e84u2X7scoT2av/r469cvrM2L5af8za3Xt0blH5HfWtclS+f+gcyvpzaWbtOvJ/Uz9jq/LfHh9t3UJ6
   </data>
  </layer>
- <objectgroup name="events" width="32" height="32"/>
+ <objectgroup name="events" width="32" height="32">
+  <object name="foo" type="teleport" x="512" y="96" width="64" height="64"/>
+ </objectgroup>
  <objectgroup name="spawn" width="32" height="32">
   <object name="player" type="spawn" x="64" y="160" width="32" height="32"/>
  </objectgroup>

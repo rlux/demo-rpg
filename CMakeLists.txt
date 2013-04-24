@@ -18,6 +18,7 @@ FILE(GLOB_RECURSE headers "include" *.h *.hpp)
 set(sources
 	src/main.cpp
 	src/MainWindow.cpp
+	src/Map.cpp
 	src/Game.cpp
 	src/GameLoader.cpp
 	src/GameWidget.cpp
@@ -28,6 +29,7 @@ set(sources
 	src/NPC.cpp
 	src/NPCFactory.cpp
 	src/Animation.cpp
+	src/EventTrigger.cpp
 )
 
 QT4_WRAP_CPP(moc_sources
