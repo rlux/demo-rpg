@@ -20,6 +20,7 @@ set(sources
 	src/MainWindow.cpp
 	src/Map.cpp
 	src/Game.cpp
+	src/GameState.cpp
 	src/GameLoader.cpp
 	src/GameWidget.cpp
 	src/GameRenderer.cpp

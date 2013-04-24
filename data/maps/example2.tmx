@@ -12,6 +12,9 @@
  <tileset firstgid="66" name="tree" tilewidth="32" tileheight="32">
   <image source="../tilesets/tree.gif" width="64" height="96"/>
  </tileset>
+ <tileset firstgid="72" name="oldtree" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oldtree.gif" width="64" height="64"/>
+ </tileset>
  <layer name="ground" width="20" height="20">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAA2NkYGBghGJuIBagEDMOI/M4gJiHSuaBzOICYnYCZhJrHh8Q8yPRxJjHDMQsSJiQ3wiZh47RzScG4zOPHCyChmVI0CuBRb8gGpYmwTwxLPrRsTAWO3FhISLMG8WjmJ4YAFUB5P1ABgAA
@@ -19,11 +22,11 @@
  </layer>
  <layer name="decoration" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA2NgGNxAYaAdMAqGBHACYmcqmuMCxK5UMA9mjhsQu1PBPGzmGFJgHsy/yGZQYh7Mv/jMMyDSLJA6mH+xmWcExMZAbEKEWehqsZlnBsTmQGxBhHnoaokNPyUizEY2wxIPRjYPnzp0PdgANvOIAQD2rATDQAYAAA==
+   H4sIAAAAAAAAA+3QSQqAQAwEwHmK+AI3XK7uy///Y3sIxCEMwQzowYa+tYUZ576d5O0f+HPLim4RvR09Irg9OjCH3KfOiE4Gh0LOjC4GhyI5ucGje7lh8ejekJcprWtH90pegZZopbD8reTVaIO2Cs/fat8vVdjc6ALlXmjnfyNF8jQ5AeSNEtdABgAA
   </data>
  </layer>
  <objectgroup name="events" width="20" height="20">
-  <object name="south" type="changemap" x="224" y="608" width="96" height="32">
+  <object name="south" type="changemap" x="256" y="608" width="32" height="32">
    <properties>
     <property name="map" value="example"/>
     <property name="target" value="teleport"/>
@@ -32,7 +35,7 @@
  </objectgroup>
  <layer name="walkable" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA2NgQAWKFGJ0QKl56GbS032kqCGkdrCow6ePkFnEmDdQgFruo7Z/aWUeuhil5qHHPy3NI9Z8fPkRl13Euose5lECsLmJGuUiIftw8XEBALWbJYRABgAA
+   H4sIAAAAAAAAA2NgQAWKFGJ0QKl56GbS032kqCGkdrCow6ePkFmkmEssoJa51HIntf1L7XDDlScoNQ89/mlpHrHm48uPuOwi1l30MI8SgM1N1CgXCdmHi48LAAD8tXutQAYAAA==
   </data>
  </layer>
 </map>

@@ -18,6 +18,9 @@
  <tileset firstgid="92" name="misc" tilewidth="32" tileheight="32">
   <image source="../tilesets/misc.gif" width="256" height="256"/>
  </tileset>
+ <tileset firstgid="156" name="statue" tilewidth="32" tileheight="32">
+  <image source="../tilesets/statue.gif" width="74" height="66"/>
+ </tileset>
  <layer name="ground" width="32" height="32">
   <data encoding="base64" compression="zlib">
    eJztwwEJAAAMBKGr8/0LrsdQcNVUVVXV1w+k76QB
@@ -25,7 +28,7 @@
  </layer>
  <layer name="decoration" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzNl7kOgzAMhjN0YGBg6NChA0MvoT5Htw6deZU+fEHFIvplO3aSHpasQFPz+UoCQwhhKNBHpINwzWmz/OdX8i/846SnSc/MfTDcx8LZc7/FfE0+mR/iE2M36aaSXgxzHcTXMD5a4h+YMY4NtWFsJX6uSM+y8D39h/mh+xz+Nqw1agV7SdAPqbc1Ptpr8ynx8jHHWi+k1r+Fjz2LkurFVH5q5F+Lk+NjL9eovyTIL+m/+Sy8h/VcnKUP+v7WKf5jjVP8W6TE9/Z/SfwaP8WRBPdfLz/ei3L0oMxR7TT+t0Tie849D8vKr8mR7Kk3rPm3PtcjNeuf44+FPxb4VINv9QPXO7f+PXziPRPc+Fn0DkvvmC3DH8HGU38tB/G+j6NkW9p/GFsf3nFfl3Ev2JEvlvzjteaLFv8sWMva64/ODdr/8RuDs0F+zjd4ib4AuXc/Vg==
+   eJzNlztuwzAMhjV08OAhQ4cMGTL0EQg9R7cMmXOVHKWPq1ZGQpj4QVKkpDYlQMiOQn98SbJzSil36IlpVq4lnW7/uZf8F/5z0Zeir8J9ctxzkeyl3zjfkt/MD/GJsS36MEgPjrkNxDcJPnriz8LIY0OdBFuN3yraszz8SP9hfui+hf+Y1hrNir0m6IfW2xYf7a35mkT5mGOrF2rrH/kfRT+Bjz2LUuvFWn4446voN/DRX8neilPiYy+PqL8myO/pv+UsPKb1XFxkn+z9bWP4jzWu8d+ZEj/a/z3xW/waRxPcf6N8vhe16JMxR7Wz+H8lGj9y7kVYXv5IjmZPveHNv/e5ERlZ/xZ/PPxzh08j+F4/cL1L6z/CJ96lwuXPondYesecBf4ZbCL1t3LA930cNdve/sPY9uka99tt3Cl25Isn/3ht+WLFvwjWcvT6o3OD9n/8xpBskN/yDd6jPwI+Qcw=
   </data>
  </layer>
  <objectgroup color="#7e7e81" name="objects" width="32" height="32">
@@ -38,7 +41,7 @@
  </objectgroup>
  <layer name="walkable" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzNltkNwCAMQ1mI/dfrL0K1iRNzREIVVeElrjl6a61faG143ooX+BGNWJ/Nh96N36/y2xmojlPhqH/2MtI9o787InzFf1U/uepHdVT5lfwUPlvTf3Ow9R/hu/ZfNr6qf0QTVq/j/6+C6Rjlzx7I8LM5qf1MHk6eos+ff1z1uuJVvnLuZVmM7+Sg8er5teNfOefMjN2hv5sfzWN1b1H5Dn+rjMr+x+6haGzVf1lvoJyQNsp+pNxxTqw/lX+6fRDHKVA=
+   eJzNll0OwCAIg73Q7n+9vRoDhUL9ITGLZvBBh9NvjPFdGGN63rIX+BmN0BzF89bm96P8dppXxylT1L/2sqd7RX+1ZfhM/3X7SVW/V0eX38mP4aM9bcVA+9+Lva55OTKG/BE/6x9pYtWLYqv7D+mY5Vs6sfxqTuy8koeSx+hj9Y+qXpW9ymfOvSoL8ZUcz589v3Z8K2XMiu8O/dX8bB7RvYXlK/qbZXT+f9EZv+M8rPZG5j7AfovKHefE/mP5p8cPAUgqBA==
   </data>
  </layer>
  <objectgroup name="events" width="32" height="32">
