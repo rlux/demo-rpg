@@ -53,10 +53,9 @@ void EventTrigger::trigger(MapEvent* event)
 
 void EventTrigger::enter(AnimatedObject* object)
 {
-	if (!object->isPlayer()) return;
-
 	if (_type=="changemap")
 	{
+		if (!object->isPlayer()) return;
 		trigger(new MapChangeEvent(object, _properties["map"], _properties["target"]));
 	}
 	else if (_type=="teleport")
