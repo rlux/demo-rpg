@@ -1,5 +1,8 @@
 #pragma once
 
+#include <QPainter>
+#include <QKeyEvent>
+
 class GameState
 {
 public:
