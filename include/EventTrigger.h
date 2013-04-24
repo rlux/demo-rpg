@@ -1,14 +1,21 @@
 #pragma once
 
 #include <AnimatedObject.h>
+#include <MapEvent.h>
 
 #include <QPointF>
 #include <QSize>
 #include <QRectF>
+#include <QHash>
 
-class EventTrigger
+#include <tmx/Object.h>
+
+class EventTrigger : public QObject
 {
+	Q_OBJECT
 public:
+	EventTrigger(tmx::Object* object);
+
 	const QPointF& position() const;
 	void setPosition(const QPointF& position);
 
@@ -20,10 +27,16 @@ public:
 	const QSize& size() const;
 	void setSize(const QSize& size);
 
-	virtual void enter(AnimatedObject* object);
-	virtual void exit(AnimatedObject* object);
+	void enter(AnimatedObject* object);
+	void exit(AnimatedObject* object);
+signals:
+	void triggered(MapEvent* event);
 protected:
 	QPointF _position;
 	QSize _size;
 	QString _name;
+	QString _type;
+	QHash<QString, QString> _properties;
+
+	void trigger(MapEvent* event);
 };

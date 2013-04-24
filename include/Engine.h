@@ -6,12 +6,15 @@
 #include <QHash>
 #include <QSet>
 
-class Engine
+class Engine : public QObject
 {
+	Q_OBJECT
 public:
 	Engine(Game* game);
 
 	void update(double delta);
+protected slots:
+	void mapChanged();
 protected:
 	Game* _game;
 	QHash<AnimatedObject*, QSet<EventTrigger*>> _currentTriggers;

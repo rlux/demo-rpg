@@ -7,12 +7,15 @@ class Map;
 class AnimatedObject;
 class EventTrigger;
 
-class GameRenderer : public tmx::Renderer
+class GameRenderer : public QObject, public tmx::Renderer
 {
+	Q_OBJECT
 public:
 	GameRenderer(Game* game);
 
 	void renderGame(QPainter& painter);
+protected slots:
+	void mapChanged();
 protected:
 	Game* _game;
 

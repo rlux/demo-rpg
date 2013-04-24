@@ -8,6 +8,15 @@
 Engine::Engine(Game* game)
 : _game(game)
 {
+	connect(_game, SIGNAL(mapChanged()), this, SLOT(mapChanged()));
+}
+
+void Engine::mapChanged()
+{
+	_currentTriggers.clear();
+
+	Player* player = _game->player();
+	_currentTriggers[player] = _game->currentMap()->triggersIn(player->marginedRect());
 }
 
 void Engine::update(double delta)
@@ -61,7 +70,7 @@ void Engine::moveObject(AnimatedObject* object, double delta)
 
 void Engine::checkTriggers(AnimatedObject* object)
 {
-	QSet<EventTrigger*>& oldTriggers = _currentTriggers[object];
+	QSet<EventTrigger*> oldTriggers = _currentTriggers[object];
 	QSet<EventTrigger*> newTriggers = _game->currentMap()->triggersIn(object->marginedRect());
 	for (EventTrigger* trigger: newTriggers-oldTriggers)
 	{

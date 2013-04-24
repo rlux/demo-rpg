@@ -30,10 +30,16 @@ set(sources
 	src/NPCFactory.cpp
 	src/Animation.cpp
 	src/EventTrigger.cpp
+	src/MapEvent.cpp
 )
 
 QT4_WRAP_CPP(moc_sources
   include/GameWidget.h
+  include/GameRenderer.h
+  include/Game.h
+  include/Map.h
+  include/EventTrigger.h
+  include/Engine.h
 )
 #QT4_WRAP_UI(ui_headers ...)
 

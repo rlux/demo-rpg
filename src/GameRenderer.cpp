@@ -7,7 +7,13 @@
 GameRenderer::GameRenderer(Game* game)
 : _game(game)
 {
-	loadResourcesFor(_game->currentMap()->internalMap());
+	if (_game->currentMap()->isValid()) loadResourcesFor(_game->currentMap()->internalMap());
+	connect(_game, SIGNAL(mapChanged()), this, SLOT(mapChanged()));
+}
+
+void GameRenderer::mapChanged()
+{
+	if (_game->currentMap()->isValid())  loadResourcesFor(_game->currentMap()->internalMap());
 }
 
 void GameRenderer::renderGame(QPainter& painter)

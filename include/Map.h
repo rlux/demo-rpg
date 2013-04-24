@@ -8,12 +8,14 @@
 #include <QSet>
 #include <tmx/Map.h>
 
-class Map
+class Map : public QObject
 {
+	Q_OBJECT
 public:
 	Map(const QString& filename);
 	~Map();
 
+	bool isValid() const;
 	tmx::Map* internalMap();
 
 	void initialize(const NPCFactory& npcFactory);
@@ -23,6 +25,10 @@ public:
 
 	QSet<AnimatedObject*> objectsIn(const QRectF& rect) const;
 	QSet<EventTrigger*> triggersIn(const QRectF& rect) const;
+
+	QPointF target(const QString& name);
+signals:
+	void eventTriggered(MapEvent* event);
 protected:
 	tmx::Map* _map;
 	QList<AnimatedObject*> _objects;

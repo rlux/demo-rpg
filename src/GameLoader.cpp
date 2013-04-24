@@ -52,25 +52,9 @@ Game* GameLoader::createGame(const QDomElement& element)
 {
 	if (element.tagName()!="game") return nullptr;
 
-	QString mapSource = element.attribute("startmap");
-	Map* map = new Map(path()+"/"+mapSource);
 
 	Game* game = new Game();
 	initializeObject(element.firstChildElement("player"), game->player());
-
-	QString spawnPoint = element.attribute("spawnpoint");
-	QPoint pos;
-	if (tmx::Layer* layer = map->internalMap()->layerNamed("spawn"))
-	{
-		if (tmx::ObjectLayer* oLayer = layer->asObjectLayer())
-		{
-			if (tmx::Object* o = oLayer->objectNamed(spawnPoint))
-			{
-				pos = o->position();
-			}
-		}
-	}
-	game->player()->setPosition(pos);
 
 	QDomNodeList children = element.childNodes();
 	for (int i=0; i<children.size(); ++i)
@@ -85,7 +69,10 @@ Game* GameLoader::createGame(const QDomElement& element)
 		}
 	}
 
-	game->setCurrentMap(map);
+	QString mapSource = element.attribute("startmap");
+	QString target = element.attribute("target");
+
+	game->changeMap(mapSource, target);
 
 	return game;
 }

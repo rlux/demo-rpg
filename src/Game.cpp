@@ -1,26 +1,22 @@
 #include <Game.h>
 
+#include <MapEvent.h>
+
 #include <QDebug>
 
 Game::Game()
-: _map(nullptr)
+: _currentMap(nullptr)
 {
 }
 
 Game::~Game()
 {
-	delete _map;
+	qDeleteAll(_maps);
 }
 
 Map* Game::currentMap()
 {
-	return _map;
-}
-
-void Game::setCurrentMap(Map* map)
-{
-	_map = map;
-	_map->initialize(_npcFactory);
+	return _currentMap;
 }
 
 Player* Game::player()
@@ -31,6 +27,14 @@ Player* Game::player()
 NPCFactory* Game::npcFactory()
 {
 	return &_npcFactory;
+}
+
+void Game::changeMap(const QString& map, const QString& target)
+{
+	qDebug() << "change map"<<map<< target;
+	_currentMap = obtainMap(map);
+	_player.setPosition(_currentMap->target(target));
+	emit(mapChanged());
 }
 
 void Game::handleKeyPress(QKeyEvent* event)
@@ -52,9 +56,6 @@ void Game::handleKeyPress(QKeyEvent* event)
 		case Qt::Key_Down:
 			_player.setDirection(Player::Down);
 			_directions.insert(Player::Down);
-			break;
-		case Qt::Key_Backspace:
-			_player.setPosition(QPointF(100,200));
 			break;
 	}
 }
@@ -84,4 +85,28 @@ void Game::handleKeyRelease(QKeyEvent* event)
 	{
 		_player.setDirection(*_directions.begin());
 	}
+}
+
+void Game::processMapEvent(MapEvent* event)
+{
+	MapChangeEvent* e = dynamic_cast<MapChangeEvent*>(event);
+
+	if (e) {
+		changeMap(e->mapName(), e->target());
+	}
+
+	delete event;
+}
+
+Map* Game::obtainMap(const QString& name)
+{
+	if (!_maps.contains(name))
+	{
+		Map* map = new Map("data/maps/"+name+".tmx");
+		map->initialize(_npcFactory);
+		connect(map, SIGNAL(eventTriggered(MapEvent*)), this, SLOT(processMapEvent(MapEvent*)));
+		_maps.insert(name, map);
+	}
+
+	return _maps[name];
 }

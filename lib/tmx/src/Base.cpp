@@ -11,3 +11,8 @@ QString Base::property(const QString& property) const
 {
 	return _properties.value(property, QString());
 }
+
+const QHash<QString, QString>& Base::properties() const
+{
+	return _properties;
+}

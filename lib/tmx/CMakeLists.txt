@@ -7,7 +7,7 @@ IF(NOT MSVC)
 	ADD_DEFINITIONS(-std=c++0x -Werror=return-type)
 ENDIF(NOT MSVC)
 
-
+find_package(ZLIB REQUIRED)
 find_package(Qt4 COMPONENTS QtCore QtXml REQUIRED)
 include(${QT_USE_FILE})
 
@@ -37,4 +37,4 @@ set(sources
 
 add_library(${target} SHARED ${sources} ${headers})
 
-target_link_libraries(${target} ${QT_LIBRARIES})
+target_link_libraries(${target} ${QT_LIBRARIES} ${ZLIB_LIBRARIES})

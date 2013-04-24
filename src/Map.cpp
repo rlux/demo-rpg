@@ -20,6 +20,11 @@ tmx::Map* Map::internalMap()
 	return _map;
 }
 
+bool Map::isValid() const
+{
+	return _map!=nullptr;
+}
+
 void Map::initialize(const NPCFactory& npcFactory)
 {
 	if (tmx::Layer* layer = _map->layerNamed("objects"))
@@ -44,10 +49,8 @@ void Map::initialize(const NPCFactory& npcFactory)
 		{
 			for (tmx::Object* object: eventLayer->objects())
 			{
-				EventTrigger* trigger = new EventTrigger();
-				trigger->setPosition(object->position());
-				trigger->setSize(object->size());
-				trigger->setName(object->name());
+				EventTrigger* trigger = new EventTrigger(object);
+				connect(trigger, SIGNAL(triggered(MapEvent*)), this, SIGNAL(eventTriggered(MapEvent*)));
 				_triggers << trigger;
 			}
 		}
@@ -92,4 +95,30 @@ QSet<EventTrigger*> Map::triggersIn(const QRectF& rect) const
 	}
 
 	return triggers;
+}
+
+QPointF Map::target(const QString& name)
+{
+	QPointF pos;
+	if (tmx::Layer* layer = _map->layerNamed("spawn"))
+	{
+		if (tmx::ObjectLayer* oLayer = layer->asObjectLayer())
+		{
+			if (tmx::Object* o = oLayer->objectNamed(name))
+			{
+				pos = o->position();
+			}
+		}
+	}
+	if (tmx::Layer* layer = _map->layerNamed("events"))
+	{
+		if (tmx::ObjectLayer* oLayer = layer->asObjectLayer())
+		{
+			if (tmx::Object* o = oLayer->objectNamed(name))
+			{
+				pos = o->position();
+			}
+		}
+	}
+	return pos;
 }

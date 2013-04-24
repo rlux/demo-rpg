@@ -2,6 +2,15 @@
 
 #include <QDebug>
 
+EventTrigger::EventTrigger(tmx::Object* object)
+{
+	setPosition(object->position());
+	setSize(object->size());
+	setName(object->name());
+	_type = object->type();
+	_properties = object->properties();
+}
+
 const QPointF& EventTrigger::position() const
 {
 	return _position;
@@ -37,13 +46,21 @@ QRectF EventTrigger::rect() const
 	return QRectF(_position, _size);
 }
 
+void EventTrigger::trigger(MapEvent* event)
+{
+	emit(triggered(event));
+}
+
 void EventTrigger::enter(AnimatedObject* object)
 {
-	qDebug() << "enter" << object;
-	object->setPosition(QPointF(100,200));
+	if (!object->isPlayer()) return;
+
+	if (_type=="changemap")
+	{
+		trigger(new MapChangeEvent(object, _properties["map"], _properties["target"]));
+	}
 }
 
 void EventTrigger::exit(AnimatedObject* object)
 {
-	qDebug() << "exit" << object;
 }
