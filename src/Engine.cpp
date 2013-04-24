@@ -14,9 +14,6 @@ Engine::Engine(Game* game)
 void Engine::mapChanged()
 {
 	_currentTriggers.clear();
-
-	Player* player = _game->player();
-	_currentTriggers[player] = _game->currentMap()->triggersIn(player->marginedRect());
 }
 
 void Engine::update(double delta)
@@ -80,7 +77,7 @@ void Engine::checkTriggers(AnimatedObject* object)
 	{
 		trigger->exit(object);
 	}
-	oldTriggers = newTriggers;
+	 _currentTriggers[object] = _game->currentMap()->triggersIn(object->marginedRect());
 }
 
 tmx::TileLayer* Engine::walkableLayer()

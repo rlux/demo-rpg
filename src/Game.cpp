@@ -31,7 +31,7 @@ NPCFactory* Game::npcFactory()
 
 void Game::changeMap(const QString& map, const QString& target)
 {
-	qDebug() << "change map"<<map<< target;
+//	qDebug() << "change map"<<map<< target;
 	_currentMap = obtainMap(map);
 	_player.setPosition(_currentMap->target(target));
 	emit(mapChanged());
