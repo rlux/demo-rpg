@@ -28,6 +28,7 @@ protected:
 	void moveObject(AnimatedObject* object, double delta);
 
 	void checkTriggers(AnimatedObject* object);
+	QSet<EventTrigger*> triggersFor(AnimatedObject* object);
 
 	tmx::TileLayer* walkableLayer();
 	bool canBeAt(AnimatedObject* object, const QPointF& pos);

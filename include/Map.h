@@ -26,7 +26,9 @@ public:
 	QSet<AnimatedObject*> objectsIn(const QRectF& rect) const;
 	QSet<EventTrigger*> triggersIn(const QRectF& rect) const;
 
-	QPointF target(const QString& name);
+	QRectF target(const QString& name);
+
+	void moveObjectToTarget(AnimatedObject* object, const QString& name);
 signals:
 	void eventTriggered(MapEvent* event);
 protected:

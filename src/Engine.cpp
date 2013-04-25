@@ -15,7 +15,9 @@ Engine::Engine(Game* game)
 
 void Engine::mapChanged()
 {
+	for (EventTrigger* trigger: _currentTriggers[_game->player()]) trigger->exit(_game->player());
 	_currentTriggers.clear();
+	for (EventTrigger* trigger: _game->currentMap()->triggersIn(_game->player()->rect())) trigger->ignore(_game->player());
 }
 
 void Engine::update(double delta)
@@ -53,11 +55,7 @@ void Engine::moveObject(AnimatedObject* object, double delta)
 			object->setPosition(point);
 			checkTriggers(object);
 
-			if (object->position()!=point)
-			{
-				checkTriggers(object);
-				break;
-			}
+			if (object->position()!=point) break;
 		}
 		else
 		{
@@ -69,17 +67,41 @@ void Engine::moveObject(AnimatedObject* object, double delta)
 
 void Engine::checkTriggers(AnimatedObject* object)
 {
+	if (!object->isPlayer()) return;
+
 	QSet<EventTrigger*> oldTriggers = _currentTriggers[object];
-	QSet<EventTrigger*> newTriggers = _game->currentMap()->triggersIn(object->marginedRect());
+	QSet<EventTrigger*> newTriggers = _game->currentMap()->triggersIn(object->rect());
+
 	for (EventTrigger* trigger: newTriggers-oldTriggers)
 	{
 		trigger->enter(object);
+	}
+	for (EventTrigger* trigger: newTriggers)
+	{
+		trigger->move(object);
 	}
 	for (EventTrigger* trigger: oldTriggers-newTriggers)
 	{
 		trigger->exit(object);
 	}
-	 _currentTriggers[object] = _game->currentMap()->triggersIn(object->marginedRect());
+	 _currentTriggers[object] = _game->currentMap()->triggersIn(object->rect());
+}
+
+QSet<EventTrigger*> Engine::triggersFor(AnimatedObject* object)
+{
+	QSet<EventTrigger*> triggers;
+	QRectF objectRect = object->marginedRect();
+	double objectArea = objectRect.width()*objectRect.height();
+	for (EventTrigger* trigger: _game->currentMap()->triggersIn(objectRect))
+	{
+		QRectF triggerRect = trigger->rect();
+		double triggerArea = triggerRect.width()*triggerRect.height();
+		QRectF intersected = trigger->rect().intersected(objectRect);
+		double intersectedArea = intersected.width()*intersected.height();
+		if (intersectedArea/qMin(objectArea, triggerArea)>0.5) triggers << trigger;
+	}
+
+	return triggers;
 }
 
 tmx::TileLayer* Engine::walkableLayer()

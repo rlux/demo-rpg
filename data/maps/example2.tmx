@@ -29,7 +29,7 @@
   </data>
  </layer>
  <objectgroup name="events" width="20" height="20">
-  <object name="south" type="changemap" x="256" y="608" width="32" height="32">
+  <object name="south" type="changemap" x="225" y="627" width="96" height="11">
    <properties>
     <property name="map" value="example"/>
     <property name="target" value="north"/>

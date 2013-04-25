@@ -51,8 +51,17 @@ void EventTrigger::trigger(MapEvent* event)
 	emit(triggered(event));
 }
 
-void EventTrigger::enter(AnimatedObject* object)
+void EventTrigger::ignore(AnimatedObject* object)
 {
+	_ignored << object;
+}
+
+void EventTrigger::trigger(AnimatedObject* object)
+{
+//	qDebug() << "trigger"<<_type <<  _name;
+
+	if (_ignored.contains(object)) return;
+
 	if (_type=="changemap")
 	{
 		if (!object->isPlayer()) return;
@@ -62,8 +71,35 @@ void EventTrigger::enter(AnimatedObject* object)
 	{
 		trigger(new TeleportEvent(object, _properties["target"]));
 	}
+
+	_ignored << object;
+}
+
+void EventTrigger::enter(AnimatedObject* object)
+{
+//	qDebug() << "enter"<<_type <<  _name;
+}
+
+void EventTrigger::move(AnimatedObject* object)
+{
+//	qDebug() << "move"<<_type <<  _name;
+
+	QRectF objectRect = object->marginedRect();
+	double objectArea = objectRect.width()*objectRect.height();
+
+	QRectF triggerRect = rect();
+	double triggerArea = triggerRect.width()*triggerRect.height();
+	QRectF intersected = triggerRect.intersected(objectRect);
+	double intersectedArea = intersected.width()*intersected.height();
+
+	double ratio = intersectedArea/qMin(objectArea, triggerArea);
+
+	if (ratio>0.5) trigger(object);
 }
 
 void EventTrigger::exit(AnimatedObject* object)
 {
+//	qDebug() << "exit" << _type <<  _name;
+
+	_ignored.remove(object);
 }

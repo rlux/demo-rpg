@@ -79,6 +79,11 @@ void Object::setY(int y)
 	_position.setY(y);
 }
 
+QRect Object::rect() const
+{
+	return QRect(_position, _size);
+}
+
 void Object::setVisible(bool visible)
 {
 	_visible = visible;

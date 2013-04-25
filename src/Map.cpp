@@ -97,16 +97,16 @@ QSet<EventTrigger*> Map::triggersIn(const QRectF& rect) const
 	return triggers;
 }
 
-QPointF Map::target(const QString& name)
+QRectF Map::target(const QString& name)
 {
-	QPointF pos;
+	QRectF area;
 	if (tmx::Layer* layer = _map->layerNamed("spawn"))
 	{
 		if (tmx::ObjectLayer* oLayer = layer->asObjectLayer())
 		{
 			if (tmx::Object* o = oLayer->objectNamed(name))
 			{
-				pos = o->position();
+				area = o->rect();
 			}
 		}
 	}
@@ -116,9 +116,22 @@ QPointF Map::target(const QString& name)
 		{
 			if (tmx::Object* o = oLayer->objectNamed(name))
 			{
-				pos = o->position();
+				area = o->rect();
 			}
 		}
 	}
-	return pos;
+	return area;
+}
+
+void Map::moveObjectToTarget(AnimatedObject* object, const QString& name)
+{
+	QRectF area = target(name);
+	QPointF pos = area.center()-QPointF(object->size().width(), object->size().height())/2.0;
+	QRectF rect(pos, object->size());
+	QSize mapSize = _map->pixelSize();
+	if (rect.left()<0) rect.moveLeft(0);
+	if (rect.right()>mapSize.width()) rect.moveRight(mapSize.width());
+	if (rect.top()<0) rect.moveTop(0);
+	if (rect.bottom()>mapSize.height()) rect.moveBottom(mapSize.height());
+	object->setPosition(rect.topLeft());
 }

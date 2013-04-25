@@ -2,6 +2,7 @@
 
 #include <MapEvent.h>
 
+#include <QApplication>
 #include <QDebug>
 
 Game::Game()
@@ -48,8 +49,17 @@ void Game::handleKeyPress(QKeyEvent* event)
 			_player.setDirection(Player::Down);
 			_directions.insert(Player::Down);
 			break;
-		case Qt::Key_D:
-			_renderer->setDebug(!_renderer->debug());
+		case Qt::Key_1:
+			_renderer->toggleRenderFlag(GameRenderer::RenderEvents);
+			break;
+		case Qt::Key_2:
+			_renderer->toggleRenderFlag(GameRenderer::RenderWalkable);
+			break;
+		case Qt::Key_3:
+			_renderer->toggleRenderFlag(GameRenderer::RenderCollisionVolume);
+			break;
+		case Qt::Key_Escape:
+			QApplication::quit();
 			break;
 	}
 }
@@ -89,7 +99,7 @@ void Game::processMapEvent(MapEvent* event)
 	}
 	else if (TeleportEvent* e = dynamic_cast<TeleportEvent*>(event))
 	{
-		e->trigger()->setPosition(_currentMap->target(e->target()));
+		_currentMap->moveObjectToTarget(e->trigger(), e->target());
 	}
 
 	delete event;
@@ -117,9 +127,8 @@ GameRenderer* Game::renderer()
 
 void Game::changeMap(const QString& map, const QString& target)
 {
-//	qDebug() << "change map"<<map<< target;
 	_currentMap = obtainMap(map);
-	_player.setPosition(_currentMap->target(target));
+	_currentMap->moveObjectToTarget(&_player, target);
 	emit(mapChanged());
 }
 

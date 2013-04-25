@@ -6,7 +6,7 @@
 
 GameRenderer::GameRenderer(Game* game)
 : _game(game)
-, _debug(false)
+, _debugRenderFlags(0)
 {
 	connect(_game, SIGNAL(mapChanged()), this, SLOT(mapChanged()));
 }
@@ -26,14 +26,16 @@ void GameRenderer::renderGame(QPainter& painter)
 	}
 }
 
-void GameRenderer::setDebug(bool b)
+void GameRenderer::toggleRenderFlag(DebugRenderFlags flag)
 {
-	_debug = b;
-}
-
-bool GameRenderer::debug() const
-{
-	return _debug;
+	if (_debugRenderFlags & flag)
+	{
+		_debugRenderFlags &= ~flag;
+	}
+	else
+	{
+		_debugRenderFlags |= flag;
+	}
 }
 
 void GameRenderer::calculateOffset()
@@ -63,10 +65,10 @@ void GameRenderer::renderLayers(QPainter& painter, tmx::Map* map)
 {
 	renderLayerNamed(painter, map, "ground");
 	renderLayerNamed(painter, map, "decoration");
-	if (_debug) renderEventTriggers(painter);
+	if (_debugRenderFlags & RenderEvents) renderEventTriggers(painter);
 	renderObjects(painter);
 	renderLayerNamed(painter, map, "top");
-	//renderLayerNamed(painter, map, "walkable");
+	if (_debugRenderFlags & RenderWalkable)  renderLayerNamed(painter, map, "walkable");
 }
 
 void GameRenderer::renderLayerNamed(QPainter& painter, tmx::Map* map, const QString& name)
@@ -93,7 +95,7 @@ void GameRenderer::renderObject(QPainter& painter, AnimatedObject* object)
 	painter.save();
 	painter.translate(_mapOffset+_viewport.topLeft());
 
-	//painter.fillRect(object->marginedRect(), Qt::blue);
+	if (_debugRenderFlags & RenderCollisionVolume) painter.fillRect(object->marginedRect(), Qt::red);
 
 	QPixmap* pixmap = object->animation()->pixmap();
 	if (pixmap)
@@ -126,7 +128,6 @@ void GameRenderer::renderEventTrigger(QPainter& painter, EventTrigger* trigger)
 	painter.drawRect(rect);
 	painter.setPen(Qt::white);
 	QString name = trigger->name();
-//	painter.drawText(rect, Qt::TextSingleLine, painter.fontMetrics().elidedText(name, Qt::ElideRight, rect.width()));
 	painter.drawText(rect.topLeft()+QPointF(2,painter.fontMetrics().height()), name);
 	painter.restore();
 }

@@ -41,6 +41,8 @@ public:
 	void setX(int x);
 	void setY(int y);
 
+	QRect rect() const;
+
 	void setVisible(bool visible);
 	bool isVisible() const;
 

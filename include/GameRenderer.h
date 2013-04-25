@@ -11,17 +11,24 @@ class GameRenderer : public QObject, public tmx::Renderer
 {
 	Q_OBJECT
 public:
+	enum DebugRenderFlags
+	{
+		NoDebugRender = 0x0,
+		RenderEvents = 0x1,
+		RenderWalkable = 0x2,
+		RenderCollisionVolume = 0x4
+	};
+
 	GameRenderer(Game* game);
 
 	void renderGame(QPainter& painter);
 
-	void setDebug(bool b);
-	bool debug() const;
+	void toggleRenderFlag(DebugRenderFlags flag);
 protected slots:
 	void mapChanged();
 protected:
 	Game* _game;
-	bool _debug;
+	unsigned _debugRenderFlags;
 
 	void calculateOffset();
 
