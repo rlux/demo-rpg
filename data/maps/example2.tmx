@@ -15,6 +15,9 @@
  <tileset firstgid="72" name="oldtree" tilewidth="32" tileheight="32">
   <image source="../tilesets/oldtree.gif" width="64" height="64"/>
  </tileset>
+ <tileset firstgid="76" name="man3" tilewidth="32" tileheight="32">
+  <image source="../charsets/man3.png" width="96" height="128"/>
+ </tileset>
  <layer name="ground" width="20" height="20">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAA2NkYGBghGJuIBagEDMOI/M4gJiHSuaBzOICYnYCZhJrHh8Q8yPRxJjHDMQsSJiQ3wiZh47RzScG4zOPHCyChmVI0CuBRb8gGpYmwTwxLPrRsTAWO3FhISLMG8WjmJ4YAFUB5P1ABgAA
@@ -22,20 +25,30 @@
  </layer>
  <layer name="decoration" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA+3QSQqAQAwEwHmK+AI3XK7uy///Y3sIxCEMwQzowYa+tYUZ576d5O0f+HPLim4RvR09Irg9OjCH3KfOiE4Gh0LOjC4GhyI5ucGje7lh8ejekJcprWtH90pegZZopbD8reTVaIO2Cs/fat8vVdjc6ALlXmjnfyNF8jQ5AeSNEtdABgAA
+   H4sIAAAAAAAAA2NgGNxAYaAdMApoCryA2HsQmusCxK5UNMcNiN0pMAcGsJljSAVzqWUezL/IZqCbZ0CkWSB1MP9iM88IiI2B2IQIs9DVYjPPDIjNgdiCCPPQ1eLzLzJQIsJsZDMs8WBk8/CpQ9eDDWAzjxgAADJJfalABgAA
   </data>
  </layer>
  <objectgroup name="events" width="20" height="20">
   <object name="south" type="changemap" x="256" y="608" width="32" height="32">
    <properties>
     <property name="map" value="example"/>
-    <property name="target" value="teleport"/>
+    <property name="target" value="north"/>
    </properties>
   </object>
  </objectgroup>
  <layer name="walkable" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA2NgQAWKFGJ0QKl56GbS032kqCGkdrCow6ePkFmkmEssoJa51HIntf1L7XDDlScoNQ89/mlpHrHm48uPuOwi1l30MI8SgM1N1CgXCdmHi48LAAD8tXutQAYAAA==
+   H4sIAAAAAAAAA2NgQAWKFGJ0QKl56GbS032kqCGkdrCow6ePkFnEmEcqGKzmUsvf1A4/XHmCmoBa/sVlHrHm48uPuOwi1l30MI8SgM1N1CgXCdmHi48LAADvUkSxQAYAAA==
+  </data>
+ </layer>
+ <objectgroup name="objects" width="20" height="20">
+  <object gid="76" x="256" y="352"/>
+  <object gid="76" x="256" y="352"/>
+  <object name="man3" type="npc" gid="76" x="256" y="352"/>
+ </objectgroup>
+ <layer name="top" width="20" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NgGAWjgHjgAcSeg9BcJyB2pqI5IwWMNP+OAuoCACBbhgNABgAA
   </data>
  </layer>
 </map>

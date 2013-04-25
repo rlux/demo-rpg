@@ -45,7 +45,7 @@
   </data>
  </layer>
  <objectgroup name="events" width="32" height="32">
-  <object name="teleport" type="changemap" x="960" y="0" width="32" height="32">
+  <object name="north" type="changemap" x="960" y="0" width="32" height="32">
    <properties>
     <property name="map" value="example2"/>
     <property name="target" value="south"/>
