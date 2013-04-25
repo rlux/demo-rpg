@@ -89,6 +89,7 @@ QSet<EventTrigger*> Map::triggersIn(const QRectF& rect) const
 	for (EventTrigger* trigger: _triggers)
 	{
 		if (trigger->rect().intersects(rect))
+	//	if (trigger->intersects(rect))
 		{
 			triggers << trigger;
 		}

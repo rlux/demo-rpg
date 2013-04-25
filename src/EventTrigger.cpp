@@ -51,16 +51,9 @@ void EventTrigger::trigger(MapEvent* event)
 	emit(triggered(event));
 }
 
-void EventTrigger::ignore(AnimatedObject* object)
-{
-	_ignored << object;
-}
-
 void EventTrigger::trigger(AnimatedObject* object)
 {
-//	qDebug() << "trigger"<<_type <<  _name;
-
-	if (_ignored.contains(object)) return;
+	qDebug() << "trigger"<<_type <<  _name;
 
 	if (_type=="changemap")
 	{
@@ -71,35 +64,28 @@ void EventTrigger::trigger(AnimatedObject* object)
 	{
 		trigger(new TeleportEvent(object, _properties["target"]));
 	}
-
-	_ignored << object;
 }
 
 void EventTrigger::enter(AnimatedObject* object)
 {
 //	qDebug() << "enter"<<_type <<  _name;
+	trigger(object);
 }
 
-void EventTrigger::move(AnimatedObject* object)
+bool EventTrigger::intersects(const QRectF& rect)
 {
-//	qDebug() << "move"<<_type <<  _name;
+	QRectF triggerRect = this->rect();
 
-	QRectF objectRect = object->marginedRect();
-	double objectArea = objectRect.width()*objectRect.height();
+	if (triggerRect.contains(rect)) return true;
 
-	QRectF triggerRect = rect();
-	double triggerArea = triggerRect.width()*triggerRect.height();
-	QRectF intersected = triggerRect.intersected(objectRect);
-	double intersectedArea = intersected.width()*intersected.height();
+	QRectF intersected = triggerRect.intersected(rect);
 
-	double ratio = intersectedArea/qMin(objectArea, triggerArea);
+	double p = qMax(intersected.width()/triggerRect.width(), intersected.height()/triggerRect.height());
 
-	if (ratio>0.5) trigger(object);
+	return p>0.5;
 }
 
 void EventTrigger::exit(AnimatedObject* object)
 {
 //	qDebug() << "exit" << _type <<  _name;
-
-	_ignored.remove(object);
 }

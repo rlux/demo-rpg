@@ -3,6 +3,7 @@
 #include <QKeyEvent>
 #include <QSet>
 #include <QHash>
+#include <QQueue>
 
 #include <GameRenderer.h>
 #include <Engine.h>
@@ -34,7 +35,7 @@ public:
 signals:
 	void mapChanged();
 protected slots:
-	void processMapEvent(MapEvent* event);
+	void queueMapEvent(MapEvent* event);
 protected:
 	Map* _currentMap;
 	Player _player;
@@ -43,6 +44,10 @@ protected:
 	QHash<QString, Map*> _maps;
 	Engine* _engine;
 	GameRenderer* _renderer;
+	QQueue<MapEvent*> _mapEvents;
+
+	void processMapEvents();
+	void handleMapEvent(MapEvent* event);
 
 	Map* obtainMap(const QString& name);
 };

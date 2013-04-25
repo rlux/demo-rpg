@@ -15,9 +15,6 @@ Engine::Engine(Game* game)
 
 void Engine::mapChanged()
 {
-	for (EventTrigger* trigger: _currentTriggers[_game->player()]) trigger->exit(_game->player());
-	_currentTriggers.clear();
-	for (EventTrigger* trigger: _game->currentMap()->triggersIn(_game->player()->rect())) trigger->ignore(_game->player());
 }
 
 void Engine::update(double delta)
@@ -48,14 +45,14 @@ void Engine::moveObject(AnimatedObject* object, double delta)
 
 	QList<QPointF> points = wayPoints(object, distance);
 
+	QSet<EventTrigger*> currentTriggers = _game->currentMap()->triggersIn(object->marginedRect());
+
 	for (const QPointF point: points)
 	{
 		if (canBeAt(object, point) || !canBeAt(object, object->position()))
 		{
 			object->setPosition(point);
-			checkTriggers(object);
-
-			if (object->position()!=point) break;
+			checkTriggers(object, currentTriggers);
 		}
 		else
 		{
@@ -65,43 +62,33 @@ void Engine::moveObject(AnimatedObject* object, double delta)
 	}
 }
 
-void Engine::checkTriggers(AnimatedObject* object)
+void Engine::checkTriggers(AnimatedObject* object, QSet<EventTrigger*>& currentTriggers)
 {
-	if (!object->isPlayer()) return;
+	QSet<EventTrigger*> newTriggers = _game->currentMap()->triggersIn(object->marginedRect());
 
-	QSet<EventTrigger*> oldTriggers = _currentTriggers[object];
-	QSet<EventTrigger*> newTriggers = _game->currentMap()->triggersIn(object->rect());
+	if (object->isPlayer())
+	{
+		newTriggers.clear();
+		for (EventTrigger* trigger: _game->currentMap()->triggersIn(object->marginedRect()))
+		{
+			if (trigger->intersects(object->marginedRect()))
+			{
+				newTriggers<<trigger;
+			}
+		}
+	}
 
-	for (EventTrigger* trigger: newTriggers-oldTriggers)
-	{
-		trigger->enter(object);
-	}
-	for (EventTrigger* trigger: newTriggers)
-	{
-		trigger->move(object);
-	}
-	for (EventTrigger* trigger: oldTriggers-newTriggers)
+
+	for (EventTrigger* trigger: currentTriggers-newTriggers)
 	{
 		trigger->exit(object);
 	}
-	 _currentTriggers[object] = _game->currentMap()->triggersIn(object->rect());
-}
-
-QSet<EventTrigger*> Engine::triggersFor(AnimatedObject* object)
-{
-	QSet<EventTrigger*> triggers;
-	QRectF objectRect = object->marginedRect();
-	double objectArea = objectRect.width()*objectRect.height();
-	for (EventTrigger* trigger: _game->currentMap()->triggersIn(objectRect))
+	for (EventTrigger* trigger: newTriggers-currentTriggers)
 	{
-		QRectF triggerRect = trigger->rect();
-		double triggerArea = triggerRect.width()*triggerRect.height();
-		QRectF intersected = trigger->rect().intersected(objectRect);
-		double intersectedArea = intersected.width()*intersected.height();
-		if (intersectedArea/qMin(objectArea, triggerArea)>0.5) triggers << trigger;
+		trigger->enter(object);
 	}
 
-	return triggers;
+	currentTriggers = newTriggers;
 }
 
 tmx::TileLayer* Engine::walkableLayer()
@@ -172,6 +159,13 @@ QList<QPointF> Engine::wayPoints(AnimatedObject* object, double distance)
 		} else {
 			positions << obstacle.top() << obstacle.bottom();
 		}
+	}
+
+	QSize mapSize = _game->currentMap()->internalMap()->pixelSize();
+	if (horizontal) {
+		positions << 0 << mapSize.width();
+	} else {
+		positions << 0 << mapSize.height();
 	}
 
 	if (ascending)

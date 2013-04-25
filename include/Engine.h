@@ -6,7 +6,6 @@
 #include <tmx/TileLayer.h>
 
 #include <QList>
-#include <QHash>
 #include <QSet>
 
 class Game;
@@ -22,13 +21,11 @@ protected slots:
 	void mapChanged();
 protected:
 	Game* _game;
-	QHash<AnimatedObject*, QSet<EventTrigger*>> _currentTriggers;
 
 	void moveObjects(double delta);
 	void moveObject(AnimatedObject* object, double delta);
 
-	void checkTriggers(AnimatedObject* object);
-	QSet<EventTrigger*> triggersFor(AnimatedObject* object);
+	void checkTriggers(AnimatedObject* object, QSet<EventTrigger*>& currentTriggers);
 
 	tmx::TileLayer* walkableLayer();
 	bool canBeAt(AnimatedObject* object, const QPointF& pos);

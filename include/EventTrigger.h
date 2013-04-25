@@ -7,7 +7,6 @@
 #include <QSize>
 #include <QRectF>
 #include <QHash>
-#include <QSet>
 
 #include <tmx/Object.h>
 
@@ -28,10 +27,9 @@ public:
 	const QSize& size() const;
 	void setSize(const QSize& size);
 
-	void ignore(AnimatedObject* object);
+	bool intersects(const QRectF& rect);
 
 	void enter(AnimatedObject* object);
-	void move(AnimatedObject* object);
 	void exit(AnimatedObject* object);
 signals:
 	void triggered(MapEvent* event);
@@ -41,7 +39,6 @@ protected:
 	QString _name;
 	QString _type;
 	QHash<QString, QString> _properties;
-	QSet<AnimatedObject*> _ignored;
 
 	void trigger(AnimatedObject* object);
 	void trigger(MapEvent* event);

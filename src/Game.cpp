@@ -22,6 +22,7 @@ Game::~Game()
 void Game::update(double delta)
 {
 	_engine->update(delta);
+	processMapEvents();
 }
 
 void Game::render(QPainter& painter)
@@ -91,18 +92,33 @@ void Game::handleKeyRelease(QKeyEvent* event)
 	}
 }
 
-void Game::processMapEvent(MapEvent* event)
+void Game::queueMapEvent(MapEvent* event)
+{
+	_mapEvents.enqueue(event);
+}
+
+void Game::processMapEvents()
+{
+	while (!_mapEvents.isEmpty())
+	{
+		MapEvent* event = _mapEvents.dequeue();
+		handleMapEvent(event);
+		delete event;
+	}
+}
+
+void Game::handleMapEvent(MapEvent* event)
 {
 	if (MapChangeEvent* e = dynamic_cast<MapChangeEvent*>(event))
 	{
 		changeMap(e->mapName(), e->target());
+		_mapEvents.clear();
 	}
 	else if (TeleportEvent* e = dynamic_cast<TeleportEvent*>(event))
 	{
 		_currentMap->moveObjectToTarget(e->trigger(), e->target());
+		_mapEvents.clear();
 	}
-
-	delete event;
 }
 
 Map* Game::currentMap()
@@ -138,7 +154,7 @@ Map* Game::obtainMap(const QString& name)
 	{
 		Map* map = new Map("data/maps/"+name+".tmx");
 		map->initialize(_npcFactory);
-		connect(map, SIGNAL(eventTriggered(MapEvent*)), this, SLOT(processMapEvent(MapEvent*)));
+		connect(map, SIGNAL(eventTriggered(MapEvent*)), this, SLOT(queueMapEvent(MapEvent*)));
 		_maps.insert(name, map);
 	}
 
