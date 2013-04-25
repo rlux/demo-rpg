@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 2.6)
 project(demo-rpg)
 set(target demo-rpg)
 
+cmake_policy(SET CMP0009 NEW)
+
 IF(NOT MSVC)
 	ADD_DEFINITIONS(-std=c++0x -Werror=return-type)
 ENDIF(NOT MSVC)
