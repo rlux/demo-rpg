@@ -105,7 +105,7 @@ void GameLoader::initializeAnimation(const QDomElement& element, Animation* anim
 	QString layout = element.attribute("layout");
 	for (int i=0; i<layout.size(); ++i)
 	{
-		switch (layout[i].toLower().toAscii())
+		switch (layout[i].toLower().toLatin1())
 		{
 			case 'l':
 				animation->setOffset(Animation::Left, i);

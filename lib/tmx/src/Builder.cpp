@@ -476,7 +476,7 @@ void DataState::handleAttribute(Attribute::type attribute, const QString& value)
 
 void DataState::handleData(const QString& _data)
 {
-	data->setBytes(_data.toAscii());
+	data->setBytes(_data.toLatin1());
 }
 
 ImageState::ImageState(Image* image) : image(image)
