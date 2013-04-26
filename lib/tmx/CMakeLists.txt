@@ -7,9 +7,10 @@ IF(NOT MSVC)
 	ADD_DEFINITIONS(-std=c++0x -Werror=return-type)
 ENDIF(NOT MSVC)
 
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+find_package(Qt5Core REQUIRED)
 find_package(ZLIB REQUIRED)
-find_package(Qt4 COMPONENTS QtCore QtXml REQUIRED)
-include(${QT_USE_FILE})
 
 include_directories("include")
 
@@ -37,4 +38,5 @@ set(sources
 
 add_library(${target} SHARED ${sources} ${headers})
 
-target_link_libraries(${target} ${QT_LIBRARIES} ${ZLIB_LIBRARIES})
+target_link_libraries(${target} ${ZLIB_LIBRARIES})
+qt5_use_modules(${target} Widgets Xml)

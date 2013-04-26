@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.8)
 
 project(demo-rpg)
 set(target demo-rpg)
@@ -9,9 +9,9 @@ IF(NOT MSVC)
 	ADD_DEFINITIONS(-std=c++0x -Werror=return-type)
 ENDIF(NOT MSVC)
 
-
-find_package(Qt4 COMPONENTS QtCore QtGui QtXml REQUIRED)
-include(${QT_USE_FILE})
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+find_package(Qt5Core REQUIRED)
 
 include_directories("include" "lib/tmx/include" "lib/tmxrenderer/include" )
 
@@ -36,22 +36,12 @@ set(sources
 	src/MapEvent.cpp
 )
 
-QT4_WRAP_CPP(moc_sources
-  include/GameWidget.h
-  include/GameRenderer.h
-  include/Game.h
-  include/Map.h
-  include/EventTrigger.h
-  include/Engine.h
-)
-#QT4_WRAP_UI(ui_headers ...)
-
 add_subdirectory("lib")
 
-add_executable(${target} ${sources} ${moc_sources} ${headers})
+add_executable(${target} ${sources}  ${headers})
 
-target_link_libraries(${target} tmx tmxrenderer ${QT_LIBRARIES})
-
+target_link_libraries(${target} tmx tmxrenderer)
+qt5_use_modules(${target} Widgets Xml)
 
 #copy data
 add_custom_command(

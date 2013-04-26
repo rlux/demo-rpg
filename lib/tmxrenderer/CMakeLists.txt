@@ -7,9 +7,9 @@ IF(NOT MSVC)
 	ADD_DEFINITIONS(-std=c++0x -Werror=return-type)
 ENDIF(NOT MSVC)
 
-
-find_package(Qt4 COMPONENTS QtCore REQUIRED)
-include(${QT_USE_FILE})
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+find_package(Qt5Core REQUIRED)
 
 include_directories("include" "../tmx/include")
 
@@ -21,4 +21,5 @@ set(sources
 
 add_library(${target} SHARED ${sources} ${headers})
 
-target_link_libraries(${target} tmx ${QT_LIBRARIES})
+target_link_libraries(${target} tmx)
+qt5_use_modules(${target} Widgets)
