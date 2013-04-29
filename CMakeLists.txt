@@ -12,8 +12,13 @@ ENDIF(NOT MSVC)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 find_package(Qt5Core REQUIRED)
+find_package(TastefulRPG QUIET)
 
-include_directories("include" "lib/tmx/include" "lib/tmxrenderer/include" )
+if(TastefulRPG_FOUND)
+	include_directories("include" "lib/tmx/include" "lib/tmxrenderer/include" ${TastefulRPG_INCLUDE_DIR})
+else(TastefulRPG_FOUND)
+	include_directories("include" "lib/tmx/include" "lib/tmxrenderer/include")
+endif(TastefulRPG_FOUND)
 
 FILE(GLOB_RECURSE headers "include" *.h *.hpp)
 
@@ -40,7 +45,12 @@ add_subdirectory("lib")
 
 add_executable(${target} ${sources}  ${headers})
 
-target_link_libraries(${target} tmx tmxrenderer)
+if(TastefulRPG_FOUND)
+	target_link_libraries(${target} tmx tmxrenderer ${TastefulRPG_LIBRARY})
+else(TastefulRPG_FOUND)
+	target_link_libraries(${target} tmx tmxrenderer)
+endif(TastefulRPG_FOUND)
+
 qt5_use_modules(${target} Widgets Xml)
 
 #copy data
