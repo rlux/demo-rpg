@@ -4,7 +4,7 @@
   <image source="../tilesets/tileset01.png" width="128" height="352"/>
  </tileset>
  <tileset firstgid="45" name="walkable" tilewidth="32" tileheight="32">
-  <image source="../tilesets/overlay.png" width="32" height="32"/>
+  <image source="../external/tilesets/overlay.png" width="32" height="32"/>
  </tileset>
  <tileset firstgid="46" name="Woman 2" tilewidth="32" tileheight="32">
   <image source="../charsets/woman2.png" width="96" height="128"/>
@@ -13,13 +13,13 @@
   <image source="../tilesets/tileset03.png" width="128" height="256"/>
  </tileset>
  <tileset firstgid="90" name="stone" tilewidth="32" tileheight="32">
-  <image source="../tilesets/stone.gif" width="32" height="64"/>
+  <image source="../external/tilesets/stone.gif" width="32" height="64"/>
  </tileset>
  <tileset firstgid="92" name="misc" tilewidth="32" tileheight="32">
-  <image source="../tilesets/misc.gif" width="256" height="256"/>
+  <image source="../external/tilesets/misc.gif" width="256" height="256"/>
  </tileset>
  <tileset firstgid="156" name="statue" tilewidth="32" tileheight="32">
-  <image source="../tilesets/statue.gif" width="74" height="66"/>
+  <image source="../external/tilesets/statue.gif" width="74" height="66"/>
  </tileset>
  <layer name="ground" width="32" height="32">
   <data encoding="base64" compression="zlib">

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="20" height="20" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="tileset02" tilewidth="32" tileheight="32">
-  <image source="../tilesets/tileset02.png" width="512" height="64"/>
+  <image source="../external/tilesets/tileset02.png" width="512" height="64"/>
  </tileset>
  <tileset firstgid="33" name="overlay" tilewidth="32" tileheight="32">
-  <image source="../tilesets/overlay.png" width="32" height="32"/>
+  <image source="../external/tilesets/overlay.png" width="32" height="32"/>
  </tileset>
  <tileset firstgid="34" name="tileset03" tilewidth="32" tileheight="32">
   <image source="../tilesets/tileset03.png" width="128" height="256"/>
  </tileset>
  <tileset firstgid="66" name="tree" tilewidth="32" tileheight="32">
-  <image source="../tilesets/tree.gif" width="64" height="96"/>
+  <image source="../external/tilesets/tree.gif" width="64" height="96"/>
  </tileset>
  <tileset firstgid="72" name="oldtree" tilewidth="32" tileheight="32">
-  <image source="../tilesets/oldtree.gif" width="64" height="64"/>
+  <image source="../external/tilesets/oldtree.gif" width="64" height="64"/>
  </tileset>
  <tileset firstgid="76" name="man3" tilewidth="32" tileheight="32">
   <image source="../charsets/man3.png" width="96" height="128"/>
